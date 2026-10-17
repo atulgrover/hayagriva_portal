@@ -4,6 +4,7 @@ import { getMockStore } from '../../../../../lib/db/seed';
 import { licenses, activations, users, hubItems, deviceSyncQueue } from '../../../../../lib/db/schema';
 import { getPresignedDownloadUrl } from '../../../../../lib/storage/s3';
 import { eq, and } from 'drizzle-orm';
+import { curatedGarudaAgents } from "../../../../../lib/taxonomy/curated-garuda-agents";
 
 export async function GET(request: Request) {
   try {
@@ -143,9 +144,27 @@ export async function GET(request: Request) {
 
     const chamberOrg = user?.org || 'Independent Chamber';
 
+    // Ensure mock store always has the latest curated agents (from all domains)
+    const agentList = Array.isArray(curatedGarudaAgents)
+      ? curatedGarudaAgents
+      : (curatedGarudaAgents as any)?.curatedGarudaAgents || (curatedGarudaAgents as any)?.default || [];
+    for (const agent of agentList) {
+      if (!store.hubItems.some((h: any) => h.id === agent.id)) {
+        store.hubItems.push(agent);
+      }
+    }
+
     // Collect public items & chamber private items
     let rawItems: any[] = [];
     if (isMock) {
+      const agentList = Array.isArray(curatedGarudaAgents)
+        ? curatedGarudaAgents
+        : (curatedGarudaAgents as any)?.curatedGarudaAgents || (curatedGarudaAgents as any)?.default || [];
+      for (const agent of agentList) {
+        if (!store.hubItems.some((h: any) => h.id === agent.id)) {
+          store.hubItems.push(agent);
+        }
+      }
       const publicItems = (store.hubItems || []).filter((item) => item.visibility === 'PUBLIC');
       const privateItems = (store.hubItems || []).filter(
         (item) => item.visibility === 'PRIVATE_CHAMBER' && item.orgId === chamberOrg
@@ -166,6 +185,13 @@ export async function GET(request: Request) {
         );
         rawItems = [...publicItems, ...privateItems];
       }
+    }
+
+    // Filter by domain if requested (e.g. ?domain=trade-vocational or ?domain=legal-dispute)
+    const url = new URL(request.url);
+    const requestedDomain = url.searchParams.get("domain");
+    if (requestedDomain) {
+      rawItems = rawItems.filter((item) => item.domain === requestedDomain);
     }
 
     // Attach signed presigned download URLs for seamless binary or archive syncing
