@@ -25,7 +25,7 @@ async function runQueueDispatchTests() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       licenseKey: 'HAYA-ENT-8F92-K4X9-98QA',
-      hubItemId: 'varaha_agt_agri_crop_14',
+      hubItemId: 'garuda_agt_agri_crop_14',
     }),
   });
   const queueRes = await postQueueDispatchRoute(queueReq);
@@ -50,7 +50,7 @@ async function runQueueDispatchTests() {
   assert.strictEqual(syncRes.status, 200);
   assert.strictEqual(syncData.success, true);
   assert.ok(Array.isArray(syncData.dispatches), 'syncData should have dispatches array');
-  const found = syncData.dispatches.find((d: any) => d.hubItemId === 'varaha_agt_agri_crop_14');
+  const found = syncData.dispatches.find((d: any) => d.hubItemId === 'garuda_agt_agri_crop_14');
   assert.ok(found, 'Should find queued item in sync dispatches');
   console.log('✔ Workstation sync successfully returned queued dispatch!');
 

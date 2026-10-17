@@ -42,7 +42,7 @@ const navSections: NavSection[] = [
   {
     title: 'Sovereign Catalogs',
     items: [
-      { name: 'Varaha Agents', href: '/dashboard/agents?tab=bazaar', icon: Sparkles, badge: 'Community' },
+      { name: 'Garuda Agents', href: '/dashboard/agents?tab=bazaar', icon: Sparkles, badge: 'Community' },
       { name: 'Statutory Vaults', href: '/dashboard/vaults', icon: Database },
       { name: 'BharatGen Models', href: '/dashboard/models', icon: Cpu },
     ]

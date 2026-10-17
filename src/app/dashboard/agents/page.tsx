@@ -216,10 +216,10 @@ function AgentsContent() {
             </span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            Varaha Agentic Platform &amp; Studio
+            Garuda Agentic Platform &amp; Studio
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Discover sovereign, community-curated agents from the Varaha registry across Legal, Clinical, Agri, and CA/Tax, or build custom <code className="text-amber-500">.haya</code> cartridges in the Varaha Agentic Studio.
+            Discover sovereign, community-curated agents from the Garuda registry across Legal, Clinical, Agri, and CA/Tax, or build custom <code className="text-amber-500">.haya</code> cartridges in the Garuda Agentic Studio.
           </p>
         </div>
 
@@ -265,7 +265,7 @@ function AgentsContent() {
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span>Varaha Catalog (Community &amp; Official)</span>
+          <span>Garuda Catalog (Community &amp; Official)</span>
           <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
             activeTab === 'bazaar' ? 'bg-black/20 text-black' : 'bg-secondary text-muted-foreground'
           }`}>

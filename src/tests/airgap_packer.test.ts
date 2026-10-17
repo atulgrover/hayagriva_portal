@@ -72,7 +72,7 @@ async function runAirgapPackerTests() {
     body: JSON.stringify({
       licenseKey: targetLicense,
       hardwareFingerprint: targetFp,
-      itemIds: ['varaha_agt_agri_crop_14'],
+      itemIds: ['garuda_agt_agri_crop_14'],
     }),
   });
 

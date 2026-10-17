@@ -239,10 +239,10 @@ export function seedHubData(): HubStore {
 
   hubItems.push(...publicFlagshipItems);
 
-  // Curated Varaha Sovereign Agents across the 5 Flagship Domains
-  const { curatedVarahaAgents } = require('../taxonomy/curated-varaha-agents');
-  if (Array.isArray(curatedVarahaAgents)) {
-    hubItems.push(...curatedVarahaAgents);
+  // Curated Garuda Sovereign Agents across the 5 Flagship Domains
+  const { curatedGarudaAgents } = require('../taxonomy/curated-garuda-agents');
+  if (Array.isArray(curatedGarudaAgents)) {
+    hubItems.push(...curatedGarudaAgents);
   }
 
   // Scraped Community items from local hubData.json if available

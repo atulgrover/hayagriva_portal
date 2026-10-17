@@ -361,7 +361,7 @@ export default function AdminAgentsDirectoryPage() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 border border-amber-500/30">
-              VARAHA AGENTIC STUDIO GOVERNANCE
+              GARUDA AGENTIC STUDIO GOVERNANCE
             </span>
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30">
               Sovereign Cartridge Ecosystem
@@ -373,10 +373,10 @@ export default function AdminAgentsDirectoryPage() {
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
             <Bot className="w-7 h-7 text-amber-500" />
-            Varaha Agentic Studio &amp; Cartridge Accreditation
+            Garuda Agentic Studio &amp; Cartridge Accreditation
           </h1>
           <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Govern multi-domain coworkers, audit .haya cartridge manifests for zero-egress compliance, enforce statutory prompt rules, and stamp community agents with Varaha Official Accreditation.
+            Govern multi-domain coworkers, audit .haya cartridge manifests for zero-egress compliance, enforce statutory prompt rules, and stamp community agents with Garuda Official Accreditation.
           </p>
         </div>
 

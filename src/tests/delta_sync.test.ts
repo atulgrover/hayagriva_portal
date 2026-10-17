@@ -41,7 +41,7 @@ async function runDeltaSyncTests() {
       'X-Hayagriva-Fingerprint': activeFp,
     },
     body: JSON.stringify({
-      itemId: 'varaha_agt_agri_crop_14',
+      itemId: 'garuda_agt_agri_crop_14',
       clientHashes: {
         'dummy.json': 'old_hash',
       },
