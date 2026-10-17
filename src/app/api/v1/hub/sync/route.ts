@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getDbClient } from '../../../../../lib/db';
 import { getMockStore } from '../../../../../lib/db/seed';
-import { licenses, activations, users, hubItems } from '../../../../../lib/db/schema';
+import { licenses, activations, users, hubItems, deviceSyncQueue } from '../../../../../lib/db/schema';
 import { getPresignedDownloadUrl } from '../../../../../lib/storage/s3';
 import { eq, and } from 'drizzle-orm';
 
@@ -169,6 +169,40 @@ export async function GET(request: Request) {
     }
 
     // Attach signed presigned download URLs for seamless binary or archive syncing
+    
+    // Collect pending remote dispatches for this workstation/license
+    let dispatches: any[] = [];
+    if (isMock) {
+      dispatches = (store.deviceSyncQueue || []).filter(
+        (d) =>
+          d.licenseKey.trim() === licenseKey.trim() &&
+          (!d.hardwareFingerprint || d.hardwareFingerprint === fingerprint) &&
+          d.status === "QUEUED"
+      );
+    } else {
+      try {
+        const dbDispatches = await (client as any)
+          .select()
+          .from(deviceSyncQueue)
+          .where(
+            and(
+              eq(deviceSyncQueue.licenseKey, licenseKey.trim()),
+              eq(deviceSyncQueue.status, "QUEUED")
+            )
+          );
+        dispatches = dbDispatches.filter(
+          (d: any) => !d.hardwareFingerprint || d.hardwareFingerprint === fingerprint
+        );
+      } catch {
+        dispatches = (store.deviceSyncQueue || []).filter(
+          (d) =>
+            d.licenseKey.trim() === licenseKey.trim() &&
+            (!d.hardwareFingerprint || d.hardwareFingerprint === fingerprint) &&
+            d.status === "QUEUED"
+        );
+      }
+    }
+
     const itemsWithDownloadUrls = await Promise.all(
       rawItems.map(async (item) => {
         const assetKey =
@@ -193,6 +227,7 @@ export async function GET(request: Request) {
         hardwareFingerprint: fingerprint,
       },
       items: itemsWithDownloadUrls,
+      dispatches,
       count: itemsWithDownloadUrls.length,
       syncedAt: new Date().toISOString(),
     });

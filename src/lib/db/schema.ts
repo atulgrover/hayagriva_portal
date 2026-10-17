@@ -211,3 +211,19 @@ export const hubItems = pgTable("hub_items", {
 
 export type HubItem = typeof hubItems.$inferSelect;
 export type NewHubItem = typeof hubItems.$inferInsert;
+
+// 10. Device Remote Sync Dispatch Queue Table
+export const deviceSyncQueue = pgTable("device_sync_queue", {
+  id: text("id").primaryKey(),
+  licenseKey: varchar("license_key", { length: 255 }).notNull(),
+  hardwareFingerprint: varchar("hardware_fingerprint", { length: 255 }),
+  hubItemId: varchar("hub_item_id", { length: 255 }).notNull(),
+  status: varchar("status", { length: 50 }).default("QUEUED").notNull(),
+  action: varchar("action", { length: 50 }).default("INSTALL").notNull(),
+  priority: varchar("priority", { length: 50 }).default("NORMAL").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  deliveredAt: timestamp("delivered_at"),
+});
+
+export type DeviceSyncQueueItem = typeof deviceSyncQueue.$inferSelect;
+export type NewDeviceSyncQueueItem = typeof deviceSyncQueue.$inferInsert;

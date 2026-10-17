@@ -1,5 +1,5 @@
 // admin-panel/src/lib/db/seed.ts
-import { User, SystemLog, Invoice, DownloadRecord, SupportTicket, AdminAuditLog, License, Activation, ApiKey, HubItem } from './schema';
+import { User, SystemLog, Invoice, DownloadRecord, SupportTicket, AdminAuditLog, License, Activation, ApiKey, HubItem, DeviceSyncQueueItem } from './schema';
 import { seedHubData } from './seed-hub';
 
 export interface AdminStore {
@@ -13,6 +13,7 @@ export interface AdminStore {
   activations: Activation[];
   apiKeys: ApiKey[];
   hubItems: HubItem[];
+  deviceSyncQueue: DeviceSyncQueueItem[];
 }
 
 const globalWithStore = globalThis as typeof globalThis & {
