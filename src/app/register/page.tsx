@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Shield, Sparkles, AlertCircle, ArrowRight, Lock, User, Mail, Building, Award, CheckCircle2, Moon, Sun } from 'lucide-react';
+import { Shield, Sparkles, AlertCircle, ArrowRight, Lock, User, Mail, Building, Award, CheckCircle2, Moon, Sun, Loader2 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 export default function RegisterPage() {
@@ -78,7 +78,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-center items-center p-4 selection:bg-blue-500/20">
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-center items-center px-4 py-12 selection:bg-amber-500/20">
       {/* Theme Toggle Button */}
       <div className="absolute top-4 right-4">
         <button
@@ -90,192 +90,191 @@ export default function RegisterPage() {
         </button>
       </div>
 
-      <div className="w-full max-w-xl space-y-6">
-        {/* Branding Header */}
-        <div className="text-center">
+      {/* Main Card Modal Container (Matches Login Modal) */}
+      <div className="w-full max-w-xl bg-card border border-border rounded-2xl shadow-2xl p-8 sm:p-10 space-y-6">
+        {/* Header Branding (Inside the Modal, Centered & Big) */}
+        <div className="text-center pt-1 pb-2">
           <div className="flex justify-center">
             <img
               src="/branding/hayagriva_logo_white.png"
               alt="Lord Hayagriva Sovereign Intelligence"
-              className="h-16 w-auto object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200 hidden dark:block"
+              className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200 hidden dark:block"
             />
             <img
               src="/branding/hayagriva_logo_transparent.png"
               alt="Lord Hayagriva Sovereign Intelligence"
-              className="h-16 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
+              className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
             />
           </div>
         </div>
 
-        {/* Card Container */}
-        <div className="bg-card border border-border rounded-xl shadow-xl p-6 sm:p-8 space-y-6">
-          {error && (
-            <div className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center gap-2.5 text-red-500 text-xs animate-in fade-in duration-200">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
+        {/* Error Alert */}
+        {error && (
+          <div className="p-3.5 rounded-lg bg-destructive/10 border border-destructive/20 flex items-center gap-2.5 text-destructive text-xs animate-in fade-in duration-200">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Full Name */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-muted-foreground" /> Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Adv. Amit Sharma"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              {/* Professional Role Dropdown */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5 text-muted-foreground" /> Professional Role *
-                </label>
-                <select
-                  value={formData.designation}
-                  onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                  className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
-                >
-                  <option value="Advocate / Litigator">Advocate / Litigator</option>
-                  <option value="Insolvency Professional (IP / IRP / RP)">Insolvency Professional (IP / IRP / RP)</option>
-                  <option value="Law Firm Partner / Associate">Law Firm Partner / Associate</option>
-                  <option value="Chartered Accountant / Forensic Auditor">Chartered Accountant / Forensic Auditor</option>
-                  <option value="Corporate In-House Counsel">Corporate In-House Counsel</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Work / Chamber Email */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-foreground flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-muted-foreground" /> Work / Chamber Email *
-                </span>
-                <span className="text-[10px] text-muted-foreground">Used for license delivery</span>
-              </label>
-              <input
-                type="email"
-                required
-                placeholder="practitioner@lawchambers.in"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
-              />
-            </div>
-
-            {/* Passwords */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-muted-foreground" /> Password *
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••••••"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5 text-muted-foreground" /> Confirm Password *
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••••••"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
-                />
-              </div>
-            </div>
-
-            {/* Chamber / Law Firm Name */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Full Name */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                <Building className="w-3.5 h-3.5 text-muted-foreground" /> Law Firm / Chamber Name (Optional)
+                <User className="w-3.5 h-3.5 text-muted-foreground" /> Full Name *
               </label>
               <input
                 type="text"
-                placeholder="e.g. Sharma & Associates Legal Chambers"
-                value={formData.firmName}
-                onChange={(e) => setFormData({ ...formData, firmName: e.target.value })}
-                className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                required
+                placeholder="e.g. Adv. Amit Sharma"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
               />
             </div>
 
-            {/* Bar Council / IBBI Enrollment */}
+            {/* Professional Role Dropdown */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-foreground flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5 text-muted-foreground" /> Bar Council / IBBI Enrollment No. (Optional)
-                </span>
-                <span className="text-[10px] text-muted-foreground">For Verified Chamber Badge</span>
+              <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                <Award className="w-3.5 h-3.5 text-muted-foreground" /> Professional Role *
               </label>
-              <input
-                type="text"
-                placeholder="D/1482/2018 or IBBI/IPA-001/..."
-                value={formData.barCouncilEnrollment}
-                onChange={(e) => setFormData({ ...formData, barCouncilEnrollment: e.target.value })}
-                className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
-              />
+              <select
+                value={formData.designation}
+                onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
+                className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+              >
+                <option value="Advocate / Litigator">Advocate / Litigator</option>
+                <option value="Insolvency Professional (IP / IRP / RP)">Insolvency Professional (IP / IRP / RP)</option>
+                <option value="Law Firm Partner / Associate">Law Firm Partner / Associate</option>
+                <option value="Chartered Accountant / Forensic Auditor">Chartered Accountant / Forensic Auditor</option>
+                <option value="Corporate In-House Counsel">Corporate In-House Counsel</option>
+              </select>
             </div>
-
-            {/* Terms and Privacy Checkbox */}
-            <div className="pt-1 flex items-start gap-2.5">
-              <input
-                type="checkbox"
-                id="termsAccepted"
-                checked={formData.termsAccepted}
-                onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
-                className="mt-0.5 rounded border-border text-blue-600 focus:ring-blue-500"
-              />
-              <label htmlFor="termsAccepted" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
-                I agree to the <span className="text-foreground underline">Terms of Service</span> and acknowledge the <span className="text-foreground underline">Air-Gapped Sovereign Privacy Architecture</span>.
-              </label>
-            </div>
-
-            {/* Submit CTA */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-10 mt-2 rounded-md bg-blue-600 text-white font-medium text-xs hover:bg-blue-500 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 shadow-sm font-semibold tracking-wide"
-            >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                  <span>PROVISIONING STARTER LICENSE...</span>
-                </>
-              ) : (
-                <>
-                  <span>CREATE ACCOUNT &amp; DOWNLOAD HARNESS</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Footer Navigation */}
-          <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
-            <span>Already have an account?</span>
-            <Link
-              href="/login"
-              className="font-semibold text-blue-500 hover:text-blue-400 hover:underline flex items-center gap-1"
-            >
-              Sign In Here →
-            </Link>
           </div>
+
+          {/* Work / Chamber Email */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-foreground flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5 text-muted-foreground" /> Work / Chamber Email *
+              </span>
+              <span className="text-[10px] text-muted-foreground">Used for license delivery</span>
+            </label>
+            <input
+              type="email"
+              required
+              placeholder="practitioner@lawchambers.in"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+            />
+          </div>
+
+          {/* Passwords */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-muted-foreground" /> Password *
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••••••"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-muted-foreground" /> Confirm Password *
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••••••"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+              />
+            </div>
+          </div>
+
+          {/* Chamber / Law Firm Name */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+              <Building className="w-3.5 h-3.5 text-muted-foreground" /> Law Firm / Chamber Name (Optional)
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Sharma & Associates Legal Chambers"
+              value={formData.firmName}
+              onChange={(e) => setFormData({ ...formData, firmName: e.target.value })}
+              className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+            />
+          </div>
+
+          {/* Bar Council / IBBI Enrollment */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-foreground flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Award className="w-3.5 h-3.5 text-muted-foreground" /> Bar Council / IBBI Enrollment No. (Optional)
+              </span>
+              <span className="text-[10px] text-muted-foreground">For Verified Chamber Badge</span>
+            </label>
+            <input
+              type="text"
+              placeholder="D/1482/2018 or IBBI/IPA-001/..."
+              value={formData.barCouncilEnrollment}
+              onChange={(e) => setFormData({ ...formData, barCouncilEnrollment: e.target.value })}
+              className="w-full bg-secondary/50 border border-input rounded-lg px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
+            />
+          </div>
+
+          {/* Terms and Privacy Checkbox */}
+          <div className="pt-1 flex items-start gap-2.5">
+            <input
+              type="checkbox"
+              id="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
+              className="mt-0.5 rounded border-border text-primary focus:ring-primary"
+            />
+            <label htmlFor="termsAccepted" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
+              I agree to the <span className="text-foreground underline">Terms of Service</span> and acknowledge the <span className="text-foreground underline">Privacy Architecture</span>.
+            </label>
+          </div>
+
+          {/* Submit CTA */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs py-2.5 rounded-lg shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer mt-2"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Creating Account & Provisioning License...</span>
+              </>
+            ) : (
+              <>
+                <span>Create Account</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
+        </form>
+
+        {/* Footer Navigation */}
+        <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+          <span>Already have an account?</span>
+          <Link
+            href="/login"
+            className="font-semibold text-primary hover:underline flex items-center gap-1"
+          >
+            Sign In Here →
+          </Link>
         </div>
       </div>
     </div>

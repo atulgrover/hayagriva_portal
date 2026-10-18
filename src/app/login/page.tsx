@@ -57,17 +57,17 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12 selection:bg-amber-500/20">
       <div className="w-full max-w-md bg-card border border-border rounded-2xl shadow-2xl p-8 space-y-6">
         {/* Header Branding */}
-        <div className="text-center">
+        <div className="text-center pt-1 pb-2">
           <div className="flex justify-center">
             <img
               src="/branding/hayagriva_logo_white.png"
               alt="Lord Hayagriva Sovereign Intelligence"
-              className="h-16 w-auto object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200 hidden dark:block"
+              className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200 hidden dark:block"
             />
             <img
               src="/branding/hayagriva_logo_transparent.png"
               alt="Lord Hayagriva Sovereign Intelligence"
-              className="h-16 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
+              className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
             />
           </div>
         </div>
