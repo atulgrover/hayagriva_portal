@@ -112,7 +112,7 @@ export default function RegisterPage() {
             </span>
           </h1>
           <p className="text-sm text-muted-foreground">
-            Create Your Practitioner Account &amp; Start Drafting Court-Ready Pleadings
+            Register your practitioner account &amp; receive your Sovereign Workstation License (1 Device Seat)
           </p>
         </div>
 
@@ -135,7 +135,7 @@ export default function RegisterPage() {
                 <input
                   type="text"
                   required
-                  placeholder="Adv. Rajeshwar Rao"
+                  placeholder="e.g. Adv. Amit Sharma"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
@@ -172,7 +172,7 @@ export default function RegisterPage() {
               <input
                 type="email"
                 required
-                placeholder="r.rao@insolvencylaw.in"
+                placeholder="practitioner@lawchambers.in"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
@@ -217,7 +217,7 @@ export default function RegisterPage() {
               </label>
               <input
                 type="text"
-                placeholder="Rao & Partners Insolvency Advocates"
+                placeholder="e.g. Sharma & Associates Legal Chambers"
                 value={formData.firmName}
                 onChange={(e) => setFormData({ ...formData, firmName: e.target.value })}
                 className="w-full h-9 px-3 text-xs rounded-md bg-background border border-border focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
