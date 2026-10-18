@@ -652,7 +652,8 @@ export function seedInitialData(): AdminStore {
     licenses,
     activations,
     apiKeys,
-    hubItems: seedHubData().hubItems
+    hubItems: seedHubData().hubItems,
+    deviceSyncQueue: []
   };
 
   return globalWithStore.__hayagrivaStore;

@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       items: selectedItems,
     });
 
-    return new NextResponse(packBuffer, {
+    return new NextResponse(new Uint8Array(packBuffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/x-hayagriva-pack',

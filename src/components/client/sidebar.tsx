@@ -5,12 +5,9 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  LayoutDashboard, 
-  KeyRound, 
-  UserCheck, 
   CreditCard, 
   HelpCircle,
-  DownloadCloud,
+  Laptop,
   Database,
   Cpu,
   Bot,
@@ -32,27 +29,24 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    title: 'Chamber Workspace',
+    title: 'User Workspace',
     items: [
-      { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-      { name: 'Agent Studio', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
-      { name: 'Desktop Harness', href: '/dashboard/harness', icon: DownloadCloud },
+      { name: 'Profile / License / Hardware', href: '/dashboard/workspace', icon: Laptop },
+      { name: 'Custom Agents', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
     ]
   },
   {
-    title: 'Sovereign Catalogs',
+    title: 'Garuda Directories',
     items: [
-      { name: 'Garuda Agents', href: '/dashboard/agents?tab=bazaar', icon: Sparkles, badge: 'Community' },
-      { name: 'Statutory Vaults', href: '/dashboard/vaults', icon: Database },
-      { name: 'BharatGen Models', href: '/dashboard/models', icon: Cpu },
+      { name: 'Sovereign Models', href: '/dashboard/models', icon: Cpu },
+      { name: 'Knowledge Vaults', href: '/dashboard/vaults', icon: Database },
+      { name: 'Community Agents', href: '/dashboard/community-agents', icon: Sparkles, badge: 'Registry' },
     ]
   },
   {
-    title: 'Governance & Accounting',
+    title: 'Governance',
     items: [
-      { name: 'Licenses & Devices', href: '/dashboard/licenses', icon: KeyRound, badge: '1 Active' },
       { name: 'Invoices & Payments', href: '/dashboard/billing', icon: CreditCard },
-      { name: 'Profile & Security', href: '/dashboard/profile', icon: UserCheck },
       { name: 'Support Tickets', href: '/dashboard/support', icon: HelpCircle },
     ]
   }
@@ -104,7 +98,9 @@ export function ClientSidebar() {
               if (queryPart && typeof window !== 'undefined') {
                 isActive = pathname === itemBase && window.location.search.includes(queryPart);
               } else {
-                isActive = pathname === item.href || (item.href !== '/dashboard' && !item.href.includes('?') && pathname.startsWith(item.href));
+                isActive = pathname === item.href || 
+                  (item.href !== '/dashboard' && !item.href.includes('?') && pathname.startsWith(item.href)) ||
+                  (item.href === '/dashboard/workspace' && (pathname === '/dashboard/licenses' || pathname === '/dashboard/profile' || pathname === '/dashboard/harness'));
               }
               const Icon = item.icon;
 
@@ -119,9 +115,9 @@ export function ClientSidebar() {
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   )}
                 >
-                  <div className="flex items-center space-x-2.5">
-                    <Icon className={cn("w-4 h-4 transition-transform group-hover:scale-110", isActive ? "text-amber-500 dark:text-amber-400" : "text-muted-foreground group-hover:text-foreground")} />
-                    <span>{item.name}</span>
+                  <div className="flex items-center space-x-2.5 min-w-0">
+                    <Icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover:scale-110", isActive ? "text-amber-500 dark:text-amber-400" : "text-muted-foreground group-hover:text-foreground")} />
+                    <span className="whitespace-nowrap truncate">{item.name}</span>
                   </div>
                   {item.badge && (
                     <span className={cn(

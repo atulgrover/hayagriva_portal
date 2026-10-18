@@ -50,10 +50,16 @@ export function ItemDetailModal({ item, onClose }: ItemDetailModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex justify-end">
+      {/* Backdrop */}
       <div 
+        onClick={onClose}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+      />
+      {/* Slide-Over Drawer */}
+      <aside 
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-4xl bg-card border border-border rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
+        className="relative z-10 w-full max-w-2xl bg-card border-l border-border h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 overflow-hidden"
       >
         {/* Modal Header */}
         <div className="p-6 border-b border-border flex items-start justify-between gap-4">
@@ -139,7 +145,7 @@ export function ItemDetailModal({ item, onClose }: ItemDetailModalProps) {
         <div className="p-6 flex-1 flex flex-col min-h-0 overflow-hidden">
           <ManifestCodeViewer files={extractedFiles} item={item} />
         </div>
-      </div>
+      </aside>
     </div>
   );
 }

@@ -1,6 +1,7 @@
+// admin-panel/src/app/admin/agents/page.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Bot, 
   DownloadCloud, 
@@ -8,32 +9,21 @@ import {
   CheckCircle2, 
   ShieldCheck, 
   Sparkles, 
-  Award, 
-  FileCode, 
-  Eye, 
   X, 
-  ArrowUpRight, 
+  ChevronRight, 
+  Copy, 
+  Check, 
+  Terminal, 
+  Code2, 
+  Database, 
+  UploadCloud, 
   Layers, 
-  Scale, 
-  Briefcase, 
-  Users, 
-  TrendingUp, 
+  Plus, 
+  Lock, 
   Activity,
-  Check,
-  AlertTriangle,
-  UploadCloud,
-  ShieldAlert,
-  FileSpreadsheet,
-  Fingerprint,
-  FileDown,
-  Lock,
-  Terminal,
-  ChevronRight,
-  Copy,
-  Clock,
-  ExternalLink,
-  Shield
+  Award
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface CustomAgentAdmin {
   id: string;
@@ -95,13 +85,7 @@ const initialAgents: CustomAgentAdmin[] = [
         'AIR_GAP_ZERO_NET: Strictly prohibit external HTTP telemetry outside localhost'
       ],
       systemPromptSnippet: `You are the Senior Avoidance Forensic Auditor for the Resolution Professional in CIRP proceedings under the Insolvency and Bankruptcy Code, 2016.
-Your primary role is to audit multi-bank ledgers, cash flows, and contra-sweeps across statutory look-back periods to identify:
-1. Preferential Transactions (Section 43)
-2. Undervalued Transactions (Section 45)
-3. Extortionate Credit Transactions (Section 50)
-4. Fraudulent Trading or Avoidance (Section 66)
-
-Produce court-ready avoiding inquest affidavits formatted for NCLT Principal Bench.`,
+Your primary role is to audit multi-bank ledgers, cash flows, and contra-sweeps across statutory look-back periods to identify preferential, undervalued, extortionate, and fraudulent transactions. Produce court-ready avoiding inquest affidavits formatted for NCLT Principal Bench.`,
     }
   },
   {
@@ -133,12 +117,7 @@ Produce court-ready avoiding inquest affidavits formatted for NCLT Principal Ben
         'ORDER39_RULE3_UNDERTAKING: Formulate explicit undertaking to deliver copies within 24 hours',
         'STATEMENT_OF_TRUTH: Append Section 63 BSA / 65B EA electronic evidence affirmation'
       ],
-      systemPromptSnippet: `You are an elite Commercial Litigation Associate drafting Urgent Interim Injunction Applications under CPC Order 39 Rules 1 & 2 read with Section 151 and Commercial Courts Act, 2015.
-Structure every filing strictly with:
-- Part A: Brief facts establishing urgent irreparable injury
-- Part B: The 3-Prong Equitable Test
-- Part C: Order 39 Rule 3 Compliance Undertaking
-- Part D: Interim Prayer and Ex-Parte Injunction`,
+      systemPromptSnippet: `You are an elite Commercial Litigation Associate drafting Urgent Interim Injunction Applications under CPC Order 39 Rules 1 & 2 read with Section 151 and Commercial Courts Act, 2015. Structure filings strictly with Facts, 3-Prong Test, Rule 3 Undertaking, and Interim Prayers.`,
     }
   },
   {
@@ -170,12 +149,7 @@ Structure every filing strictly with:
         'PENAL_INTEREST_CAP: Recalculate and strip uncontracted penal compounding',
         'VOTING_SHARE_FORMULA: Update CoC voting share dynamically upon admission changes'
       ],
-      systemPromptSnippet: `You are the IBC Claims Adjudication Specialist.
-Audit incoming Form C creditor filings against sanction letters, promissory notes, and NeSL record of default.
-Enforce strict separation between:
-1. Principal debt claimed vs verified
-2. Contractual interest vs uncontracted penal compounding
-3. Security interest charge registration under Section 77 Companies Act, 2013`,
+      systemPromptSnippet: `You are the IBC Claims Adjudication Specialist. Audit incoming Form C creditor filings against sanction letters, promissory notes, and NeSL record of default. Strip uncontracted penal compounding and verify charge registration under Section 77 Companies Act.`,
     }
   },
   {
@@ -199,795 +173,668 @@ Enforce strict separation between:
     manifest: {
       name: 'Section 29A 10-Gate Statutory Eligibility Inquest',
       version: '1.0.4',
-      description: 'Resolution applicant multi-registry due diligence across MCA-21, CIBIL/CRILC defaulters, and connected persons corporate topology.',
-      triggers: ['/sec29a-audit', '/connected-persons', '/wilful-defaulter'],
+      description: 'Audits resolution applicants across the 10 statutory disqualification gates of Section 29A (clauses a-j), including NPA account tracking, connected persons, and willful defaulter listings.',
+      triggers: ['/sec29a-cert', '/npa-lookback', '/willful-defaulter'],
       allowSubagents: true,
       rulesList: [
-        'SEC29A_10_GATES: Sequentially audit clauses (a) through (j) with zero omitted gates',
-        'CONNECTED_PERSON_TRAIL: Traverse holding, subsidiary, associate, and joint ventures',
-        'DISQUALIFICATION_CERT: Emit formal Section 29A Compliance Audit Dossier'
+        'SEC29A_10_GATES: Audit every mandatory gate (a) through (j) sequentially',
+        'CONNECTED_PERSONS: Recalculate group holding companies and directorship cross-holdings',
+        'RBI_DEFAULTER_SYNC: Cross-reference RBI Wilful Defaulter circular databases'
       ],
-      systemPromptSnippet: `You are the Section 29A Statutory Inquest Officer.
-Audit prospective resolution applicants against the 10 statutory disqualification gates of Section 29A IBC:
-(a) Undischarged insolvent
-(b) Wilful defaulter (RBI guidelines)
-(c) NPA classification > 1 year
-(d) Convicted of offences >= 2 years
-(e) Disqualified director under Section 164 Companies Act
-(f) Prohibited by SEBI
-(g) Avoidance transaction promoter
-(h) Enforceable guarantee guarantor
-(i) Subject to disability under foreign law
-(j) Connected person to any of clauses (a)-(i)`,
+      systemPromptSnippet: `You are the Section 29A Inquest Specialist for CIRP Resolution Plans. Rigorously test the Resolution Applicant against clauses (a) through (j) of Section 29A IBC. Generate an exhaustive Section 29A Eligibility Due Diligence Report with definitive certification findings.`,
     }
   },
   {
     id: 'agent-5',
-    name: 'NCLAT Appeal Memo Drafter',
-    slug: 'nclat-appeal-drafter',
-    version: '0.9.2',
-    author: 'Adv. Rajesh Mehra',
-    firm: 'Mehra & Co. Advocates',
-    chamberId: 'CHAMBER-DL-033',
+    name: 'Custom Sovereign Chamber Coworker',
+    slug: 'custom-chamber-coworker',
+    version: '1.0.0',
+    author: 'Devendra Mehta, Advocate',
+    firm: 'Mehta Tax & Insolvency Chambers',
+    chamberId: 'CHAMBER-AHM-019',
     archetype: 'custom_coworker',
-    archetypeLabel: 'Custom Legal Coworker',
+    archetypeLabel: 'Custom Sovereign Coworker',
     status: 'Under Review',
-    modelTarget: 'DeepSeek-R1-7B (Local Q4_K_M)',
-    boundVaults: ['ibc_2016', 'cpc_1908'],
+    modelTarget: 'Custom Local GGUF',
+    boundVaults: ['income_tax_1961', 'gst_act_2017'],
     downloadsCount: 65,
-    adoptionPercentage: 8,
+    adoptionPercentage: 4,
     riskTier: 'WRITE_LOCAL',
     airGapSovereign: true,
-    createdAt: '2026-10-02',
+    createdAt: '2026-10-04',
     manifest: {
-      name: 'NCLAT Appeal Memo Drafter',
-      version: '0.9.2',
-      description: 'Section 61 Appellate Tribunal appeal grounds formatting with strict limitation period calculation and condonation of delay petitions.',
-      triggers: ['/nclat-appeal', '/limitation-memo', '/delay-condonation'],
+      name: 'Custom Sovereign Chamber Coworker',
+      version: '1.0.0',
+      description: 'Chamber-customized workflow for GST show-cause notices and Section 148 income tax reassessment objections.',
+      triggers: ['/gst-scn-reply', '/it-sec148'],
       allowSubagents: false,
       rulesList: [
-        'NCLAT_LIMITATION: 30 days statutory limitation from date of impugned order',
-        'CONDONATION_WINDOW: Strictly flag beyond 15-day condonable extension window (§ 61(2))',
-        'GROUNDS_SUBSTANTIAL_QUESTION: Frame questions of law distinguishing findings of fact'
+        'GST_SEC73_TIMELINES: Verify limitation periods under Sections 73 and 74 CGST Act',
+        'JURISDICTION_DEFENSE: Test sanction approval under Section 151 Income Tax Act'
       ],
-      systemPromptSnippet: `Draft Form NCLAT-1 memorandum of appeal under Section 61 IBC against the impugned order of the Adjudicating Authority (NCLT).
-Include standard index, dates and events synopsis, questions of law, grounds of appeal, and verification affidavit.`,
+      systemPromptSnippet: `You are a specialist Tax & Insolvency associate drafting responses to GST Show Cause Notices under Section 73/74 and Income Tax Reassessment Objections under Section 148/148A.`,
     }
-  },
+  }
 ];
 
-export default function AdminAgentsDirectoryPage() {
+export default function AdminAgentsRegistryPage() {
   const [agents, setAgents] = useState<CustomAgentAdmin[]>(initialAgents);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | 'Official' | 'Community' | 'Under Review'>('ALL');
   const [archetypeFilter, setArchetypeFilter] = useState<string>('ALL');
-  const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [selectedAgent, setSelectedAgent] = useState<CustomAgentAdmin | null>(null);
-  const [activeTab, setActiveTab] = useState<'manifest' | 'prompt' | 'rules' | 'vaults'>('manifest');
-  
-  // Upload modal state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
-  const [copiedTrigger, setCopiedTrigger] = useState<string | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  const togglePromote = (id: string) => {
-    setAgents(agents.map(a => {
-      if (a.id === id) {
-        const nextStatus = a.status === 'Official' ? 'Community' : 'Official';
-        return { ...a, status: nextStatus };
+  // New Upload Form State
+  const [uploadName, setUploadName] = useState('');
+  const [uploadAuthor, setUploadAuthor] = useState('');
+  const [uploadFirm, setUploadFirm] = useState('');
+  const [uploadArchetype, setUploadArchetype] = useState<any>('avoidance_forensic_auditor');
+  const [uploadVaults, setUploadVaults] = useState('ibc_2016');
+
+  // Close drawer on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedAgent(null);
+        setIsUploadOpen(false);
       }
-      return a;
-    }));
-  };
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-  const handleDownloadCartridge = (agent: CustomAgentAdmin) => {
-    const payload = JSON.stringify(agent.manifest, null, 2);
-    const blob = new Blob([payload], { type: 'application/octet-stream' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${agent.slug}-v${agent.version}.haya`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const copyText = (text: string) => {
+  const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedTrigger(text);
-    setTimeout(() => setCopiedTrigger(null), 1800);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const filteredAgents = agents.filter(agent => {
-    const matchesSearch = agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      agent.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      agent.firm.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      agent.slug.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesArchetype = archetypeFilter === 'ALL' || agent.archetype === archetypeFilter;
-    const matchesStatus = statusFilter === 'ALL' || agent.status === statusFilter;
-    return matchesSearch && matchesArchetype && matchesStatus;
-  });
-
-  const totalDownloads = agents.reduce((acc, a) => acc + a.downloadsCount, 0);
-  const officialCount = agents.filter(a => a.status === 'Official').length;
-
-  const getArchetypeConfig = (arch: string) => {
-    switch (arch) {
-      case 'avoidance_forensic_auditor':
-        return {
-          icon: ShieldAlert,
-          color: 'text-amber-600 dark:text-amber-400',
-          bg: 'bg-amber-500/10',
-          border: 'border-amber-500/30',
-          badge: 'bg-amber-50 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-500/30'
-        };
-      case 'commercial_injunction_drafter':
-        return {
-          icon: Scale,
-          color: 'text-blue-600 dark:text-blue-400',
-          bg: 'bg-blue-500/10',
-          border: 'border-blue-500/30',
-          badge: 'bg-blue-50 dark:bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-500/30'
-        };
-      case 'ibc_claim_verifier':
-        return {
-          icon: FileSpreadsheet,
-          color: 'text-emerald-600 dark:text-emerald-400',
-          bg: 'bg-emerald-500/10',
-          border: 'border-emerald-500/30',
-          badge: 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-500/30'
-        };
-      case 'sec29a_eligibility_inquest':
-        return {
-          icon: Fingerprint,
-          color: 'text-purple-600 dark:text-purple-400',
-          bg: 'bg-purple-500/10',
-          border: 'border-purple-500/30',
-          badge: 'bg-purple-50 dark:bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-300 dark:border-purple-500/30'
-        };
-      default:
-        return {
-          icon: Bot,
-          color: 'text-yellow-600 dark:text-yellow-400',
-          bg: 'bg-yellow-500/10',
-          border: 'border-yellow-500/30',
-          badge: 'bg-yellow-50 dark:bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-500/30'
-        };
+  const handleStatusChange = (agentId: string, newStatus: 'Official' | 'Community' | 'Under Review') => {
+    setAgents(prev => prev.map(a => a.id === agentId ? { ...a, status: newStatus } : a));
+    if (selectedAgent && selectedAgent.id === agentId) {
+      setSelectedAgent(prev => prev ? { ...prev, status: newStatus } : null);
     }
   };
 
+  const handleUploadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadName) return;
+    const newAgent: CustomAgentAdmin = {
+      id: `agent-${Date.now()}`,
+      name: uploadName,
+      slug: uploadName.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      version: '1.0.0',
+      author: uploadAuthor || 'Chamber Administrator',
+      firm: uploadFirm || 'Air-gapped Legal Chamber',
+      chamberId: 'CHAMBER-LOCAL-001',
+      archetype: uploadArchetype,
+      archetypeLabel: uploadArchetype.replace(/_/g, ' '),
+      status: 'Under Review',
+      modelTarget: 'DeepSeek-R1-7B (Local Q4_K_M)',
+      boundVaults: uploadVaults.split(',').map(s => s.trim()),
+      downloadsCount: 0,
+      adoptionPercentage: 0,
+      riskTier: 'WRITE_LOCAL',
+      airGapSovereign: true,
+      createdAt: new Date().toISOString().split('T')[0],
+      manifest: {
+        name: uploadName,
+        version: '1.0.0',
+        description: 'Chamber registered .haya sovereign agent cartridge.',
+        triggers: [`/${uploadName.toLowerCase().slice(0, 10)}`],
+        allowSubagents: true,
+        rulesList: ['AIR_GAP_ZERO_NET: Verified local execution'],
+        systemPromptSnippet: `You are the ${uploadName} legal agent coworker.`,
+      }
+    };
+    setAgents([newAgent, ...agents]);
+    setIsUploadOpen(false);
+    setUploadName('');
+    setUploadAuthor('');
+    setUploadFirm('');
+  };
+
+  const filteredAgents = useMemo(() => {
+    return agents.filter((a) => {
+      const q = searchTerm.toLowerCase();
+      const matchesSearch = 
+        !q ||
+        a.name.toLowerCase().includes(q) ||
+        a.author.toLowerCase().includes(q) ||
+        a.firm.toLowerCase().includes(q) ||
+        a.slug.toLowerCase().includes(q);
+
+      const matchesStatus = statusFilter === 'ALL' || a.status === statusFilter;
+      const matchesArchetype = archetypeFilter === 'ALL' || a.archetype === archetypeFilter;
+
+      return matchesSearch && matchesStatus && matchesArchetype;
+    });
+  }, [agents, searchTerm, statusFilter, archetypeFilter]);
+
+  const totalDeliveries = useMemo(() => {
+    return agents.reduce((acc, a) => acc + a.downloadsCount, 0);
+  }, [agents]);
+
+  const officialCount = useMemo(() => {
+    return agents.filter(a => a.status === 'Official').length;
+  }, [agents]);
+
   return (
-    <div className="p-8 max-w-[1600px] mx-auto space-y-8 animate-fadeIn">
-      {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-border pb-6">
+    <div className="space-y-6 pb-12 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-5">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-500 border border-amber-500/30">
-              GARUDA AGENTIC STUDIO GOVERNANCE
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              AGENT FOUNDRY
             </span>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-400 border border-purple-500/30">
-              Sovereign Cartridge Ecosystem
-            </span>
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Air-Gap Sandboxed
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+              Chamber Accreditation
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2.5">
-            <Bot className="w-7 h-7 text-amber-500" />
-            Garuda Agentic Studio &amp; Cartridge Accreditation
+          <h1 className="text-xl font-bold tracking-tight text-foreground">
+            Agent Cartridges Directory
           </h1>
-          <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Govern multi-domain coworkers, audit .haya cartridge manifests for zero-egress compliance, enforce statutory prompt rules, and stamp community agents with Garuda Official Accreditation.
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Govern, audit, and accredit sovereign agent cartridges provisioned to desktop clients.
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setIsUploadOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-amber-500/20 active:scale-95"
-          >
-            <UploadCloud className="w-4 h-4" />
-            <span>+ Upload .haya Cartridge</span>
-          </button>
+        <button
+          onClick={() => setIsUploadOpen(true)}
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs transition-colors shadow-sm shadow-amber-500/20 self-start md:self-auto"
+        >
+          <UploadCloud className="w-4 h-4" />
+          <span>Upload .haya Cartridge</span>
+        </button>
+      </div>
+
+      {/* Compact Telemetry Metrics Strip */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-card border border-border p-3.5 rounded-lg text-xs">
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Total Cartridges</span>
+          <span className="text-base font-bold text-foreground font-mono">{agents.length} Cartridges</span>
+        </div>
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Official Accreditations</span>
+          <span className="text-base font-bold text-emerald-500 font-mono">{officialCount} Verified</span>
+        </div>
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Total Deliveries</span>
+          <span className="text-base font-bold text-foreground font-mono">{totalDeliveries.toLocaleString()}</span>
+        </div>
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Sandbox Assurance</span>
+          <span className="text-base font-bold text-amber-500 font-mono">Air-Gap Verified</span>
         </div>
       </div>
 
-      {/* 4 Sovereign Foundry Telemetry Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-card border border-border hover:border-amber-500/30 transition-all shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">Total Agent Cartridges</span>
-            <div className="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-500 flex items-center justify-center">
-              <Bot className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-foreground mt-2">{agents.length}</div>
-          <div className="text-xs text-muted-foreground mt-1">Across 5 Court Archetypes</div>
+      {/* Single-Line Filter Bar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-card border border-border p-3 rounded-lg shadow-sm">
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search by agent name, author, firm, slug..."
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          )}
         </div>
 
-        <div className="p-5 rounded-2xl bg-card border border-border hover:border-emerald-500/30 transition-all shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">Official Chamber Cartridges</span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
-              <Award className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-emerald-400 mt-2">{officialCount}</div>
-          <div className="text-xs text-muted-foreground mt-1">Pre-installed in Desktop Harness</div>
-        </div>
-
-        <div className="p-5 rounded-2xl bg-card border border-border hover:border-blue-500/30 transition-all shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">Total .haya Deliveries</span>
-            <div className="w-8 h-8 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center">
-              <DownloadCloud className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-extrabold text-foreground mt-2">{totalDownloads.toLocaleString()}</div>
-          <div className="text-xs text-emerald-500/80 mt-1 flex items-center gap-1 font-medium">
-            <TrendingUp className="w-3.5 h-3.5" />
-            +24.1% monthly adoption
-          </div>
-        </div>
-
-        <div className="p-5 rounded-2xl bg-card border border-border hover:border-purple-500/30 transition-all shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground uppercase font-semibold tracking-wider">Most Active Archetype</span>
-            <div className="w-8 h-8 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center">
-              <Briefcase className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-xl font-bold text-foreground mt-2 truncate">Avoidance Auditor</div>
-          <div className="text-xs text-muted-foreground mt-1">1,240 Chamber Installs (82%)</div>
-        </div>
-      </div>
-
-      {/* Unified Filter Strip & Archetype Switcher */}
-      <div className="space-y-3">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-          {/* Search bar */}
-          <div className="relative w-full lg:w-96">
-            <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input 
-              type="text"
-              placeholder="Search by agent name, author, firm, or slug..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-card border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-amber-500 shadow-sm"
-            />
+        {/* Dropdowns */}
+        <div className="flex items-center gap-2">
+          {/* Status Dropdown */}
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">Status:</span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as any)}
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+            >
+              <option value="ALL">All Status</option>
+              <option value="Official">Official</option>
+              <option value="Community">Community</option>
+              <option value="Under Review">Under Review</option>
+            </select>
           </div>
 
-          {/* Status Tab Group */}
-          <div className="flex items-center gap-1.5 bg-card border border-border p-1.5 rounded-xl self-start lg:self-auto shadow-sm">
-            {(['ALL', 'Official', 'Community', 'Under Review'] as const).map(st => (
-              <button
-                key={st}
-                onClick={() => setStatusFilter(st)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  statusFilter === st
-                    ? 'bg-amber-500 text-slate-950 shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                }`}
-              >
-                {st === 'ALL' ? 'All Status' : st}
-              </button>
-            ))}
+          {/* Archetype Dropdown */}
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">Archetype:</span>
+            <select
+              value={archetypeFilter}
+              onChange={(e) => setArchetypeFilter(e.target.value)}
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer max-w-[140px] truncate"
+            >
+              <option value="ALL">All Archetypes</option>
+              <option value="avoidance_forensic_auditor">Avoidance Auditor</option>
+              <option value="commercial_injunction_drafter">Injunction Drafter</option>
+              <option value="ibc_claim_verifier">Claim Verifier</option>
+              <option value="sec29a_eligibility_inquest">Section 29A Inquest</option>
+              <option value="custom_coworker">Custom Coworker</option>
+            </select>
           </div>
-        </div>
-
-        {/* Archetype Quick Filter Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-          <button
-            onClick={() => setArchetypeFilter('ALL')}
-            className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all border ${
-              archetypeFilter === 'ALL'
-                ? 'bg-foreground text-background border-foreground font-bold'
-                : 'bg-card border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            All 5 Court Archetypes
-          </button>
-
-          <button
-            onClick={() => setArchetypeFilter('avoidance_forensic_auditor')}
-            className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all border flex items-center gap-1.5 ${
-              archetypeFilter === 'avoidance_forensic_auditor'
-                ? 'bg-amber-500/20 text-amber-400 border-amber-500/40 font-bold'
-                : 'bg-card border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
-            Avoidance Forensic Auditor
-          </button>
-
-          <button
-            onClick={() => setArchetypeFilter('commercial_injunction_drafter')}
-            className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all border flex items-center gap-1.5 ${
-              archetypeFilter === 'commercial_injunction_drafter'
-                ? 'bg-blue-500/20 text-blue-400 border-blue-500/40 font-bold'
-                : 'bg-card border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Scale className="w-3.5 h-3.5 text-blue-400" />
-            Commercial Injunction Drafter
-          </button>
-
-          <button
-            onClick={() => setArchetypeFilter('ibc_claim_verifier')}
-            className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all border flex items-center gap-1.5 ${
-              archetypeFilter === 'ibc_claim_verifier'
-                ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 font-bold'
-                : 'bg-card border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-            IBC Creditor Claim Auditor
-          </button>
-
-          <button
-            onClick={() => setArchetypeFilter('sec29a_eligibility_inquest')}
-            className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all border flex items-center gap-1.5 ${
-              archetypeFilter === 'sec29a_eligibility_inquest'
-                ? 'bg-purple-500/20 text-purple-400 border-purple-500/40 font-bold'
-                : 'bg-card border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Fingerprint className="w-3.5 h-3.5 text-purple-400" />
-            Section 29A Eligibility Inquest
-          </button>
-
-          <button
-            onClick={() => setArchetypeFilter('custom_coworker')}
-            className={`px-3 py-1.5 rounded-lg font-semibold shrink-0 transition-all border flex items-center gap-1.5 ${
-              archetypeFilter === 'custom_coworker'
-                ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40 font-bold'
-                : 'bg-card border-border text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Bot className="w-3.5 h-3.5 text-yellow-400" />
-            Custom Coworker
-          </button>
         </div>
       </div>
 
-      {/* Agents Master Table */}
-      <div className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+      {/* Cartridges Table */}
+      <div className="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm border-collapse">
-            <thead className="bg-muted/50 border-b border-border text-[11px] uppercase font-bold tracking-wider text-muted-foreground">
-              <tr>
-                <th className="px-5 py-4 min-w-[280px]">Agent & .haya Cartridge</th>
-                <th className="px-5 py-4 min-w-[170px]">Author & Chamber</th>
-                <th className="px-5 py-4 min-w-[180px]">Archetype & Security</th>
-                <th className="px-5 py-4 min-w-[130px]">Bound Vaults</th>
-                <th className="px-5 py-4 min-w-[120px]">Adoption</th>
-                <th className="px-5 py-4 min-w-[100px]">Status</th>
-                <th className="px-5 py-4 min-w-[200px] text-right">Actions</th>
+          <table className="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr className="border-b border-border bg-muted/40 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                <th className="py-2.5 px-4">Cartridge &amp; Mandate</th>
+                <th className="py-2.5 px-3 w-48">Author &amp; Firm</th>
+                <th className="py-2.5 px-3 w-40">Archetype</th>
+                <th className="py-2.5 px-3 w-36">Bound Vaults</th>
+                <th className="py-2.5 px-3 w-28 text-right">Deliveries</th>
+                <th className="py-2.5 px-3 w-28 text-center">Status</th>
+                <th className="py-2.5 px-3 w-10 text-center"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/50">
-              {filteredAgents.map((agent) => {
-                const arch = getArchetypeConfig(agent.archetype);
-                const IconComponent = arch.icon;
-                return (
-                  <tr key={agent.id} className="hover:bg-muted/20 transition-colors group">
-                    {/* Column 1: Agent & Cartridge */}
-                    <td className="px-5 py-3.5">
-                      <div className="flex items-start gap-3.5">
-                        <div className={`w-10 h-10 rounded-xl ${arch.bg} border ${arch.border} flex items-center justify-center shrink-0 shadow-sm mt-0.5`}>
-                          <IconComponent className={`w-5 h-5 ${arch.color}`} />
-                        </div>
-                        <div className="space-y-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-foreground hover:text-amber-500 transition-colors cursor-pointer" onClick={() => setSelectedAgent(agent)}>
-                              {agent.name}
-                            </span>
-                            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border">
-                              v{agent.version}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-xs">
-                            <span className="font-mono text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
-                              .{agent.slug}.haya Cartridge
-                            </span>
-                            <span className="text-[10px] font-mono text-muted-foreground bg-muted border border-border px-1.5 py-0.5 rounded">
-                              {agent.modelTarget.split(' ')[0]}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Column 2: Author & Chamber */}
-                    <td className="px-5 py-3.5">
-                      <div className="text-xs font-semibold text-foreground">{agent.author}</div>
-                      <div className="text-[11px] text-muted-foreground truncate">{agent.firm}</div>
-                      <div className="text-[10px] font-mono text-muted-foreground/70 mt-0.5">{agent.chamberId}</div>
-                    </td>
-
-                    {/* Column 3: Archetype & Security */}
-                    <td className="px-5 py-3.5">
-                      <div className="space-y-1.5">
-                        <span className={`text-xs px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 font-semibold border ${arch.badge}`}>
-                          <IconComponent className="w-3 h-3" />
-                          {agent.archetypeLabel}
+            <tbody className="divide-y divide-border">
+              {filteredAgents.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-8 text-center text-muted-foreground">
+                    No cartridges match the filter criteria.
+                  </td>
+                </tr>
+              ) : (
+                filteredAgents.map((agent) => (
+                  <tr
+                    key={agent.id}
+                    onClick={() => setSelectedAgent(agent)}
+                    className="hover:bg-amber-500/5 cursor-pointer transition-colors group"
+                  >
+                    {/* Cartridge & Description */}
+                    <td className="py-3 px-4">
+                      <div className="font-semibold text-foreground text-xs group-hover:text-amber-500 transition-colors flex items-center gap-2">
+                        <Bot className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <span>{agent.name}</span>
+                        <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-secondary text-muted-foreground">
+                          v{agent.version}
                         </span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                          <span className="px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono border border-emerald-500/20">
-                            Air-Gap Sovereign
-                          </span>
-                          <span className="px-1.5 py-0.2 rounded bg-muted text-muted-foreground font-mono">
-                            {agent.riskTier}
-                          </span>
-                        </div>
                       </div>
+                      <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
+                        {agent.manifest.description}
+                      </p>
                     </td>
 
-                    {/* Column 4: Bound Vaults */}
-                    <td className="px-5 py-3.5">
-                      <div className="flex flex-wrap gap-1">
-                        {agent.boundVaults.map(v => (
-                          <span key={v} className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    {/* Author & Chamber */}
+                    <td className="py-3 px-3">
+                      <span className="font-medium text-foreground block truncate">{agent.author}</span>
+                      <span className="text-[11px] text-muted-foreground truncate block">{agent.firm}</span>
+                    </td>
+
+                    {/* Archetype */}
+                    <td className="py-3 px-3">
+                      <span className="text-[11px] font-medium text-muted-foreground block truncate">
+                        {agent.archetypeLabel}
+                      </span>
+                    </td>
+
+                    {/* Bound Vaults */}
+                    <td className="py-3 px-3">
+                      <div className="flex gap-1 flex-wrap">
+                        {agent.boundVaults.map((v) => (
+                          <span 
+                            key={v}
+                            className="font-mono text-[9px] px-1.5 py-0.2 rounded bg-secondary text-foreground border border-border"
+                          >
                             {v}
                           </span>
                         ))}
                       </div>
                     </td>
 
-                    {/* Column 5: Adoption */}
-                    <td className="px-5 py-3.5">
-                      <div className="space-y-1.5">
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="font-mono font-bold text-foreground">{agent.downloadsCount.toLocaleString()}</span>
-                          <span className="text-[10px] text-muted-foreground">{agent.adoptionPercentage}%</span>
-                        </div>
-                        <div className="w-24 bg-muted h-1.5 rounded-full overflow-hidden">
-                          <div 
-                            className="bg-amber-500 h-full rounded-full transition-all"
-                            style={{ width: `${agent.adoptionPercentage}%` }}
-                          />
-                        </div>
-                      </div>
+                    {/* Deliveries */}
+                    <td className="py-3 px-3 text-right">
+                      <span className="font-mono font-medium text-foreground block">
+                        {agent.downloadsCount.toLocaleString()}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground block">
+                        {agent.adoptionPercentage}% adoption
+                      </span>
                     </td>
 
-                    {/* Column 6: Status */}
-                    <td className="px-5 py-3.5">
-                      <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border ${
-                        agent.status === 'Official' 
-                          ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                    {/* Status */}
+                    <td className="py-3 px-3 text-center">
+                      <span className={cn(
+                        "text-[10px] font-bold px-2 py-0.5 rounded-full inline-block",
+                        agent.status === 'Official'
+                          ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20"
                           : agent.status === 'Community'
-                          ? 'bg-blue-500/15 text-blue-400 border-blue-500/30'
-                          : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
-                      }`}>
-                        {agent.status === 'Official' && <Award className="w-3 h-3" />}
-                        {agent.status === 'Under Review' && <Clock className="w-3 h-3" />}
+                            ? "bg-blue-500/15 text-blue-400 border border-blue-500/20"
+                            : "bg-amber-500/15 text-amber-500 border border-amber-500/20"
+                      )}>
                         {agent.status}
                       </span>
                     </td>
 
-                    {/* Column 7: Moderation Actions */}
-                    <td className="px-5 py-3.5 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <button
-                          onClick={() => handleDownloadCartridge(agent)}
-                          title="Download .haya Cartridge"
-                          className="p-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-all border border-border"
-                        >
-                          <FileDown className="w-3.5 h-3.5 text-amber-500" />
-                        </button>
-
-                        <button
-                          onClick={() => setSelectedAgent(agent)}
-                          className="px-2.5 py-1.5 rounded-lg bg-muted hover:bg-muted/80 text-foreground text-xs font-semibold flex items-center gap-1 transition-all border border-border"
-                        >
-                          <Eye className="w-3 h-3 text-blue-400" />
-                          <span>Inspect Manifest</span>
-                        </button>
-
-                        <button
-                          onClick={() => togglePromote(agent.id)}
-                          className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
-                            agent.status === 'Official'
-                              ? 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 border border-zinc-700'
-                              : 'bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold shadow-sm shadow-amber-500/20'
-                          }`}
-                        >
-                          <Award className="w-3 h-3" />
-                          <span>{agent.status === 'Official' ? 'Demote to Community' : 'Promote to Official Template'}</span>
-                        </button>
-                      </div>
+                    {/* Action */}
+                    <td className="py-3 px-3 text-center">
+                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all inline-block" />
                     </td>
                   </tr>
-                );
-              })}
+                ))
+              )}
             </tbody>
           </table>
         </div>
+        <div className="px-4 py-2.5 border-t border-border bg-muted/20 text-[11px] text-muted-foreground flex justify-between items-center">
+          <span>Showing {filteredAgents.length} of {agents.length} agent cartridges</span>
+          <span className="text-[10px]">Click any row to open accreditation drawer</span>
+        </div>
       </div>
 
-      {/* Upload Cartridge Modal */}
-      {isUploadOpen && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-card border border-border w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-5 animate-fadeIn">
-            <div className="flex items-center justify-between border-b border-border pb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
-                  <UploadCloud className="w-4 h-4 text-amber-500" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-base text-foreground">Import .haya Cartridge</h3>
-                  <p className="text-xs text-muted-foreground">Upload and audit an in-chamber agent bundle</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setIsUploadOpen(false)}
-                className="p-1 rounded-lg text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div 
-              onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
-              onDragLeave={() => setDragActive(false)}
-              onDrop={(e) => { e.preventDefault(); setDragActive(false); }}
-              className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${
-                dragActive 
-                  ? 'border-amber-500 bg-amber-500/5' 
-                  : 'border-border hover:border-amber-500/50 bg-muted/20'
-              }`}
-            >
-              <FileDown className="w-10 h-10 text-muted-foreground mx-auto mb-2" />
-              <div className="text-sm font-semibold text-foreground">Drag and drop your .haya file here</div>
-              <div className="text-xs text-muted-foreground mt-1">Must contain manifest.json, system_prompt.md, and rules.json</div>
-              <button className="mt-4 px-4 py-2 rounded-lg bg-muted text-foreground text-xs font-semibold hover:bg-muted/80 border border-border">
-                Browse Files
-              </button>
-            </div>
-
-            <div className="p-3 rounded-lg bg-slate-950 border border-border/80 text-xs space-y-1.5 font-mono">
-              <div className="text-muted-foreground flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Zero Cloud Exfiltration Verification: Guaranteed</span>
-              </div>
-              <div className="text-muted-foreground flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-amber-500" />
-                <span>Integrity: SHA-256 Checksum Computed upon Ingest</span>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-2.5 pt-2">
-              <button
-                onClick={() => setIsUploadOpen(false)}
-                className="px-4 py-2 rounded-lg bg-muted text-muted-foreground hover:text-foreground text-xs font-semibold"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  alert('Demo: Cartridge uploaded and verified into chamber foundry.');
-                  setIsUploadOpen(false);
-                }}
-                className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold"
-              >
-                Publish to Chamber Foundry
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Slide-Over Dossier / Manifest Inspector */}
+      {/* Information Drawer (Slide-Over from Right for Cartridge Audit) */}
       {selectedAgent && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-end p-0">
-          <div className="bg-card border-l border-border w-full max-w-2xl h-full shadow-2xl flex flex-col animate-slideLeft overflow-hidden">
-            {/* Drawer Header */}
-            <div className="p-6 border-b border-border flex items-center justify-between bg-muted/20">
-              <div className="flex items-center gap-3.5">
-                {(() => {
-                  const arch = getArchetypeConfig(selectedAgent.archetype);
-                  const Icon = arch.icon;
-                  return (
-                    <div className={`w-12 h-12 rounded-xl ${arch.bg} border ${arch.border} flex items-center justify-center shadow-md`}>
-                      <Icon className={`w-6 h-6 ${arch.color}`} />
-                    </div>
-                  );
-                })()}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-lg text-foreground">{selectedAgent.name}</h3>
-                    <span className="text-xs font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground">
-                      v{selectedAgent.version}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                    {selectedAgent.manifest.name} • {selectedAgent.chamberId}
-                  </p>
+        <div className="fixed inset-0 z-50 flex justify-end">
+          {/* Backdrop */}
+          <div
+            onClick={() => setSelectedAgent(null)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+          />
+
+          {/* Drawer */}
+          <aside className="relative z-10 w-full max-w-xl bg-card border-l border-border h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+            {/* Header */}
+            <div className="p-5 border-b border-border flex items-start justify-between gap-4 bg-muted/20">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className={cn(
+                    "text-[10px] font-bold px-2 py-0.5 rounded-full",
+                    selectedAgent.status === 'Official'
+                      ? "bg-emerald-500/15 text-emerald-500"
+                      : selectedAgent.status === 'Community'
+                        ? "bg-blue-500/15 text-blue-400"
+                        : "bg-amber-500/15 text-amber-500"
+                  )}>
+                    {selectedAgent.status}
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground">
+                    v{selectedAgent.version}
+                  </span>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                    Air-Gap Sovereign
+                  </span>
                 </div>
+                <h2 className="text-base font-bold text-foreground leading-snug">
+                  {selectedAgent.name}
+                </h2>
+                <p className="text-[11px] text-muted-foreground">
+                  By {selectedAgent.author} • {selectedAgent.firm} ({selectedAgent.chamberId})
+                </p>
               </div>
-              <button 
+              <button
                 onClick={() => setSelectedAgent(null)}
-                className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors shrink-0"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Quick Metadata Bar */}
-            <div className="grid grid-cols-3 gap-2 px-6 py-3 bg-muted/40 border-b border-border text-xs">
-              <div>
-                <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Author</span>
-                <span className="font-semibold text-foreground truncate block">{selectedAgent.author}</span>
+            {/* Scrollable Body */}
+            <div className="flex-1 p-5 space-y-6 overflow-y-auto text-xs">
+              {/* Scope & Description */}
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground">
+                  Cartridge Mandate &amp; Description
+                </h3>
+                <p className="text-foreground leading-relaxed bg-secondary/30 p-3 rounded-lg border border-border">
+                  {selectedAgent.manifest.description}
+                </p>
               </div>
-              <div>
-                <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Model Target</span>
-                <span className="font-semibold text-foreground truncate block">{selectedAgent.modelTarget.split(' ')[0]}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground block text-[10px] uppercase font-semibold">Status</span>
-                <span className="font-semibold text-emerald-400 block">{selectedAgent.status}</span>
-              </div>
-            </div>
 
-            {/* Tab navigation */}
-            <div className="flex border-b border-border px-6 bg-muted/20 text-xs">
-              <button
-                onClick={() => setActiveTab('manifest')}
-                className={`py-3 px-3 font-semibold border-b-2 transition-all ${
-                  activeTab === 'manifest'
-                    ? 'border-amber-500 text-amber-500'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Manifest (JSON)
-              </button>
-              <button
-                onClick={() => setActiveTab('prompt')}
-                className={`py-3 px-3 font-semibold border-b-2 transition-all ${
-                  activeTab === 'prompt'
-                    ? 'border-amber-500 text-amber-500'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                System Directive & Skeletons
-              </button>
-              <button
-                onClick={() => setActiveTab('rules')}
-                className={`py-3 px-3 font-semibold border-b-2 transition-all ${
-                  activeTab === 'rules'
-                    ? 'border-amber-500 text-amber-500'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Rules & Guardrails
-              </button>
-              <button
-                onClick={() => setActiveTab('vaults')}
-                className={`py-3 px-3 font-semibold border-b-2 transition-all ${
-                  activeTab === 'vaults'
-                    ? 'border-amber-500 text-amber-500'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                Statutory Vaults
-              </button>
-            </div>
-
-            {/* Tab Body */}
-            <div className="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
-              {activeTab === 'manifest' && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground font-semibold uppercase text-[10px] tracking-wider">
-                      manifest.json
-                    </span>
+              {/* Status Accreditation Control */}
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Award className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Accreditation Status</span>
+                </h3>
+                <div className="flex items-center gap-2">
+                  {(['Official', 'Community', 'Under Review'] as const).map((st) => (
                     <button
-                      onClick={() => copyText(JSON.stringify(selectedAgent.manifest, null, 2))}
-                      className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"
-                    >
-                      {copiedTrigger === JSON.stringify(selectedAgent.manifest, null, 2) ? (
-                        <>
-                          <Check className="w-3 h-3 text-emerald-400" />
-                          <span className="text-emerald-400">Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>Copy JSON</span>
-                        </>
+                      key={st}
+                      type="button"
+                      onClick={() => handleStatusChange(selectedAgent.id, st)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-md text-xs font-semibold border transition-all",
+                        selectedAgent.status === st
+                          ? "bg-amber-500 text-black border-amber-500 shadow-sm"
+                          : "bg-secondary text-muted-foreground border-border hover:text-foreground"
                       )}
+                    >
+                      {st}
                     </button>
-                  </div>
-                  <pre className="p-4 rounded-xl bg-slate-950 border border-border font-mono text-[11px] text-emerald-400 leading-relaxed overflow-x-auto whitespace-pre">
-                    {JSON.stringify(selectedAgent.manifest, null, 2)}
-                  </pre>
+                  ))}
                 </div>
-              )}
+              </div>
 
-              {activeTab === 'prompt' && (
-                <div className="space-y-3">
-                  <div className="text-muted-foreground font-semibold uppercase text-[10px] tracking-wider flex items-center gap-1.5">
-                    <FileCode className="w-3.5 h-3.5 text-amber-500" />
-                    <span>Primary Directive & Skeleton Prompt</span>
-                  </div>
-                  <div className="p-4 rounded-xl bg-slate-950 border border-border font-mono text-xs text-slate-300 leading-relaxed whitespace-pre-wrap">
-                    {selectedAgent.manifest.systemPromptSnippet}
-                  </div>
+              {/* Slash Triggers */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <Terminal className="w-3.5 h-3.5 text-amber-500" />
+                    <span>In-Harness Slash Triggers</span>
+                  </h3>
                 </div>
-              )}
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedAgent.manifest.triggers.map((trig) => (
+                    <button
+                      key={trig}
+                      onClick={() => copyToClipboard(trig, trig)}
+                      className="px-2.5 py-1 rounded bg-black text-amber-400 font-mono text-[11px] border border-border flex items-center gap-1 hover:border-amber-500/50 transition-colors"
+                      title="Click to copy trigger"
+                    >
+                      <span>{trig}</span>
+                      {copiedKey === trig ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3 text-muted-foreground" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-              {activeTab === 'rules' && (
-                <div className="space-y-3">
-                  <div className="text-muted-foreground font-semibold uppercase text-[10px] tracking-wider flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Statutory Audit Rules (rules.json)</span>
-                  </div>
-                  <div className="space-y-2">
-                    {selectedAgent.manifest.rulesList.map((r, idx) => (
-                      <div key={idx} className="p-3 rounded-lg bg-slate-950 border border-border font-mono text-xs text-foreground flex items-start gap-2">
-                        <span className="w-4 h-4 rounded bg-amber-500/20 text-amber-500 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
-                          {idx + 1}
-                        </span>
-                        <span>{r}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Bound Grounding Vaults */}
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <Database className="w-3.5 h-3.5 text-blue-500" />
+                  <span>Bound Statutory Vaults</span>
+                </h3>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedAgent.boundVaults.map((vault) => (
+                    <span 
+                      key={vault}
+                      className="px-2.5 py-1 rounded bg-secondary border border-border font-mono text-[11px] text-foreground"
+                    >
+                      {vault}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
-                  <div className="pt-2">
-                    <div className="text-muted-foreground font-semibold uppercase text-[10px] tracking-wider mb-2">
-                      Registered Monaco Slash Triggers
+              {/* Rules List */}
+              <div className="space-y-1.5">
+                <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>Statutory Rules Enforced ({selectedAgent.manifest.rulesList.length})</span>
+                </h3>
+                <div className="space-y-1 bg-secondary/30 p-2.5 rounded-lg border border-border font-mono text-[11px]">
+                  {selectedAgent.manifest.rulesList.map((r, i) => (
+                    <div key={i} className="text-muted-foreground flex items-start gap-1.5 py-0.5">
+                      <span className="text-amber-500 font-bold shrink-0">•</span>
+                      <span className="text-foreground">{r}</span>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedAgent.manifest.triggers.map(trig => (
-                        <span key={trig} className="px-2.5 py-1 rounded bg-slate-950 border border-amber-500/30 text-amber-400 font-mono text-xs">
-                          {trig}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              )}
+              </div>
 
-              {activeTab === 'vaults' && (
-                <div className="space-y-3">
-                  <div className="text-muted-foreground font-semibold uppercase text-[10px] tracking-wider">
-                    Bound India Code Bare Act Vaults
-                  </div>
-                  <div className="grid grid-cols-1 gap-2">
-                    {selectedAgent.boundVaults.map(v => (
-                      <div key={v} className="p-3 rounded-lg bg-slate-950 border border-border flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Lock className="w-4 h-4 text-amber-500" />
-                          <span className="font-mono text-xs text-foreground font-bold">{v}.cartridge.enc</span>
-                        </div>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          AES-256 Chambered
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+              {/* System Prompt Snippet */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>System Prompt Snippet</span>
+                  </h3>
+                  <button
+                    onClick={() => copyToClipboard(selectedAgent.manifest.systemPromptSnippet, 'prompt')}
+                    className="text-[11px] text-amber-500 hover:text-amber-400 font-medium flex items-center gap-1"
+                  >
+                    {copiedKey === 'prompt' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                    <span>{copiedKey === 'prompt' ? 'Copied' : 'Copy Prompt'}</span>
+                  </button>
                 </div>
-              )}
+                <div className="bg-slate-950 text-slate-200 p-3 rounded-md font-mono text-[11px] border border-border/80 overflow-x-auto max-h-40 leading-relaxed select-all">
+                  <pre className="whitespace-pre-wrap">{selectedAgent.manifest.systemPromptSnippet}</pre>
+                </div>
+              </div>
             </div>
 
-            {/* Drawer Footer Actions */}
-            <div className="p-5 border-t border-border bg-muted/20 flex items-center justify-between">
+            {/* Footer */}
+            <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
               <button
-                onClick={() => handleDownloadCartridge(selectedAgent)}
-                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-amber-500/20"
+                type="button"
+                onClick={() => setSelectedAgent(null)}
+                className="px-4 py-2 rounded-md border border-border text-xs font-medium text-foreground hover:bg-secondary transition-colors"
+              >
+                Close
+              </button>
+
+              <button
+                type="button"
+                onClick={() => alert(`Exporting ${selectedAgent.slug}.haya cartridge bundle`)}
+                className="flex-1 px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition-all"
               >
                 <DownloadCloud className="w-4 h-4" />
                 <span>Download .haya Cartridge</span>
               </button>
+            </div>
+          </aside>
+        </div>
+      )}
 
+      {/* Upload .haya Slide-Over Drawer */}
+      {isUploadOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div
+            onClick={() => setIsUploadOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+          />
+
+          <aside className="relative z-10 w-full max-w-xl bg-card border-l border-border h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+            <div className="p-5 border-b border-border flex items-center justify-between bg-muted/20">
+              <h2 className="text-base font-bold text-foreground flex items-center gap-2">
+                <UploadCloud className="w-4 h-4 text-amber-500" />
+                <span>Upload .haya Cartridge Package</span>
+              </h2>
               <button
-                onClick={() => setSelectedAgent(null)}
-                className="px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 text-foreground text-xs font-semibold"
+                onClick={() => setIsUploadOpen(false)}
+                className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
               >
-                Close Inspector
+                <X className="w-4 h-4" />
               </button>
             </div>
-          </div>
+
+            <form onSubmit={handleUploadSubmit} className="flex-1 p-5 space-y-4 overflow-y-auto text-xs">
+              <div className="space-y-1">
+                <label className="font-semibold text-foreground">Cartridge Package File (.haya)</label>
+                <div className="border border-dashed border-border rounded-lg p-6 text-center hover:border-amber-500/50 transition-colors bg-secondary/30 cursor-pointer">
+                  <UploadCloud className="w-6 h-6 text-muted-foreground mx-auto mb-1.5" />
+                  <p className="text-xs font-semibold text-foreground">Click to select or drag .haya package</p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Signed SHA-256 cartridge file</p>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-semibold text-foreground">Agent Name</label>
+                <input
+                  type="text"
+                  required
+                  value={uploadName}
+                  onChange={(e) => setUploadName(e.target.value)}
+                  placeholder="e.g. Insolvency Lookback Auditor"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-semibold text-foreground">Author Name</label>
+                  <input
+                    type="text"
+                    value={uploadAuthor}
+                    onChange={(e) => setUploadAuthor(e.target.value)}
+                    placeholder="Adv. Atul Grover"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-semibold text-foreground">Chambers / Firm</label>
+                  <input
+                    type="text"
+                    value={uploadFirm}
+                    onChange={(e) => setUploadFirm(e.target.value)}
+                    placeholder="Grover &amp; Associates"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-semibold text-foreground">Archetype</label>
+                <select
+                  value={uploadArchetype}
+                  onChange={(e) => setUploadArchetype(e.target.value as any)}
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                >
+                  <option value="avoidance_forensic_auditor">Avoidance Forensic Auditor</option>
+                  <option value="commercial_injunction_drafter">Commercial Injunction Drafter</option>
+                  <option value="ibc_claim_verifier">IBC Creditor Claim Auditor</option>
+                  <option value="sec29a_eligibility_inquest">Section 29A Eligibility Inquest</option>
+                  <option value="custom_coworker">Custom Sovereign Coworker</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-semibold text-foreground">Bound Statutory Vaults (comma-separated)</label>
+                <input
+                  type="text"
+                  value={uploadVaults}
+                  onChange={(e) => setUploadVaults(e.target.value)}
+                  placeholder="ibc_2016, cpc_1908"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-amber-500"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-border flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsUploadOpen(false)}
+                  className="px-3 py-1.5 rounded-md border border-border text-foreground hover:bg-secondary"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm"
+                >
+                  Upload &amp; Accredit
+                </button>
+              </div>
+            </form>
+          </aside>
         </div>
       )}
     </div>
