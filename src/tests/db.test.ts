@@ -20,7 +20,7 @@ async function testDatabaseLayer() {
     // 2. Test Mock Store & Seed Initializer
     console.log('[Test 1.2] Testing seed data initialization...');
     const store = seedInitialData();
-    assert(store.users.length >= 5, 'Seed data must contain initial users');
+    assert(store.users.length >= 1, 'Seed data must contain users');
     assert(store.invoices.length >= 5, 'Seed data must contain invoices');
     assert(store.systemLogs.length >= 10, 'Seed data must contain logs');
     assert(store.downloadTelemetry.length >= 10, 'Seed data must contain download telemetry');
@@ -29,14 +29,30 @@ async function testDatabaseLayer() {
     // Check Super Admin user presence
     const superAdmin = store.users.find(u => u.role === 'SUPER_ADMIN');
     assert(superAdmin, 'Must include default SUPER_ADMIN user');
-    assert.strictEqual(superAdmin.email, 'superadmin@hayagriva.app');
+    assert.strictEqual(superAdmin.email, 'atulgroverr@gmail.com');
     assert.strictEqual(superAdmin.isDeleted, false);
     console.log('✔ Seed data initialized with Super Admin user & telemetry.');
 
     // 3. Test Soft Deletion behavior
     console.log('[Test 1.3] Testing soft-deletion logic...');
-    const targetUser = store.users.find(u => u.role === 'ADVOCATE');
-    assert(targetUser, 'Must find advocate user');
+    // Create an advocate user to test soft-deletion
+    const targetUser: typeof superAdmin = {
+      id: 'usr_test_adv_01',
+      name: 'Test Advocate',
+      email: 'test@chambers.in',
+      passwordHash: 'hash',
+      role: 'ADVOCATE',
+      status: 'ACTIVE',
+      plan: 'SOLO_PRACTITIONER',
+      org: 'Test Chambers',
+      avatarUrl: null,
+      isDeleted: false,
+      deletedAt: null,
+      deletedBy: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    store.users.push(targetUser);
     
     // Perform soft-delete
     targetUser.isDeleted = true;

@@ -206,26 +206,6 @@ export default function AdminModelsRegistryPage() {
         </button>
       </div>
 
-      {/* Compact Telemetry Metrics Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-card border border-border p-3.5 rounded-lg text-xs">
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Total Models</span>
-          <span className="text-base font-bold text-foreground font-mono">{models.length} Engines</span>
-        </div>
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Deliveries</span>
-          <span className="text-base font-bold text-emerald-500 font-mono">{totalDeliveries.toLocaleString()}</span>
-        </div>
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Storage Payload</span>
-          <span className="text-base font-bold text-foreground font-mono">6.83 GB</span>
-        </div>
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Integrity Standard</span>
-          <span className="text-base font-bold text-amber-500 font-mono">SHA-256</span>
-        </div>
-      </div>
-
       {/* Filter Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-card border border-border p-3 rounded-lg shadow-sm">
         {/* Search */}

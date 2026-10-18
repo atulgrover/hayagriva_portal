@@ -351,26 +351,6 @@ export default function AdminAgentsRegistryPage() {
         </button>
       </div>
 
-      {/* Compact Telemetry Metrics Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-card border border-border p-3.5 rounded-lg text-xs">
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Total Cartridges</span>
-          <span className="text-base font-bold text-foreground font-mono">{agents.length} Cartridges</span>
-        </div>
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Official Accreditations</span>
-          <span className="text-base font-bold text-emerald-500 font-mono">{officialCount} Verified</span>
-        </div>
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Total Deliveries</span>
-          <span className="text-base font-bold text-foreground font-mono">{totalDeliveries.toLocaleString()}</span>
-        </div>
-        <div>
-          <span className="text-[10px] text-muted-foreground uppercase font-medium block">Sandbox Assurance</span>
-          <span className="text-base font-bold text-amber-500 font-mono">Air-Gap Verified</span>
-        </div>
-      </div>
-
       {/* Single-Line Filter Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-card border border-border p-3 rounded-lg shadow-sm">
         {/* Search */}
