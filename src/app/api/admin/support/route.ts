@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getMockStore } from '@/lib/db/seed';
 import { triageTickets, updateTicket } from '@/lib/services/modules';
+import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
 
 export async function GET(request: Request) {
   try {
@@ -35,20 +36,15 @@ export async function PATCH(request: Request) {
     const { status, priority, adminResponse } = body;
 
     // Extract admin identity from session cookie if present
-    const sessionCookie = request.headers.get('cookie')
-      ?.split(';')
-      .find(c => c.trim().startsWith('hayagriva_user='));
+    const cookieVal = getCookieValue(request.headers.get('cookie'), 'hayagriva_user');
 
     let adminId = 'usr_superadmin_01';
     let adminEmail = 'superadmin@hayagriva.app';
 
-    if (sessionCookie) {
-      try {
-        const val = sessionCookie.split('=')[1];
-        const parsed = JSON.parse(decodeURIComponent(val));
-        if (parsed?.id) adminId = parsed.id;
-        if (parsed?.email) adminEmail = parsed.email;
-      } catch {}
+    if (cookieVal) {
+      const parsed = safeParseJsonCookie(cookieVal);
+      if (parsed?.id) adminId = parsed.id;
+      if (parsed?.email) adminEmail = parsed.email;
     }
 
     const store = getMockStore();

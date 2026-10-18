@@ -2,21 +2,16 @@
 import { NextResponse } from 'next/server';
 import { getMockStore } from '@/lib/db/seed';
 import { transferSeat } from '@/lib/services/licensing';
+import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
 
 export async function POST(request: Request) {
   try {
-    const sessionUserCookie = request.headers.get('cookie')
-      ?.split(';')
-      .find(c => c.trim().startsWith('hayagriva_user='));
-
+    const cookieVal = getCookieValue(request.headers.get('cookie'), 'hayagriva_user');
     let userId = 'usr_adv_01';
 
-    if (sessionUserCookie) {
-      try {
-        const val = sessionUserCookie.split('=')[1];
-        const parsed = JSON.parse(decodeURIComponent(val));
-        if (parsed?.id) userId = parsed.id;
-      } catch {}
+    if (cookieVal) {
+      const parsed = safeParseJsonCookie(cookieVal);
+      if (parsed?.id) userId = parsed.id;
     }
 
     const body = await request.json();

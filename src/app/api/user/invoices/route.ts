@@ -1,21 +1,16 @@
 // admin-panel/src/app/api/user/invoices/route.ts
 import { NextResponse } from 'next/server';
 import { getMockStore } from '@/lib/db/seed';
+import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
 
 export async function GET(request: Request) {
   try {
-    const sessionUserCookie = request.headers.get('cookie')
-      ?.split(';')
-      .find(c => c.trim().startsWith('hayagriva_user='));
-
+    const cookieVal = getCookieValue(request.headers.get('cookie'), 'hayagriva_user');
     let userId = 'usr_adv_01'; // Default fallback
 
-    if (sessionUserCookie) {
-      try {
-        const val = sessionUserCookie.split('=')[1];
-        const parsed = JSON.parse(decodeURIComponent(val));
-        if (parsed?.id) userId = parsed.id;
-      } catch {}
+    if (cookieVal) {
+      const parsed = safeParseJsonCookie(cookieVal);
+      if (parsed?.id) userId = parsed.id;
     }
 
     const store = getMockStore();

@@ -12,6 +12,8 @@ import {
   LogOut 
 } from 'lucide-react';
 
+import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
+
 interface CurrentUser {
   id?: string;
   name: string;
@@ -31,18 +33,15 @@ export function ClientHeader() {
 
     // 1. Parse session cookie immediately for zero-flicker render
     try {
-      const match = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('hayagriva_user='));
-      if (match) {
-        const val = match.split('=')[1];
-        const parsed = JSON.parse(decodeURIComponent(val));
+      const val = getCookieValue(document.cookie, 'hayagriva_user');
+      if (val) {
+        const parsed = safeParseJsonCookie<CurrentUser>(val);
         if (parsed?.name) {
           setCurrentUser(parsed);
         }
       }
-    } catch (e) {
-      console.error('Failed to parse hayagriva_user cookie', e);
+    } catch {
+      // Safe fallback - no dev overlay trigger
     }
 
     // 2. Fetch fresh user profile from API

@@ -19,6 +19,8 @@ import {
   HardDrive
 } from 'lucide-react';
 
+import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
+
 interface UnifiedNavbarProps {
   onOpenPublish?: () => void;
   onTriggerSync?: () => void;
@@ -33,15 +35,10 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
   useEffect(() => {
     setMounted(true);
     // Parse user cookie
-    const cookies = document.cookie.split('; ');
-    const userCookie = cookies.find(c => c.startsWith('hayagriva_user='));
-    if (userCookie) {
-      try {
-        const parsed = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
-        setUser(parsed);
-      } catch {
-        setUser(null);
-      }
+    const val = getCookieValue(document.cookie, 'hayagriva_user');
+    if (val) {
+      const parsed = safeParseJsonCookie(val);
+      setUser(parsed);
     }
   }, []);
 

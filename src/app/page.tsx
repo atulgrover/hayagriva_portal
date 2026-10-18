@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { safeParseJsonCookie } from '@/lib/auth/cookies';
 
 export default async function HomePage() {
   const cookieStore = await cookies();
@@ -10,14 +11,7 @@ export default async function HomePage() {
     redirect('/login');
   }
 
-  let user: any = null;
-  if (userCookie) {
-    try {
-      user = JSON.parse(decodeURIComponent(userCookie));
-    } catch {
-      user = null;
-    }
-  }
+  const user = safeParseJsonCookie(userCookie);
 
   if (user?.role === 'SUPER_ADMIN') {
     redirect('/admin/dashboard');

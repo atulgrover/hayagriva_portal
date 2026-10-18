@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     // Set auto-login session cookies
     response.cookies.set({
       name: 'hayagriva_user',
-      value: encodeURIComponent(JSON.stringify({
+      value: JSON.stringify({
         id: result.user.id,
         name: result.user.name,
         email: result.user.email,
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         status: result.user.status,
         plan: result.user.plan,
         org: result.user.org,
-      })),
+      }),
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

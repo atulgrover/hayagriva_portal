@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyRbacAccess } from './lib/auth/rbac';
+import { safeParseJsonCookie } from './lib/auth/cookies';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -19,11 +20,7 @@ export function middleware(request: NextRequest) {
 
     let user: any = null;
     if (sessionUserStr) {
-      try {
-        user = JSON.parse(decodeURIComponent(sessionUserStr));
-      } catch {
-        user = null;
-      }
+      user = safeParseJsonCookie(sessionUserStr);
     } else if (sessionJwt) {
       try {
         const [b64] = sessionJwt.split('.');
