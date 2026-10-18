@@ -62,7 +62,6 @@ const navSections: NavSection[] = [
       { name: 'Billing & Revenue', href: '/admin/invoices', icon: CreditCard },
       { name: 'System & API Logs', href: '/admin/logs', icon: Server },
       { name: 'Support Tickets', href: '/admin/support', icon: HelpCircle, badge: '4' },
-      { name: 'Admin Profile & Security', href: '/admin/profile', icon: ShieldCheck },
     ]
   }
 ];
@@ -140,15 +139,8 @@ export function AdminSidebar() {
         ))}
       </div>
 
-      {/* Infrastructure Telemetry Footer */}
-      <div className="p-3 border-t border-border bg-secondary/30 space-y-2 text-xs">
-        <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Neon DB Connected</span>
-          </span>
-          <span className="font-mono text-[10px]">100% Sovereign</span>
-        </div>
+      {/* Practitioner Portal Shortcut Footer */}
+      <div className="p-3 border-t border-border bg-secondary/30 text-xs">
         <Link 
           href="/dashboard" 
           className="w-full py-1.5 px-2.5 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border flex items-center justify-between text-[11px] font-medium transition-colors"

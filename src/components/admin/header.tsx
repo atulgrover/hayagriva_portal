@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { 
   Sun, 
@@ -74,12 +75,16 @@ export function AdminHeader() {
         <div className="h-4 w-[1px] bg-border mx-1" />
 
         {/* Super Admin Profile Pill */}
-        <div className="flex items-center space-x-2.5 pl-1">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-white text-xs font-bold ring-2 ring-amber-500/20">
+        <Link
+          href="/admin/profile"
+          className="flex items-center space-x-2.5 pl-1 py-1 pr-2 rounded-lg hover:bg-secondary/70 transition-colors group cursor-pointer"
+          title="Manage Admin Profile & Infrastructure"
+        >
+          <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-white text-xs font-bold ring-2 ring-amber-500/20 group-hover:ring-amber-500/40 transition-all">
             AG
           </div>
           <div className="text-left hidden md:block">
-            <div className="text-xs font-semibold text-foreground flex items-center gap-1">
+            <div className="text-xs font-semibold text-foreground group-hover:text-amber-500 flex items-center gap-1 transition-colors">
               <span>Atul Grover</span>
               <span className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1 py-0.2 rounded font-mono">
                 SUPER_ADMIN
@@ -87,6 +92,7 @@ export function AdminHeader() {
             </div>
             <p className="text-[10px] text-muted-foreground font-mono">atulgroverr@gmail.com</p>
           </div>
+        </Link>
 
           {/* Sign Out Button */}
           <button
@@ -97,7 +103,6 @@ export function AdminHeader() {
             <LogOut className="w-4 h-4" />
           </button>
         </div>
-      </div>
-    </header>
+      </header>
   );
 }
