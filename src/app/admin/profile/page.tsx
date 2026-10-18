@@ -29,7 +29,7 @@ export default function ProfilePage() {
                   SUPER_ADMIN
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground font-mono">superadmin@hayagriva.app</p>
+              <p className="text-xs text-muted-foreground font-mono">atulgroverr@gmail.com</p>
               <p className="text-xs text-muted-foreground">Founder & Senior Counsel · Hayagriva Chambers & AI Labs</p>
             </div>
           </div>

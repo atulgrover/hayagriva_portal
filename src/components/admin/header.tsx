@@ -85,7 +85,7 @@ export function AdminHeader() {
                 SUPER_ADMIN
               </span>
             </div>
-            <p className="text-[10px] text-muted-foreground font-mono">superadmin@hayagriva.app</p>
+            <p className="text-[10px] text-muted-foreground font-mono">atulgroverr@gmail.com</p>
           </div>
 
           {/* Sign Out Button */}

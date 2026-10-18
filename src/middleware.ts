@@ -45,7 +45,7 @@ export function middleware(request: NextRequest) {
         id: 'usr_superadmin_01',
         role: 'SUPER_ADMIN',
         status: 'ACTIVE',
-        email: 'superadmin@hayagriva.app'
+        email: 'atulgroverr@gmail.com'
       };
     }
 

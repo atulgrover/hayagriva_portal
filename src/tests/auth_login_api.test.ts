@@ -18,14 +18,14 @@ async function testAuthLoginApi() {
   assert.strictEqual(bodyEmpty.ok, false);
   console.log('✔ Empty credentials returned 400 with ok: false.');
 
-  // 2. Valid Superadmin Login
-  console.log('[Test 1.2] Testing valid credentials for superadmin@hayagriva.app...');
+  // 2. Valid Superadmin Login for atulgroverr@gmail.com
+  console.log('[Test 1.2] Testing valid credentials for atulgroverr@gmail.com...');
   const reqSuper = new Request('http://localhost:3300/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      email: 'superadmin@hayagriva.app',
-      password: 'hayagriva_secure_password'
+      email: 'atulgroverr@gmail.com',
+      password: '@Guruji46'
     })
   });
   const resSuper = await POST(reqSuper);
@@ -34,12 +34,12 @@ async function testAuthLoginApi() {
   assert.strictEqual(bodySuper.ok, true);
   assert.strictEqual(bodySuper.success, true);
   assert(bodySuper.token, 'Must return token');
-  assert.strictEqual(bodySuper.user.email, 'superadmin@hayagriva.app');
+  assert.strictEqual(bodySuper.user.email, 'atulgroverr@gmail.com');
   assert.strictEqual(bodySuper.user.role, 'SUPER_ADMIN');
-  console.log('✔ Superadmin authenticated with token & user profile.');
+  console.log('✔ Superadmin atulgroverr@gmail.com authenticated with token & user profile.');
 
-  // 3. Valid Advocate Login with License
-  console.log('[Test 1.3] Testing valid credentials for advocate r.rao@insolvencylaw.in...');
+  // 3. Rejected Old Demo User
+  console.log('[Test 1.3] Testing old demo account rejection for r.rao@insolvencylaw.in...');
   const reqAdv = new Request('http://localhost:3300/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -49,21 +49,16 @@ async function testAuthLoginApi() {
     })
   });
   const resAdv = await POST(reqAdv);
-  assert.strictEqual(resAdv.status, 200);
-  const bodyAdv = await resAdv.json();
-  assert.strictEqual(bodyAdv.ok, true);
-  assert.strictEqual(bodyAdv.user.name, 'Adv. Rajeshwar Rao');
-  assert(bodyAdv.license, 'Advocate must return attached license if available');
-  assert(bodyAdv.license.licenseKey, 'License must include key');
-  console.log('✔ Advocate authenticated and active license attached:', bodyAdv.license.licenseKey);
+  assert.strictEqual(resAdv.status, 401, 'Old demo account must be rejected with 401');
+  console.log('✔ Demo accounts successfully blocked.');
 
-  // 4. Invalid Password
-  console.log('[Test 1.4] Testing invalid password rejection...');
+  // 4. Invalid Password for Superadmin
+  console.log('[Test 1.4] Testing invalid password rejection for atulgroverr@gmail.com...');
   const reqBadPass = new Request('http://localhost:3300/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      email: 'superadmin@hayagriva.app',
+      email: 'atulgroverr@gmail.com',
       password: 'wrong_password_123'
     })
   });

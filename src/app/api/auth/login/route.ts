@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         if (found) {
           const shaHash = crypto.createHash('sha256').update(password + 'hayagriva_salt_2026').digest('hex');
           const isMatch = found.passwordHash === `$sha256$${shaHash}` ||
-                          password === 'hayagriva_secure_password' ||
+                          (email === 'atulgroverr@gmail.com' && password === '@Guruji46') ||
                           found.passwordHash === password;
           if (isMatch) {
             matchedUser = found;
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       if (found) {
         const shaHash = crypto.createHash('sha256').update(password + 'hayagriva_salt_2026').digest('hex');
         const isMatch = found.passwordHash === `$sha256$${shaHash}` ||
-                        password === 'hayagriva_secure_password' ||
+                        (email === 'atulgroverr@gmail.com' && password === '@Guruji46') ||
                         found.passwordHash === password ||
                         false;
         if (isMatch) {
@@ -73,6 +73,48 @@ export async function POST(req: Request) {
           if (lic) matchedLicense = lic;
         }
       }
+    }
+
+    // Direct fallback for Super Admin live credentials
+    if (!matchedUser && email === 'atulgroverr@gmail.com' && password === '@Guruji46') {
+      const store = getMockStore();
+      let adminUser = store.users.find(u => u.email.toLowerCase() === 'atulgroverr@gmail.com');
+      if (!adminUser) {
+        adminUser = {
+          id: 'usr_superadmin_01',
+          name: 'Atul Grover',
+          email: 'atulgroverr@gmail.com',
+          passwordHash: '$sha256$923dc9bb16366d37e4c644284d650d31a601c5b19ae412ae07cc2e3366f6e026',
+          role: 'SUPER_ADMIN',
+          status: 'ACTIVE',
+          plan: 'ENTERPRISE',
+          org: 'Hayagriva Sovereign Intelligence',
+          avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&fit=crop',
+          isDeleted: false,
+          deletedAt: null,
+          deletedBy: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        store.users.unshift(adminUser);
+      }
+      matchedUser = adminUser;
+      let lic = store.licenses.find(l => l.userId === adminUser!.id);
+      if (!lic) {
+        lic = {
+          id: 'lic_superadmin_atul',
+          userId: adminUser.id,
+          licenseKey: 'HAYA-SOV-CHAMBER-2026-LIVE',
+          domain: 'LEGAL_DISPUTE',
+          planTier: 'ENTERPRISE',
+          maxDevices: 1,
+          status: 'ACTIVE',
+          expiresAt: new Date('2028-12-31T23:59:59Z'),
+          createdAt: new Date(),
+        };
+        store.licenses.unshift(lic);
+      }
+      matchedLicense = lic;
     }
 
     if (!matchedUser) {
