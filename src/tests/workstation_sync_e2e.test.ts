@@ -108,14 +108,14 @@ async function runWorkstationSyncE2E() {
     // 4. Verify disk contents and sync receipt
     console.log('[Step 4] Verifying extracted files and sync receipts on disk...');
     // Find any installed item folder recursively
-    function findSyncReceipt(dir) {
+    function findSyncReceipt(dir: string): string | null {
       const files = fs.readdirSync(dir);
       for (const f of files) {
         const full = path.join(dir, f);
         if (fs.statSync(full).isDirectory()) {
           const receipt = path.join(full, '.hayagriva_sync.json');
           if (fs.existsSync(receipt)) return receipt;
-          const found = findSyncReceipt(full);
+          const found: string | null = findSyncReceipt(full);
           if (found) return found;
         }
       }
