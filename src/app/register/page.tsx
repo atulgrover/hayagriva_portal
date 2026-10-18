@@ -92,28 +92,19 @@ export default function RegisterPage() {
 
       <div className="w-full max-w-xl space-y-6">
         {/* Branding Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center">
           <div className="flex justify-center">
             <img
               src="/branding/hayagriva_logo_white.png"
               alt="Lord Hayagriva Sovereign Intelligence"
-              className="h-20 w-auto object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200 hidden dark:block"
+              className="h-16 w-auto object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-200 hidden dark:block"
             />
             <img
               src="/branding/hayagriva_logo_transparent.png"
               alt="Lord Hayagriva Sovereign Intelligence"
-              className="h-20 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
+              className="h-16 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
             />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center justify-center gap-2">
-            <span>HAYAGRIVA</span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20 font-mono">
-              SOVEREIGN LEGAL OS
-            </span>
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Register your practitioner account &amp; receive your Sovereign Workstation License (1 Device Seat)
-          </p>
         </div>
 
         {/* Card Container */}
@@ -284,22 +275,6 @@ export default function RegisterPage() {
             >
               Sign In Here →
             </Link>
-          </div>
-        </div>
-
-        {/* Instant Value Badge Strip */}
-        <div className="grid grid-cols-3 gap-3 text-center text-[11px] text-muted-foreground">
-          <div className="p-2 rounded-lg bg-card/60 border border-border/60">
-            <span className="font-semibold text-foreground block">⚡ Instant Access</span>
-            <span>1-Device Free Starter</span>
-          </div>
-          <div className="p-2 rounded-lg bg-card/60 border border-border/60">
-            <span className="font-semibold text-foreground block">🔒 Zero Data Leak</span>
-            <span>100% Air-Gapped Engine</span>
-          </div>
-          <div className="p-2 rounded-lg bg-card/60 border border-border/60">
-            <span className="font-semibold text-foreground block">📜 Court Ready</span>
-            <span>Bare Acts &amp; Forms Built-in</span>
           </div>
         </div>
       </div>

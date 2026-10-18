@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12 selection:bg-amber-500/20">
       <div className="w-full max-w-md bg-card border border-border rounded-2xl shadow-2xl p-8 space-y-6">
         {/* Header Branding */}
-        <div className="text-center space-y-3">
+        <div className="text-center">
           <div className="flex justify-center">
             <img
               src="/branding/hayagriva_logo_white.png"
@@ -69,12 +69,6 @@ export default function LoginPage() {
               alt="Lord Hayagriva Sovereign Intelligence"
               className="h-16 w-auto object-contain filter drop-shadow-sm hover:scale-105 transition-transform duration-200 block dark:hidden"
             />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground">Hayagriva Sovereign Portal</h1>
-            <p className="text-xs text-muted-foreground mt-1">
-              Sign in to manage your workstation licenses and chamber AI
-            </p>
           </div>
         </div>
 
@@ -168,14 +162,6 @@ export default function LoginPage() {
           >
             Register for a license →
           </Link>
-        </div>
-
-        {/* Security Badge */}
-        <div className="text-center pt-1">
-          <p className="text-[11px] text-muted-foreground flex items-center justify-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Air-Gapped Sovereign Hardware Fingerprint Sync</span>
-          </p>
         </div>
       </div>
     </div>
