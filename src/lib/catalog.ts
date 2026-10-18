@@ -12,7 +12,8 @@ export interface CatalogItem {
 export const ASSET_CATALOG: CatalogItem[] = [
   // 1. Desktop App Installers
   { id: 'hayagriva-mac-x64.dmg', r2Key: 'builds/hayagriva-mac-x64.dmg', category: 'app', name: 'Hayagriva Desktop IDE — macOS (Intel / Apple Silicon)', price: 0, size: '120 MB', description: 'Native Electron IDE bundle with pre-bundled InLegal-SBERT & Starter Demo Pack.' },
-  { id: 'hayagriva-win-x64.exe', r2Key: 'builds/hayagriva-win-x64.exe', category: 'app', name: 'Hayagriva Desktop IDE — Windows 10 / 11 (64-bit)', price: 0, size: '140 MB', description: 'Native Standalone Windows Setup Installer with pre-bundled InLegal-SBERT & Starter Kit.' },
+  { id: 'hayagriva-win-x64.exe', r2Key: 'Hayagriva-Setup-1.17.0.exe', category: 'app', name: 'Hayagriva Desktop IDE — Windows 10 / 11 (64-bit)', price: 0, size: '96.3 MB', description: 'Native Standalone Windows Setup Installer with pre-bundled InLegal-SBERT & Starter Kit.' },
+  { id: 'Hayagriva-Setup-1.17.0.exe', r2Key: 'Hayagriva-Setup-1.17.0.exe', category: 'app', name: 'Hayagriva Desktop IDE — Windows 10 / 11 (64-bit) v1.17.0', price: 0, size: '96.3 MB', description: 'Official Windows Installer Setup Executable.' },
   { id: 'hayagriva-linux-x64.AppImage', r2Key: 'builds/hayagriva-linux-x64.AppImage', category: 'app', name: 'Hayagriva Desktop IDE — Linux (AppImage / x64)', price: 0, size: '130 MB', description: 'Portable Linux binary package with pre-bundled InLegal-SBERT & Starter Kit.' },
 
   // 2. Offline LLM AI Engines (.gguf)

@@ -36,6 +36,11 @@ export async function getPresignedDownloadUrl(
   key: string,
   ttlSeconds: number = 900
 ): Promise<string> {
+  const r2PublicUrl = process.env.R2_PUBLIC_URL || process.env.NEXT_PUBLIC_R2_PUBLIC_URL || 'https://pub-35371afc7da748a481da639a4f0d486e.r2.dev';
+  if (r2PublicUrl) {
+    const cleanUrl = r2PublicUrl.endsWith('/') ? r2PublicUrl.slice(0, -1) : r2PublicUrl;
+    return `${cleanUrl}/${encodeURI(key)}`;
+  }
   const client = getS3Client();
 
   if (client) {
