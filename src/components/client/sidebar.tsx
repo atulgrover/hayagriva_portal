@@ -62,12 +62,12 @@ export function ClientSidebar() {
         <div className="flex items-center space-x-2.5">
           <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center p-0.5 shadow-sm overflow-hidden">
             <img
-              src="/branding/hayagriva_icon_white.png"
+              src="/branding/hayagriva_knight_dark.png"
               alt="Hayagriva"
               className="w-full h-full object-contain filter drop-shadow-sm hidden dark:block"
             />
             <img
-              src="/branding/hayagriva_icon.png"
+              src="/branding/hayagriva_knight_light.png"
               alt="Hayagriva"
               className="w-full h-full object-contain filter drop-shadow-sm block dark:hidden"
             />
