@@ -408,8 +408,9 @@ function LoginContent() {
               {/* Submit */}
               <Button
                 type="submit"
+                size="lg"
                 disabled={loginLoading}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs py-2.5 rounded-lg shadow-sm gap-2 mt-2"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs rounded-md shadow-xs gap-2 mt-2"
               >
                 {loginLoading ? (
                   <>
@@ -531,8 +532,9 @@ function LoginContent() {
               <Button
                 type="submit"
                 variant="default"
+                size="lg"
                 disabled={registerLoading}
-                className="w-full text-xs font-semibold py-2.5 rounded-lg shadow-sm gap-2 mt-2"
+                className="w-full text-xs font-semibold rounded-md shadow-xs gap-2 mt-2"
               >
                 {registerLoading ? (
                   <>
