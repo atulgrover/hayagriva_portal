@@ -11,7 +11,8 @@ import {
   Database,
   Cpu,
   Bot,
-  Sparkles
+  Sparkles,
+  MessageSquare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -32,6 +33,7 @@ const navSections: NavSection[] = [
     title: 'User Workspace',
     items: [
       { name: 'Profile / License / Hardware', href: '/dashboard/workspace', icon: Laptop },
+      { name: 'Discussions & AI Bot', href: '/dashboard/community', icon: MessageSquare, badge: 'Live' },
       { name: 'Custom Agents', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
     ]
   },

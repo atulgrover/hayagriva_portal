@@ -16,7 +16,8 @@ import {
   Lock, 
   Sparkles,
   Building2,
-  HardDrive
+  HardDrive,
+  MessageSquare
 } from 'lucide-react';
 
 import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
@@ -87,13 +88,25 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
           <Link
             href="/dashboard"
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
-              pathname.startsWith('/dashboard')
+              pathname === '/dashboard'
                 ? 'bg-secondary text-foreground shadow-sm font-semibold'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-blue-500" />
             <span>Workstations</span>
+          </Link>
+
+          <Link
+            href="/dashboard/community"
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+              pathname.startsWith('/dashboard/community')
+                ? 'bg-secondary text-foreground shadow-sm font-semibold'
+                : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Community & AI</span>
           </Link>
 
           {isSuperAdmin && (
