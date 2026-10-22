@@ -153,27 +153,23 @@ function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-12 bg-background text-foreground selection:bg-amber-500/20">
+    <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-12 bg-background text-foreground">
       {/* ─────────────────────────────────────────────────────────────────────────────
           LEFT PANEL: Concept A - Sovereign Legal Capabilities (58% desktop width)
          ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="lg:col-span-7 hidden lg:flex flex-col justify-between p-8 xl:p-14 bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/20 border-r border-border/80 relative overflow-hidden select-none">
-        {/* Subtle Ambient Radial Glow */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="lg:col-span-7 hidden lg:flex flex-col justify-between p-8 xl:p-14 bg-card border-r border-border relative overflow-hidden select-none">
         {/* Top Branding */}
         <div className="space-y-6 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-amber-500/20">
+            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 flex items-center justify-center font-black text-base shadow-xs">
               ॐ
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-extrabold tracking-wider text-foreground">
+                <span className="text-sm font-bold tracking-tight text-foreground">
                   HAYAGRIVA
                 </span>
-                <Badge variant="gold" className="text-[10px] py-0 px-1.5 uppercase font-semibold">
+                <Badge variant="outline" className="text-[10px] py-0 px-1.5 uppercase font-mono font-semibold">
                   Sovereign Fleet
                 </Badge>
               </div>
@@ -185,7 +181,7 @@ function LoginContent() {
 
           <div className="space-y-2 pt-2">
             <h1 className="text-2xl xl:text-3xl font-extrabold tracking-tight text-foreground leading-tight">
-              Sovereign AI Built for <span className="text-amber-400">Indian Legal Chambers</span> & Insolvency Resolution.
+              Sovereign AI Built for Indian Legal Chambers & Insolvency Resolution.
             </h1>
             <p className="text-xs xl:text-sm text-muted-foreground max-w-xl leading-relaxed">
               Air-gapped execution, local models, and domain-specialized legal intelligence. Keep confidential case notes in your chamber with zero cloud leakage.
@@ -196,9 +192,14 @@ function LoginContent() {
         {/* Middle: 4 Distinct Feature Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 my-8 relative z-10">
           {/* Card 1: Air-Gap Privacy */}
-          <div className="p-4 rounded-xl border border-border/70 bg-card/60 backdrop-blur-xs space-y-2 hover:border-amber-500/30 transition-colors">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-              <Shield className="w-4 h-4" />
+          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
+                01
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                Privacy
+              </span>
             </div>
             <h2 className="text-xs font-bold text-foreground">Air-Gapped Sovereign Privacy</h2>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
@@ -207,9 +208,14 @@ function LoginContent() {
           </div>
 
           {/* Card 2: 64k-Node Knowledge Graph */}
-          <div className="p-4 rounded-xl border border-border/70 bg-card/60 backdrop-blur-xs space-y-2 hover:border-amber-500/30 transition-colors">
-            <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
-              <Scale className="w-4 h-4" />
+          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
+                02
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                Knowledge Graph
+              </span>
             </div>
             <h2 className="text-xs font-bold text-foreground">64k-Node Statutory Graph</h2>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
@@ -218,9 +224,14 @@ function LoginContent() {
           </div>
 
           {/* Card 3: Garuda Agent Cartridge Fleet */}
-          <div className="p-4 rounded-xl border border-border/70 bg-card/60 backdrop-blur-xs space-y-2 hover:border-amber-500/30 transition-colors">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-              <Bot className="w-4 h-4" />
+          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
+                03
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                Agents
+              </span>
             </div>
             <h2 className="text-xs font-bold text-foreground">Garuda Legal Agent Fleet</h2>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
@@ -229,9 +240,14 @@ function LoginContent() {
           </div>
 
           {/* Card 4: Community & LightRAG Bot */}
-          <div className="p-4 rounded-xl border border-border/70 bg-card/60 backdrop-blur-xs space-y-2 hover:border-amber-500/30 transition-colors">
-            <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
-              <MessageSquare className="w-4 h-4" />
+          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
+                04
+              </span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                Community
+              </span>
             </div>
             <h2 className="text-xs font-bold text-foreground">Community & LightRAG Bot</h2>
             <p className="text-[11px] text-muted-foreground leading-relaxed">
@@ -241,17 +257,17 @@ function LoginContent() {
         </div>
 
         {/* Bottom: Trust & Hardware-Bound Licensing Seal */}
-        <div className="pt-4 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground relative z-10">
+        <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground relative z-10">
           <div className="flex items-center gap-2">
-            <Laptop className="w-4 h-4 text-amber-500" />
+            <Laptop className="w-4 h-4 text-muted-foreground" />
             <span className="font-medium text-foreground">
               Hardware-Bound Cryptographic Licensing
             </span>
           </div>
           <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
-            <span className="px-1.5 py-0.5 rounded bg-secondary/80 border border-border">macOS</span>
-            <span className="px-1.5 py-0.5 rounded bg-secondary/80 border border-border">Windows</span>
-            <span className="px-1.5 py-0.5 rounded bg-secondary/80 border border-border">Linux</span>
+            <span className="px-1.5 py-0.5 rounded bg-secondary border border-border">macOS</span>
+            <span className="px-1.5 py-0.5 rounded bg-secondary border border-border">Windows</span>
+            <span className="px-1.5 py-0.5 rounded bg-secondary border border-border">Linux</span>
           </div>
         </div>
       </div>
@@ -263,7 +279,7 @@ function LoginContent() {
         {/* Top Bar with Theme Toggle */}
         <div className="flex items-center justify-between w-full pb-4">
           <div className="flex items-center gap-2 lg:hidden">
-            <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-black text-xs">
+            <div className="w-7 h-7 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 flex items-center justify-center font-black text-xs">
               ॐ
             </div>
             <span className="font-bold text-sm tracking-tight text-foreground">

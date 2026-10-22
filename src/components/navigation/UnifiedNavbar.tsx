@@ -57,13 +57,13 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
       {/* Left: Brand & Main Navigation Tabs */}
       <div className="flex items-center space-x-6">
         <Link href="/hub" className="flex items-center space-x-2.5 group">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-black text-sm shadow-md group-hover:scale-105 transition-transform">
+          <div className="w-7 h-7 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 flex items-center justify-center font-black text-xs shadow-xs group-hover:scale-105 transition-transform">
             ॐ
           </div>
           <div className="hidden md:flex flex-col">
             <span className="text-xs font-bold tracking-tight text-foreground flex items-center gap-1.5">
               HAYAGRIVA
-              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-500 font-semibold border border-amber-500/20">
+              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-secondary text-foreground font-semibold border border-border">
                 SOVEREIGN HUB
               </span>
             </span>
@@ -77,11 +77,11 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
             href="/dashboard/agents?tab=bazaar"
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
               (pathname.includes('/agents') || pathname.startsWith('/hub'))
-                ? 'bg-secondary text-foreground shadow-sm font-semibold'
+                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
-            <Compass className="w-3.5 h-3.5 text-amber-500" />
+            <Compass className="w-3.5 h-3.5 text-muted-foreground" />
             <span>Garuda Agents</span>
           </Link>
 
@@ -89,11 +89,11 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
             href="/dashboard"
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
               pathname === '/dashboard'
-                ? 'bg-secondary text-foreground shadow-sm font-semibold'
+                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
-            <LayoutDashboard className="w-3.5 h-3.5 text-blue-500" />
+            <LayoutDashboard className="w-3.5 h-3.5 text-muted-foreground" />
             <span>Workstations</span>
           </Link>
 
@@ -101,11 +101,11 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
             href="/dashboard/community"
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
               pathname.startsWith('/dashboard/community')
-                ? 'bg-secondary text-foreground shadow-sm font-semibold'
+                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
-            <MessageSquare className="w-3.5 h-3.5 text-emerald-500" />
+            <MessageSquare className="w-3.5 h-3.5 text-muted-foreground" />
             <span>Community & AI</span>
           </Link>
 
@@ -114,11 +114,11 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
               href="/admin/dashboard"
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
                 pathname.startsWith('/admin')
-                  ? 'bg-secondary text-foreground shadow-sm font-semibold'
+                  ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
                   : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
               }`}
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+              <ShieldCheck className="w-3.5 h-3.5 text-muted-foreground" />
               <span>Admin Console</span>
             </Link>
           )}
@@ -130,18 +130,18 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
         {/* Chamber Badge */}
         {user ? (
           <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-md bg-secondary/50 border border-border text-[11px]">
-            <Building2 className="w-3.5 h-3.5 text-amber-500" />
+            <Building2 className="w-3.5 h-3.5 text-muted-foreground" />
             <span className="font-medium text-foreground max-w-[140px] truncate">
               {user.org || user.name}
             </span>
-            <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-primary/10 text-primary font-bold">
+            <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-secondary text-foreground font-bold border border-border">
               {user.plan || 'ENTERPRISE'}
             </span>
           </div>
         ) : (
           <Link
             href="/login"
-            className="text-xs text-amber-500 hover:text-amber-400 font-medium px-2 py-1"
+            className="text-xs text-foreground hover:underline font-semibold px-2 py-1"
           >
             Sign In with License
           </Link>
@@ -151,10 +151,10 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
         {onTriggerSync && (
           <button
             onClick={onTriggerSync}
-            className="px-2.5 py-1.5 bg-secondary hover:bg-secondary/80 border border-border rounded-md text-xs font-medium text-foreground transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-2.5 py-1.5 bg-secondary hover:bg-secondary/80 border border-border rounded-md text-xs font-medium text-foreground transition-all flex items-center gap-1.5 shadow-xs"
             title="Synchronize Public & Private tools with AnythingLLM"
           >
-            <HardDrive className="w-3.5 h-3.5 text-cyan-400" />
+            <HardDrive className="w-3.5 h-3.5 text-muted-foreground" />
             <span className="hidden sm:inline">Sync Fleet</span>
           </button>
         )}

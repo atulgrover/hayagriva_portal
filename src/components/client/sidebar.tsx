@@ -62,7 +62,7 @@ export function ClientSidebar() {
       {/* Brand Header */}
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center p-0.5 shadow-sm overflow-hidden">
+          <div className="w-8 h-8 rounded-lg bg-secondary border border-border flex items-center justify-center p-0.5 shadow-xs overflow-hidden">
             <img
               src="/branding/hayagriva_knight_dark.png"
               alt="Hayagriva"
@@ -77,7 +77,7 @@ export function ClientSidebar() {
           <div>
             <div className="font-semibold text-sm tracking-tight text-foreground flex items-center gap-1.5">
               <span>HAYAGRIVA</span>
-              <span className="text-[10px] bg-amber-500/15 text-amber-500 dark:text-amber-400 font-mono px-1.5 py-0.5 rounded font-bold">
+              <span className="text-[9px] bg-secondary text-foreground font-mono px-1.5 py-0.2 rounded font-bold border border-border">
                 PORTAL
               </span>
             </div>
@@ -90,7 +90,7 @@ export function ClientSidebar() {
       <div className="flex-1 py-3 px-2 space-y-4 overflow-y-auto">
         {navSections.map((section) => (
           <div key={section.title} className="space-y-1">
-            <div className="px-3 pb-1 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+            <div className="px-3 pb-1 text-[10px] font-bold text-muted-foreground uppercase tracking-wider font-mono">
               {section.title}
             </div>
             {section.items.map((item) => {
@@ -113,22 +113,20 @@ export function ClientSidebar() {
                   className={cn(
                     "flex items-center justify-between px-3 py-1.5 rounded-md text-xs font-medium transition-all group",
                     isActive
-                      ? "bg-amber-500/15 text-amber-500 dark:text-amber-400 border border-amber-500/30 font-semibold"
-                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                      ? "bg-secondary text-foreground border border-border/60 font-semibold shadow-xs"
+                      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
                   )}
                 >
                   <div className="flex items-center space-x-2.5 min-w-0">
-                    <Icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover:scale-110", isActive ? "text-amber-500 dark:text-amber-400" : "text-muted-foreground group-hover:text-foreground")} />
+                    <Icon className={cn("w-4 h-4 shrink-0 transition-transform group-hover:scale-105", isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground")} />
                     <span className="whitespace-nowrap truncate">{item.name}</span>
                   </div>
                   {item.badge && (
                     <span className={cn(
-                      "px-1.5 py-0.5 rounded-full text-[10px] font-bold",
+                      "px-1.5 py-0.2 rounded-full text-[9px] font-mono font-bold border",
                       isActive 
-                        ? "bg-amber-500/20 text-amber-500" 
-                        : item.badge === 'Core'
-                          ? "bg-amber-500/15 text-amber-500 border border-amber-500/30"
-                          : "bg-emerald-500/15 text-emerald-500"
+                        ? "bg-background text-foreground border-border" 
+                        : "bg-secondary text-muted-foreground border-border/60"
                     )}>
                       {item.badge}
                     </span>
