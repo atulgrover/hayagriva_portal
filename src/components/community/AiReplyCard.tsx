@@ -29,17 +29,17 @@ export function AiReplyCard({ body, citations = [], createdAt }: AiReplyCardProp
   };
 
   return (
-    <Card className="relative overflow-hidden border border-amber-500/40 bg-gradient-to-b from-amber-500/5 via-card to-card shadow-sm">
-      {/* Decorative Gold Header Bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600" />
+    <Card className="relative overflow-hidden border border-slate-300 dark:border-slate-800 bg-card shadow-sm">
+      {/* Top Accent Line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-slate-900 dark:bg-white" />
 
       <div className="p-4 sm:p-5">
         {/* Header: Medallion, Title, Status & Actions */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Avatar className="w-8 h-8 border border-amber-500/50 bg-amber-500/10">
-                <AvatarFallback className="bg-amber-500/20 text-amber-400 font-bold text-xs font-serif">
+              <Avatar className="w-8 h-8 border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800">
+                <AvatarFallback className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs font-serif">
                   ॐ
                 </AvatarFallback>
               </Avatar>
@@ -51,8 +51,8 @@ export function AiReplyCard({ body, citations = [], createdAt }: AiReplyCardProp
                 <span className="text-xs font-bold text-foreground tracking-tight">
                   Hayagriva Sovereign Bot
                 </span>
-                <Badge variant="gold" className="text-[10px] py-0 px-1.5 flex items-center gap-1 font-semibold">
-                  <Sparkles className="w-2.5 h-2.5" />
+                <Badge variant="outline" className="text-[10px] py-0 px-2 flex items-center gap-1.5 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                   Verified Analysis
                 </Badge>
               </div>
@@ -85,17 +85,17 @@ export function AiReplyCard({ body, citations = [], createdAt }: AiReplyCardProp
 
         {/* Legal Citations Bar */}
         {citations && citations.length > 0 && (
-          <div className="mt-3.5 pt-3 border-t border-amber-500/20 flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px] font-semibold text-amber-400/80 flex items-center gap-1 mr-1">
+          <div className="mt-3.5 pt-3 border-t border-border flex flex-wrap items-center gap-1.5">
+            <span className="text-[10px] font-semibold text-muted-foreground flex items-center gap-1 mr-1">
               <Scale className="w-3 h-3" />
               Statutory Citations:
             </span>
             {citations.map((cite, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1 text-[10px] font-mono bg-amber-500/10 border border-amber-500/30 text-amber-300 px-2 py-0.5 rounded"
+                className="inline-flex items-center gap-1 text-[10px] font-mono bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 px-2 py-0.5 rounded"
               >
-                <Bookmark className="w-2.5 h-2.5 text-amber-400" />
+                <Bookmark className="w-2.5 h-2.5 text-slate-500" />
                 {cite.section ? `§ ${cite.section}` : cite.title || cite.act}
               </span>
             ))}

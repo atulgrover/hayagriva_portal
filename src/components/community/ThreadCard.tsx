@@ -83,14 +83,14 @@ export function ThreadCard({ thread, isSelected, onSelect }: ThreadCardProps) {
     <Card
       onClick={() => onSelect(thread)}
       className={cn(
-        'group cursor-pointer p-4 transition-all duration-200 border-border/80 hover:border-amber-500/40 hover:bg-secondary/20 hover:shadow-md',
-        isSelected && 'border-amber-500 bg-secondary/30 ring-1 ring-amber-500/50 shadow-sm'
+        'group cursor-pointer p-4 transition-all duration-200 border-border hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50/50 dark:hover:bg-slate-900/50 shadow-xs',
+        isSelected && 'border-slate-900 dark:border-white ring-1 ring-slate-900 dark:ring-white bg-slate-50 dark:bg-slate-900/40 shadow-sm'
       )}
     >
       <div className="flex items-start justify-between gap-3">
         {/* Left: Category and Tags */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <Badge variant={categoryConfig.variant} className="text-[10px] px-2 py-0.2">
+          <Badge variant="outline" className="text-[10px] px-2 py-0.5 font-medium">
             {categoryConfig.label}
           </Badge>
           {thread.is_pinned && (
@@ -102,7 +102,7 @@ export function ThreadCard({ thread, isSelected, onSelect }: ThreadCardProps) {
             thread.tags.slice(0, 2).map((tag, idx) => (
               <span
                 key={idx}
-                className="text-[10px] text-muted-foreground bg-secondary/60 px-1.5 py-0.5 rounded border border-border/50"
+                className="text-[10px] text-muted-foreground bg-secondary/60 px-1.5 py-0.5 rounded border border-border/50 font-mono"
               >
                 #{tag}
               </span>
@@ -111,20 +111,20 @@ export function ThreadCard({ thread, isSelected, onSelect }: ThreadCardProps) {
 
         {/* Right: AI Status Pill */}
         {thread.has_ai_answer ? (
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full shrink-0">
-            <Sparkles className="w-3 h-3 text-amber-400 animate-pulse" />
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded-full shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
             <span>AI Verified</span>
           </div>
         ) : thread.ai_status === 'PENDING' ? (
-          <div className="flex items-center gap-1 text-[11px] text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-full shrink-0">
-            <Loader2 className="w-3 h-3 animate-spin text-blue-400" />
+          <div className="flex items-center gap-1.5 text-[11px] text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded-full shrink-0">
+            <Loader2 className="w-3 h-3 animate-spin text-slate-500" />
             <span>Consulting AI...</span>
           </div>
         ) : null}
       </div>
 
       {/* Title */}
-      <h3 className="mt-2 text-sm font-semibold text-foreground group-hover:text-amber-400 transition-colors line-clamp-2">
+      <h3 className="mt-2 text-sm font-semibold text-foreground group-hover:text-slate-900 dark:group-hover:text-white transition-colors line-clamp-2">
         {thread.title}
       </h3>
 

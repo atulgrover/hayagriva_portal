@@ -123,7 +123,7 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
         {/* Drawer Header */}
         <div className="p-5 border-b border-border bg-card shrink-0 pr-12">
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="gold" className="text-[10px] uppercase font-semibold">
+            <Badge variant="outline" className="text-[10px] uppercase font-semibold">
               {activeThread.category.replace('-', ' ')}
             </Badge>
             {activeThread.is_pinned && (
@@ -176,10 +176,10 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
               createdAt={aiReply.created_at}
             />
           ) : activeThread.ai_status === 'PENDING' ? (
-            <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 flex items-center gap-3 animate-pulse">
-              <Sparkles className="w-5 h-5 text-amber-400 animate-spin" />
+            <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 p-4 flex items-center gap-3 animate-pulse">
+              <Sparkles className="w-5 h-5 text-slate-900 dark:text-white animate-spin" />
               <div>
-                <p className="text-xs font-semibold text-amber-400">
+                <p className="text-xs font-semibold text-slate-900 dark:text-white">
                   Hayagriva Sovereign Bot is analyzing Bare Acts...
                 </p>
                 <p className="text-[11px] text-muted-foreground">
@@ -190,7 +190,7 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
           ) : activeThread.ai_status === 'FAILED' ? (
             <div className="rounded-lg border border-border bg-secondary/30 p-3.5 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
+                <AlertTriangle className="w-4 h-4 text-slate-500 shrink-0" />
                 <span className="text-xs text-muted-foreground">
                   AI analysis could not complete automatically.
                 </span>
@@ -253,11 +253,11 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
         <div className="p-4 border-t border-border bg-card/95 backdrop-blur shrink-0 space-y-2.5">
           <div className="flex items-center justify-between text-[11px] text-muted-foreground">
             <span className="flex items-center gap-1 font-medium">
-              <User className="w-3 h-3 text-primary" />
+              <User className="w-3 h-3 text-foreground" />
               <span>Post a Reply</span>
             </span>
-            <span className="text-amber-400/90 text-[10px] font-mono">
-              💡 Tip: Tag <code className="bg-amber-500/10 px-1 py-0.5 rounded text-amber-300">@ai</code> to ask the Sovereign Bot
+            <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono">
+              Tip: Tag <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">@ai</code> to ask the Sovereign Bot
             </span>
           </div>
 
@@ -273,7 +273,7 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
               onClick={handleSendReply}
               disabled={isSubmitting || !replyText.trim()}
               size="sm"
-              variant="gold"
+              variant="default"
               className="gap-1.5 px-4 text-xs font-semibold"
             >
               <Send className="w-3.5 h-3.5" />

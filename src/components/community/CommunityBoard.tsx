@@ -121,15 +121,16 @@ export function CommunityBoard() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-r from-card via-card to-amber-500/5 p-6 shadow-xs">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2">
               <span className="text-xl sm:text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <Scale className="w-5 h-5 text-amber-500" />
+                <Scale className="w-5 h-5 text-foreground" />
                 Practitioner Community Board
               </span>
-              <Badge variant="gold" className="text-[10px] uppercase font-semibold">
+              <Badge variant="outline" className="text-[10px] uppercase font-semibold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 Sovereign Fleet
               </Badge>
             </div>
@@ -152,7 +153,7 @@ export function CommunityBoard() {
             </Button>
             <Button
               onClick={() => setIsModalOpen(true)}
-              variant="gold"
+              variant="default"
               size="sm"
               className="text-xs gap-1.5 h-9 font-semibold"
             >
@@ -172,7 +173,7 @@ export function CommunityBoard() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
                   selectedCategory === cat.id
-                    ? 'bg-amber-500/15 text-amber-400 font-semibold border border-amber-500/30'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
                 }`}
               >
@@ -258,7 +259,7 @@ export function CommunityBoard() {
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
                 <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-amber-500" />
+                  <Sparkles className="w-4 h-4 text-foreground" />
                   Start a Community Discussion
                 </h3>
                 <p className="text-xs text-muted-foreground">
@@ -348,7 +349,7 @@ export function CommunityBoard() {
                 </Button>
                 <Button
                   type="submit"
-                  variant="gold"
+                  variant="default"
                   size="sm"
                   disabled={isCreating}
                   className="text-xs font-semibold gap-1.5 px-4"

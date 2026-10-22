@@ -37,7 +37,7 @@ export function TiptapEditor({
         },
         blockquote: {
           HTMLAttributes: {
-            class: 'border-l-2 border-amber-500/60 pl-3 italic text-muted-foreground my-2',
+            class: 'border-l-2 border-slate-400 dark:border-slate-600 pl-3 italic text-muted-foreground my-2',
           },
         },
       }),
@@ -151,7 +151,7 @@ export function TiptapEditor({
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={cn(
             'p-1.5 rounded hover:bg-secondary hover:text-foreground transition-colors',
-            editor.isActive('blockquote') && 'bg-secondary text-amber-400'
+            editor.isActive('blockquote') && 'bg-secondary text-foreground font-semibold'
           )}
           title="Statutory Blockquote"
         >
@@ -164,7 +164,7 @@ export function TiptapEditor({
         <button
           type="button"
           onClick={insertSectionSymbol}
-          className="px-2 py-1 rounded text-xs font-serif font-bold text-amber-400/90 hover:bg-amber-500/10 hover:text-amber-300 transition-colors border border-amber-500/20"
+          className="px-2 py-1 rounded text-xs font-serif font-bold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900"
           title="Insert Section Symbol (§)"
         >
           § Sec
