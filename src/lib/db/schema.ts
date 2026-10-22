@@ -227,3 +227,45 @@ export const deviceSyncQueue = pgTable("device_sync_queue", {
 
 export type DeviceSyncQueueItem = typeof deviceSyncQueue.$inferSelect;
 export type NewDeviceSyncQueueItem = typeof deviceSyncQueue.$inferInsert;
+
+// 13. In-Portal Community Discussions Table
+export const communityThreads = pgTable("community_threads", {
+  id: text("id").primaryKey(), // th_xxxx
+  title: varchar("title", { length: 255 }).notNull(),
+  body: text("body").notNull(), // HTML / structured markdown from Tiptap
+  authorId: text("author_id").notNull(), // foreign key to users.id
+  authorName: varchar("author_name", { length: 255 }).notNull(),
+  authorRole: varchar("author_role", { length: 50 }).notNull(), // ADVOCATE, CLIENT, ADMIN, SUPER_ADMIN
+  authorAvatar: text("author_avatar"),
+  category: varchar("category", { length: 100 }).default("general").notNull(), // insolvency-ibc, commercial-pleading, desktop-harness, general
+  tags: jsonb("tags").default([]).notNull(), // ["Section 12", "CIRP"]
+  isPinned: boolean("is_pinned").default(false).notNull(),
+  isLocked: boolean("is_locked").default(false).notNull(),
+  hasAiAnswer: boolean("has_ai_answer").default(false).notNull(),
+  aiStatus: varchar("ai_status", { length: 20 }).default("PENDING").notNull(), // PENDING, COMPLETED, FAILED, SKIPPED
+  replyCount: integer("reply_count").default(0).notNull(),
+  viewsCount: integer("views_count").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// 14. Community Thread Replies Table
+export const communityReplies = pgTable("community_replies", {
+  id: text("id").primaryKey(), // rep_xxxx
+  threadId: text("thread_id").notNull(), // references communityThreads.id
+  authorId: text("author_id").notNull(), // user ID or "system_lightrag_bot"
+  authorName: varchar("author_name", { length: 255 }).notNull(),
+  authorRole: varchar("author_role", { length: 50 }).notNull(), // ADVOCATE, CLIENT, SUPER_ADMIN, AI_BOT
+  authorAvatar: text("author_avatar"),
+  body: text("body").notNull(),
+  isAiGenerated: boolean("is_ai_generated").default(false).notNull(),
+  aiCitations: jsonb("ai_citations").default([]).notNull(), // [{"act": "IBC 2016", "section": "12", "title": "Time-limit for completion of insolvency"}]
+  upvotes: integer("upvotes").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type CommunityThread = typeof communityThreads.$inferSelect;
+export type NewCommunityThread = typeof communityThreads.$inferInsert;
+export type CommunityReply = typeof communityReplies.$inferSelect;
+export type NewCommunityReply = typeof communityReplies.$inferInsert;
+
