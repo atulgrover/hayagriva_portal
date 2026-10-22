@@ -54,6 +54,10 @@ const config: Config = {
           600: "#059669",
         }
       },
+      fontFamily: {
+        sans: ['var(--font-sans)', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
