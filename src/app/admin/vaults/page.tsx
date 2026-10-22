@@ -219,7 +219,7 @@ export default function AdminVaultsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-foreground">Statutory Bare Act Vaults Governance</h1>
-            <span className="text-[10px] bg-amber-500/10 text-amber-500 font-semibold px-2 py-0.5 rounded-full border border-amber-500/20">
+            <span className="text-[10px] bg-secondary text-foreground font-semibold px-2 py-0.5 rounded-full border border-border">
               India Code Mirror Active
             </span>
           </div>
@@ -240,7 +240,7 @@ export default function AdminVaultsPage() {
               }, 1800);
             }}
             disabled={Boolean(syncingId)}
-            className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-black font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm shadow-amber-500/20"
+            className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${syncingId === 'ALL' ? 'animate-spin' : ''}`} />
             <span>Re-Sync All India Code Vaults</span>
@@ -258,7 +258,7 @@ export default function AdminVaultsPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Filter statutes by act, code, category, or keyword..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
           {searchTerm && (
             <button 
@@ -276,7 +276,7 @@ export default function AdminVaultsPage() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+            className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
@@ -291,7 +291,7 @@ export default function AdminVaultsPage() {
       <div className="p-5 rounded-xl border border-border bg-card space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-            <Database className="w-4 h-4 text-amber-500" />
+            <Database className="w-4 h-4 text-foreground" />
             Active Statutory Vault Cartridges ({filteredVaults.length})
           </h3>
           <span className="text-[11px] text-muted-foreground">Click any row to inspect cartridge details</span>
@@ -320,14 +320,14 @@ export default function AdminVaultsPage() {
                     onClick={() => setSelectedVault(vault)}
                     className={cn(
                       "hover:bg-secondary/40 transition-colors cursor-pointer",
-                      isSelected && "bg-secondary/50 ring-1 ring-amber-500/40"
+                      isSelected && "bg-secondary/50 ring-1 ring-border"
                     )}
                   >
                     <td className="py-3 font-medium text-foreground">
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-1.5">
-                          <Database className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                          <span className="font-semibold hover:text-amber-500 transition-colors">{vault.name}</span>
+                          <Database className="w-3.5 h-3.5 text-foreground shrink-0" />
+                          <span className="font-semibold hover:text-foreground transition-colors">{vault.name}</span>
                         </div>
                         <span className="text-[10px] font-mono text-muted-foreground block">{vault.id} ({vault.fileSize})</span>
                       </div>
@@ -370,7 +370,7 @@ export default function AdminVaultsPage() {
                           disabled={syncingId === vault.id}
                           className="px-2.5 py-1 rounded bg-secondary hover:bg-secondary/80 text-foreground font-medium transition-colors flex items-center gap-1"
                         >
-                          <RefreshCw className={`w-3 h-3 ${syncingId === vault.id ? 'animate-spin text-amber-500' : ''}`} />
+                          <RefreshCw className={`w-3 h-3 ${syncingId === vault.id ? 'animate-spin text-foreground' : ''}`} />
                           <span>Re-Sync</span>
                         </button>
                         <button
@@ -405,7 +405,7 @@ export default function AdminVaultsPage() {
             <div className="p-5 border-b border-border flex items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 border border-amber-500/30">
+                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
                     {selectedVault.actCode}
                   </span>
                   <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-secondary text-muted-foreground border border-border">
@@ -524,7 +524,7 @@ export default function AdminVaultsPage() {
                 <div className="bg-secondary/40 border border-border rounded-lg p-3 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Mirror Origin:</span>
-                    <span className="font-mono text-[11px] text-amber-500">{selectedVault.syncSource}</span>
+                    <span className="font-mono text-[11px] text-foreground font-semibold">{selectedVault.syncSource}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Last Gazette Sync:</span>
@@ -546,7 +546,7 @@ export default function AdminVaultsPage() {
               <button
                 onClick={() => handleSyncVault(selectedVault.id)}
                 disabled={syncingId === selectedVault.id}
-                className="flex-1 py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-black font-semibold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm shadow-amber-500/20"
+                className="flex-1 py-2 px-3 rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground font-semibold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${syncingId === selectedVault.id ? 'animate-spin' : ''}`} />
                 <span>Re-Sync from India Code</span>

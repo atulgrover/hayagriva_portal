@@ -109,7 +109,7 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
           <button
             type="button"
             onClick={() => setActiveTab('simulator')}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors ${activeTab === 'simulator' ? 'bg-amber-500 text-black shadow-sm' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors ${activeTab === 'simulator' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}
           >
             <Terminal className="w-3.5 h-3.5" />
             <span>Live Sandbox Simulator</span>
@@ -117,7 +117,7 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
           <button
             type="button"
             onClick={() => setActiveTab('manifest')}
-            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors ${activeTab === 'manifest' ? 'bg-amber-500 text-black shadow-sm' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}
+            className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors ${activeTab === 'manifest' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'}`}
           >
             <Code2 className="w-3.5 h-3.5" />
             <span>Cartridge Manifest (.haya)</span>
@@ -142,7 +142,7 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
           {/* File Mock Ingestion Header */}
           <div className="p-2.5 rounded-lg bg-secondary/40 border border-border/80 flex items-center justify-between">
             <div className="flex items-center gap-2 truncate">
-              <FileText className="w-4 h-4 text-amber-500 shrink-0" />
+              <FileText className="w-4 h-4 text-foreground shrink-0" />
               <span className="text-muted-foreground text-[11px]">Mock Ingest:</span>
               <span className="font-semibold text-foreground font-mono text-[11px] truncate">{sampleDoc}</span>
             </div>
@@ -173,7 +173,7 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
                   </div>
                 )}
                 <div
-                  className={`p-3 rounded-xl max-w-[85%] whitespace-pre-line leading-relaxed text-xs shadow-sm ${m.role === 'user' ? 'bg-amber-500/15 border border-amber-500/30 text-foreground' : 'bg-secondary/60 border border-border text-foreground font-mono text-[11px]'}`}
+                  className={`p-3 rounded-xl max-w-[85%] whitespace-pre-line leading-relaxed text-xs shadow-sm ${m.role === 'user' ? 'bg-secondary text-foreground border border-border' : 'bg-secondary/60 border border-border text-foreground font-mono text-[11px]'}`}
                 >
                   {m.content}
                 </div>
@@ -185,7 +185,7 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
               </div>
             ))}
             {isSimulating && (
-              <div className="flex items-center gap-2 text-xs text-amber-500 font-mono animate-pulse">
+              <div className="flex items-center gap-2 text-xs text-foreground font-mono animate-pulse">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Simulating agent reasoning & subagent audit loop...</span>
               </div>
@@ -200,13 +200,13 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
               onChange={(e) => setInputPrompt(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSendSimulation()}
               placeholder="Ask this agent to analyze facts, audit, or draft..."
-              className="flex-1 px-3 py-2 rounded-lg border border-border bg-secondary/30 text-foreground text-xs focus:outline-none focus:border-amber-500"
+              className="flex-1 px-3 py-2 rounded-lg border border-border bg-secondary/30 text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
             />
             <button
               type="button"
               onClick={handleSendSimulation}
               disabled={isSimulating}
-              className="px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-black font-semibold flex items-center gap-1.5 transition-colors shadow-sm shadow-amber-500/20"
+              className="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Test</span>
@@ -218,7 +218,7 @@ export function SandboxCanvas({ state }: SandboxCanvasProps) {
       {/* Tab 2: Cartridge Manifest */}
       {activeTab === 'manifest' && (
         <div className="flex-1 p-4 overflow-y-auto font-mono text-[11px] bg-secondary/20">
-          <pre className="text-amber-400 leading-relaxed whitespace-pre-wrap">
+          <pre className="text-foreground leading-relaxed whitespace-pre-wrap">
             {manifestJson}
           </pre>
         </div>

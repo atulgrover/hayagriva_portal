@@ -28,10 +28,10 @@ export function UserViewDrawer({ user, isOpen, onClose }: UserViewDrawerProps) {
   if (!isOpen || !user) return null;
 
   const roleColor = {
-    SUPER_ADMIN: 'bg-amber-500/15 text-amber-500 border-amber-500/20',
-    ADMIN: 'bg-purple-500/15 text-purple-500 border-purple-500/20',
-    ADVOCATE: 'bg-blue-500/15 text-blue-500 border-blue-500/20',
-    CLIENT: 'bg-slate-500/15 text-slate-400 border-slate-500/20',
+    SUPER_ADMIN: 'bg-foreground text-background border-transparent',
+    ADMIN: 'bg-secondary text-foreground border-border',
+    ADVOCATE: 'bg-secondary text-muted-foreground border-border',
+    CLIENT: 'bg-secondary text-muted-foreground border-border',
   }[user.role] || 'bg-secondary text-foreground';
 
   const statusColor = {
@@ -66,7 +66,7 @@ export function UserViewDrawer({ user, isOpen, onClose }: UserViewDrawerProps) {
 
           {/* User Hero Details */}
           <div className="flex items-start space-x-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white text-lg font-bold shadow-md shadow-amber-500/20 shrink-0">
+            <div className="w-14 h-14 rounded-xl bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 flex items-center justify-center text-lg font-bold shadow-md shrink-0">
               {user.name.slice(0, 2).toUpperCase()}
             </div>
             <div className="space-y-1 min-w-0">
@@ -98,7 +98,7 @@ export function UserViewDrawer({ user, isOpen, onClose }: UserViewDrawerProps) {
               <span className="text-muted-foreground flex items-center gap-1.5">
                 <CreditCard className="w-3.5 h-3.5" /> Subscription Plan
               </span>
-              <span className="font-mono font-bold text-amber-500">
+              <span className="font-mono font-bold text-foreground">
                 {user.plan}
               </span>
             </div>

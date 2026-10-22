@@ -86,7 +86,7 @@ export function UsersTable({ initialUsers, onRefresh }: UsersTableProps) {
         const user = row.original;
         return (
           <div className="flex items-center space-x-3 py-1">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-white font-bold text-xs shadow-sm shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 flex items-center justify-center font-bold text-xs shadow-sm shrink-0">
               {user.name.slice(0, 2).toUpperCase()}
             </div>
             <div>
@@ -103,10 +103,10 @@ export function UsersTable({ initialUsers, onRefresh }: UsersTableProps) {
       cell: ({ row }) => {
         const role = row.getValue('role') as string;
         const color = {
-          SUPER_ADMIN: 'bg-amber-500/15 text-amber-500 border-amber-500/20',
-          ADMIN: 'bg-purple-500/15 text-purple-500 border-purple-500/20',
-          ADVOCATE: 'bg-blue-500/15 text-blue-500 border-blue-500/20',
-          CLIENT: 'bg-slate-500/15 text-slate-400 border-slate-500/20',
+          SUPER_ADMIN: 'bg-foreground text-background border-transparent',
+          ADMIN: 'bg-secondary text-foreground border-border',
+          ADVOCATE: 'bg-secondary text-muted-foreground border-border',
+          CLIENT: 'bg-secondary text-muted-foreground border-border',
         }[role] || 'bg-secondary text-foreground';
 
         return (
@@ -140,7 +140,7 @@ export function UsersTable({ initialUsers, onRefresh }: UsersTableProps) {
       cell: ({ row }) => {
         const plan = row.getValue('plan') as string;
         return (
-          <span className="font-mono text-xs font-semibold text-amber-500">
+          <span className="font-mono text-xs font-semibold text-foreground">
             {plan}
           </span>
         );

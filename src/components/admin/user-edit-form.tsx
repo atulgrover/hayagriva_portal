@@ -114,7 +114,7 @@ export function UserEditForm({ user: initialUser }: UserEditFormProps) {
           disabled={resetting}
           className="px-3 py-1.5 text-xs font-semibold bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border rounded-md flex items-center gap-1.5 transition-colors"
         >
-          <Key className="w-3.5 h-3.5 text-amber-500" />
+          <Key className="w-3.5 h-3.5 text-foreground" />
           <span>{resetting ? 'Generating...' : 'Reset Password'}</span>
         </button>
       </div>
@@ -139,7 +139,7 @@ export function UserEditForm({ user: initialUser }: UserEditFormProps) {
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
               <span>Primary Email Identifier</span>
-              <span className="text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 px-1.5 py-0.5 rounded flex items-center gap-1 font-mono">
+              <span className="text-[10px] bg-secondary text-muted-foreground border border-border px-1.5 py-0.5 rounded flex items-center gap-1 font-mono">
                 <Lock className="w-2.5 h-2.5" /> IMMUTABLE
               </span>
             </label>
@@ -250,7 +250,7 @@ export function UserEditForm({ user: initialUser }: UserEditFormProps) {
           />
           <div className="relative bg-card border border-border rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 duration-150">
             <div className="flex items-center space-x-3">
-              <div className="p-2.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              <div className="p-2.5 rounded-full bg-secondary text-foreground border border-border">
                 <Key className="w-5 h-5" />
               </div>
               <div>

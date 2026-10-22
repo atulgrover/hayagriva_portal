@@ -26,20 +26,20 @@ export function MetricsCard({
   highlightColor = 'amber'
 }: MetricsCardProps) {
   const colorMap = {
-    amber: 'from-amber-500/10 to-amber-500/5 text-amber-500 border-amber-500/20',
-    emerald: 'from-emerald-500/10 to-emerald-500/5 text-emerald-500 border-emerald-500/20',
-    blue: 'from-blue-500/10 to-blue-500/5 text-blue-500 border-blue-500/20',
-    purple: 'from-purple-500/10 to-purple-500/5 text-purple-500 border-purple-500/20',
+    amber: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700',
+    emerald: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700',
+    blue: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700',
+    purple: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-700',
   };
 
   return (
-    <div className="bg-card border border-border rounded-xl p-4 shadow-sm relative overflow-hidden transition-all hover:border-border/80">
+    <div className="bg-card border border-border rounded-xl p-4 shadow-sm relative overflow-hidden transition-all hover:border-slate-400 dark:hover:border-slate-600">
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{title}</p>
           <div className="text-2xl font-bold tracking-tight text-foreground">{value}</div>
         </div>
-        <div className={cn("p-2.5 rounded-lg border bg-gradient-to-br", colorMap[highlightColor])}>
+        <div className={cn("p-2.5 rounded-lg border", colorMap[highlightColor])}>
           <Icon className="w-5 h-5" />
         </div>
       </div>

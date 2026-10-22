@@ -44,12 +44,12 @@ export function RevenueChart({ data }: RevenueChartProps) {
         >
           <defs>
             <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.35} />
-              <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.0} />
+              <stop offset="5%" stopColor="#475569" stopOpacity={0.25} />
+              <stop offset="95%" stopColor="#475569" stopOpacity={0.0} />
             </linearGradient>
             <linearGradient id="downloadsGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} />
-              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
+              <stop offset="5%" stopColor="#64748b" stopOpacity={0.2} />
+              <stop offset="95%" stopColor="#64748b" stopOpacity={0.0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
@@ -71,12 +71,12 @@ export function RevenueChart({ data }: RevenueChartProps) {
                 return (
                   <div className="bg-popover border border-border p-3 rounded-lg shadow-xl text-xs space-y-1">
                     <p className="font-bold text-foreground">{label}</p>
-                    <div className="flex items-center gap-2 text-amber-500 font-semibold">
+                    <div className="flex items-center gap-2 text-foreground font-semibold">
                       <span>Revenue:</span>
                       <span>₹{Number(payload[0]?.value || 0).toLocaleString('en-IN')}</span>
                     </div>
                     {payload[1] && (
-                      <div className="flex items-center gap-2 text-blue-500 font-semibold">
+                      <div className="flex items-center gap-2 text-muted-foreground font-semibold">
                         <span>Downloads:</span>
                         <span>{payload[1]?.value} units</span>
                       </div>
@@ -90,7 +90,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
           <Area
             type="monotone"
             dataKey="revenue"
-            stroke="#f59e0b"
+            stroke="#475569"
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#revenueGradient)"

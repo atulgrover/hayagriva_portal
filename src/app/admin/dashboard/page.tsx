@@ -79,7 +79,7 @@ export default function DashboardPage() {
           </button>
           <Link
             href="/admin/users"
-            className="px-3 py-1.5 text-xs font-semibold bg-amber-500 text-slate-950 hover:bg-amber-600 rounded-md shadow-sm shadow-amber-500/20 flex items-center gap-1.5 transition-all"
+            className="px-3 py-1.5 text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 rounded-md shadow-sm flex items-center gap-1.5 transition-all"
           >
             <Users className="w-3.5 h-3.5" />
             <span>Manage Users</span>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-            <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
+            <ShieldAlert className="w-3.5 h-3.5 text-foreground" />
             Sovereign Asset & In-Chamber Agent Governance
           </h2>
           <span className="text-[11px] text-muted-foreground font-mono">Real-Time Registry</span>
@@ -140,19 +140,19 @@ export default function DashboardPage() {
           {/* Agent Cartridges */}
           <Link 
             href="/admin/agents"
-            className="p-4 rounded-xl bg-card border border-border hover:border-amber-500/40 transition-all group shadow-sm flex flex-col justify-between"
+            className="p-4 rounded-xl bg-card border border-border hover:border-slate-400 dark:hover:border-slate-600 transition-all group shadow-sm flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-muted-foreground uppercase">Agent Cartridges</span>
-                <div className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-500 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-secondary text-foreground flex items-center justify-center border border-border">
                   <Bot className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-2xl font-bold text-foreground">5 Packages</div>
               <div className="text-xs text-muted-foreground mt-1">4 Official · 1 Under Review</div>
             </div>
-            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-amber-500 font-medium">
+            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-foreground font-medium">
               <span>Moderate Foundry</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -161,19 +161,19 @@ export default function DashboardPage() {
           {/* Bare Act Vaults */}
           <Link 
             href="/admin/vaults"
-            className="p-4 rounded-xl bg-card border border-border hover:border-amber-500/40 transition-all group shadow-sm flex flex-col justify-between"
+            className="p-4 rounded-xl bg-card border border-border hover:border-slate-400 dark:hover:border-slate-600 transition-all group shadow-sm flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-muted-foreground uppercase">Chamber Vaults</span>
-                <div className="w-7 h-7 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-secondary text-foreground flex items-center justify-center border border-border">
                   <Scale className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-2xl font-bold text-foreground">8 Statutes</div>
               <div className="text-xs text-muted-foreground mt-1">1,840 Sections · AES-256</div>
             </div>
-            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-blue-400 font-medium">
+            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-foreground font-medium">
               <span>Manage Law Vaults</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -182,19 +182,19 @@ export default function DashboardPage() {
           {/* AI Models Registry */}
           <Link 
             href="/admin/models"
-            className="p-4 rounded-xl bg-card border border-border hover:border-amber-500/40 transition-all group shadow-sm flex flex-col justify-between"
+            className="p-4 rounded-xl bg-card border border-border hover:border-slate-400 dark:hover:border-slate-600 transition-all group shadow-sm flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-muted-foreground uppercase">AI Reasoning Engines</span>
-                <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-secondary text-foreground flex items-center justify-center border border-border">
                   <Cpu className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-2xl font-bold text-foreground">3 Engines</div>
               <div className="text-xs text-muted-foreground mt-1">DeepSeek, Llama, BGE-ONNX</div>
             </div>
-            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-emerald-400 font-medium">
+            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-foreground font-medium">
               <span>Inspect Models</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -203,19 +203,19 @@ export default function DashboardPage() {
           {/* Desktop Harness Rollout */}
           <Link 
             href="/admin/harness"
-            className="p-4 rounded-xl bg-card border border-border hover:border-amber-500/40 transition-all group shadow-sm flex flex-col justify-between"
+            className="p-4 rounded-xl bg-card border border-border hover:border-slate-400 dark:hover:border-slate-600 transition-all group shadow-sm flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-muted-foreground uppercase">Harness Rollout</span>
-                <div className="w-7 h-7 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-secondary text-foreground flex items-center justify-center border border-border">
                   <Monitor className="w-4 h-4" />
                 </div>
               </div>
               <div className="text-2xl font-bold text-foreground">v1.2.0 Active</div>
               <div className="text-xs text-muted-foreground mt-1">4 Binaries Built & Signed</div>
             </div>
-            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-purple-400 font-medium">
+            <div className="pt-3 border-t border-border/50 mt-3 flex items-center justify-between text-xs text-foreground font-medium">
               <span>View Releases</span>
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -234,7 +234,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-center gap-3 text-xs">
               <span className="flex items-center gap-1.5 text-muted-foreground">
-                <span className="w-2.5 h-2.5 rounded bg-amber-500"></span>
+                <span className="w-2.5 h-2.5 rounded bg-slate-700 dark:bg-slate-300"></span>
                 <span>Revenue (₹)</span>
               </span>
             </div>
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                 <span className="font-mono text-muted-foreground">50% (5)</span>
               </div>
               <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                <div className="bg-amber-500 h-full rounded-full w-1/2"></div>
+                <div className="bg-slate-900 dark:bg-slate-100 h-full rounded-full w-1/2"></div>
               </div>
             </div>
 
@@ -267,7 +267,7 @@ export default function DashboardPage() {
                 <span className="font-mono text-muted-foreground">30% (3)</span>
               </div>
               <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                <div className="bg-blue-500 h-full rounded-full w-[30%]"></div>
+                <div className="bg-slate-600 dark:bg-slate-400 h-full rounded-full w-[30%]"></div>
               </div>
             </div>
 
@@ -277,7 +277,7 @@ export default function DashboardPage() {
                 <span className="font-mono text-muted-foreground">10% (1)</span>
               </div>
               <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                <div className="bg-emerald-500 h-full rounded-full w-[10%]"></div>
+                <div className="bg-slate-500 dark:bg-slate-500 h-full rounded-full w-[10%]"></div>
               </div>
             </div>
 
@@ -287,7 +287,7 @@ export default function DashboardPage() {
                 <span className="font-mono text-muted-foreground">10% (1)</span>
               </div>
               <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
-                <div className="bg-purple-500 h-full rounded-full w-[10%]"></div>
+                <div className="bg-slate-400 dark:bg-slate-600 h-full rounded-full w-[10%]"></div>
               </div>
             </div>
           </div>
@@ -314,7 +314,7 @@ export default function DashboardPage() {
           </div>
           <Link
             href="/admin/logs"
-            className="text-xs font-semibold text-amber-500 hover:underline flex items-center gap-1"
+            className="text-xs font-semibold text-foreground hover:underline flex items-center gap-1"
           >
             <span>View All Logs</span>
             <ArrowUpRight className="w-3.5 h-3.5" />

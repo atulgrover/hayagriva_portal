@@ -117,12 +117,12 @@ export function TicketResolutionModal({
         {/* Header */}
         <div className="flex items-start justify-between pb-3 border-b border-border">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20">
+            <div className="p-2.5 rounded-lg bg-secondary text-foreground border border-border">
               <MessageSquare className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold text-amber-500">{ticket.id}</span>
+                <span className="text-xs font-mono font-bold text-foreground">{ticket.id}</span>
                 <span className="text-muted-foreground text-xs">·</span>
                 <h3 className="text-sm font-bold text-foreground">Ticket Resolution & Reply</h3>
               </div>
@@ -202,7 +202,7 @@ export function TicketResolutionModal({
           {/* Quick Response Templates */}
           <div className="space-y-1.5">
             <label className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-amber-500" />
+              <Sparkles className="w-3 h-3 text-foreground" />
               <span>Quick Canned Response Templates</span>
             </label>
             <div className="flex flex-wrap gap-1.5">

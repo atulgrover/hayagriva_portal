@@ -125,9 +125,9 @@ export default function LogsPage() {
                 logs.map((log) => {
                   const isError = log.statusCode >= 400;
                   const methodColor = {
-                    GET: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
-                    POST: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-                    PUT: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+                    GET: 'bg-secondary text-muted-foreground border-border',
+                    POST: 'bg-secondary text-foreground border-border font-bold',
+                    PUT: 'bg-secondary text-foreground border-border',
                     DELETE: 'bg-destructive/10 text-destructive border-destructive/20',
                   }[log.method] || 'bg-secondary text-foreground';
 
@@ -155,7 +155,7 @@ export default function LogsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-2.5 text-xs font-mono">
-                        <span className={cn(log.responseTimeMs > 1000 ? "text-amber-500 font-bold" : "text-muted-foreground")}>
+                        <span className={cn(log.responseTimeMs > 1000 ? "text-foreground font-bold" : "text-muted-foreground")}>
                           {log.responseTimeMs}ms
                         </span>
                       </td>

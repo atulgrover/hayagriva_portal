@@ -110,7 +110,7 @@ export default function InvoicesPage() {
                 invoices.map((inv) => {
                   const statusColor = {
                     PAID: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-                    PENDING: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+                    PENDING: 'bg-secondary text-foreground border-border',
                     OVERDUE: 'bg-destructive/10 text-destructive border-destructive/20',
                   }[inv.status] || 'bg-secondary text-foreground';
 
@@ -124,7 +124,7 @@ export default function InvoicesPage() {
                         <div className="text-[11px] text-muted-foreground font-mono">{inv.userEmail}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="font-mono text-xs font-semibold text-amber-500">
+                        <span className="font-mono text-xs font-semibold text-foreground">
                           {inv.planTier}
                         </span>
                       </td>

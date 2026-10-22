@@ -22,13 +22,13 @@ export function ActivityStream({ items }: ActivityStreamProps) {
   const getIcon = (type: string) => {
     switch (type) {
       case 'AUDIT':
-        return <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />;
+        return <ShieldAlert className="w-3.5 h-3.5 text-foreground" />;
       case 'DOWNLOAD':
-        return <Download className="w-3.5 h-3.5 text-blue-500" />;
+        return <Download className="w-3.5 h-3.5 text-foreground" />;
       case 'PAYMENT':
-        return <DollarSign className="w-3.5 h-3.5 text-emerald-500" />;
+        return <DollarSign className="w-3.5 h-3.5 text-foreground" />;
       default:
-        return <Activity className="w-3.5 h-3.5 text-primary" />;
+        return <Activity className="w-3.5 h-3.5 text-foreground" />;
     }
   };
 

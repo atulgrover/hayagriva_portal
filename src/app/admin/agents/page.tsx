@@ -327,7 +327,7 @@ export default function AdminAgentsRegistryPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
               AGENT FOUNDRY
             </span>
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
@@ -344,7 +344,7 @@ export default function AdminAgentsRegistryPage() {
 
         <button
           onClick={() => setIsUploadOpen(true)}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs transition-colors shadow-sm shadow-amber-500/20 self-start md:self-auto"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs transition-colors shadow-sm self-start md:self-auto"
         >
           <UploadCloud className="w-4 h-4" />
           <span>Upload .haya Cartridge</span>
@@ -361,7 +361,7 @@ export default function AdminAgentsRegistryPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by agent name, author, firm, slug..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
           {searchTerm && (
             <button
@@ -381,7 +381,7 @@ export default function AdminAgentsRegistryPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
             >
               <option value="ALL">All Status</option>
               <option value="Official">Official</option>
@@ -396,7 +396,7 @@ export default function AdminAgentsRegistryPage() {
             <select
               value={archetypeFilter}
               onChange={(e) => setArchetypeFilter(e.target.value)}
-              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer max-w-[140px] truncate"
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer max-w-[140px] truncate"
             >
               <option value="ALL">All Archetypes</option>
               <option value="avoidance_forensic_auditor">Avoidance Auditor</option>
@@ -436,12 +436,12 @@ export default function AdminAgentsRegistryPage() {
                   <tr
                     key={agent.id}
                     onClick={() => setSelectedAgent(agent)}
-                    className="hover:bg-amber-500/5 cursor-pointer transition-colors group"
+                    className="hover:bg-secondary/40 cursor-pointer transition-colors group"
                   >
                     {/* Cartridge & Description */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-foreground text-xs group-hover:text-amber-500 transition-colors flex items-center gap-2">
-                        <Bot className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <div className="font-semibold text-foreground text-xs group-hover:text-foreground transition-colors flex items-center gap-2">
+                        <Bot className="w-3.5 h-3.5 text-foreground shrink-0" />
                         <span>{agent.name}</span>
                         <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-secondary text-muted-foreground">
                           v{agent.version}
@@ -497,7 +497,7 @@ export default function AdminAgentsRegistryPage() {
                           ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20"
                           : agent.status === 'Community'
                             ? "bg-blue-500/15 text-blue-400 border border-blue-500/20"
-                            : "bg-amber-500/15 text-amber-500 border border-amber-500/20"
+                            : "bg-secondary text-foreground border border-border"
                       )}>
                         {agent.status}
                       </span>
@@ -505,7 +505,7 @@ export default function AdminAgentsRegistryPage() {
 
                     {/* Action */}
                     <td className="py-3 px-3 text-center">
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all inline-block" />
+                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all inline-block" />
                     </td>
                   </tr>
                 ))
@@ -540,7 +540,7 @@ export default function AdminAgentsRegistryPage() {
                       ? "bg-emerald-500/15 text-emerald-500"
                       : selectedAgent.status === 'Community'
                         ? "bg-blue-500/15 text-blue-400"
-                        : "bg-amber-500/15 text-amber-500"
+                        : "bg-secondary text-foreground"
                   )}>
                     {selectedAgent.status}
                   </span>
@@ -581,7 +581,7 @@ export default function AdminAgentsRegistryPage() {
               {/* Status Accreditation Control */}
               <div className="space-y-1.5">
                 <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                  <Award className="w-3.5 h-3.5 text-amber-500" />
+                  <Award className="w-3.5 h-3.5 text-foreground" />
                   <span>Accreditation Status</span>
                 </h3>
                 <div className="flex items-center gap-2">
@@ -593,7 +593,7 @@ export default function AdminAgentsRegistryPage() {
                       className={cn(
                         "px-3 py-1.5 rounded-md text-xs font-semibold border transition-all",
                         selectedAgent.status === st
-                          ? "bg-amber-500 text-black border-amber-500 shadow-sm"
+                          ? "bg-primary text-primary-foreground border-primary shadow-sm"
                           : "bg-secondary text-muted-foreground border-border hover:text-foreground"
                       )}
                     >
@@ -607,7 +607,7 @@ export default function AdminAgentsRegistryPage() {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                    <Terminal className="w-3.5 h-3.5 text-amber-500" />
+                    <Terminal className="w-3.5 h-3.5 text-foreground" />
                     <span>In-Harness Slash Triggers</span>
                   </h3>
                 </div>
@@ -616,7 +616,7 @@ export default function AdminAgentsRegistryPage() {
                     <button
                       key={trig}
                       onClick={() => copyToClipboard(trig, trig)}
-                      className="px-2.5 py-1 rounded bg-black text-amber-400 font-mono text-[11px] border border-border flex items-center gap-1 hover:border-amber-500/50 transition-colors"
+                      className="px-2.5 py-1 rounded bg-secondary text-foreground font-mono text-[11px] border border-border flex items-center gap-1 hover:border-foreground/40 transition-colors"
                       title="Click to copy trigger"
                     >
                       <span>{trig}</span>
@@ -653,7 +653,7 @@ export default function AdminAgentsRegistryPage() {
                 <div className="space-y-1 bg-secondary/30 p-2.5 rounded-lg border border-border font-mono text-[11px]">
                   {selectedAgent.manifest.rulesList.map((r, i) => (
                     <div key={i} className="text-muted-foreground flex items-start gap-1.5 py-0.5">
-                      <span className="text-amber-500 font-bold shrink-0">•</span>
+                      <span className="text-foreground font-bold shrink-0">•</span>
                       <span className="text-foreground">{r}</span>
                     </div>
                   ))}
@@ -664,12 +664,12 @@ export default function AdminAgentsRegistryPage() {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-cyan-400" />
+                    <Code2 className="w-3.5 h-3.5 text-foreground" />
                     <span>System Prompt Snippet</span>
                   </h3>
                   <button
                     onClick={() => copyToClipboard(selectedAgent.manifest.systemPromptSnippet, 'prompt')}
-                    className="text-[11px] text-amber-500 hover:text-amber-400 font-medium flex items-center gap-1"
+                    className="text-[11px] text-foreground hover:underline font-medium flex items-center gap-1"
                   >
                     {copiedKey === 'prompt' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedKey === 'prompt' ? 'Copied' : 'Copy Prompt'}</span>
@@ -694,7 +694,7 @@ export default function AdminAgentsRegistryPage() {
               <button
                 type="button"
                 onClick={() => alert(`Exporting ${selectedAgent.slug}.haya cartridge bundle`)}
-                className="flex-1 px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition-all"
+                className="flex-1 px-4 py-2 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
               >
                 <DownloadCloud className="w-4 h-4" />
                 <span>Download .haya Cartridge</span>
@@ -715,7 +715,7 @@ export default function AdminAgentsRegistryPage() {
           <aside className="relative z-10 w-full max-w-xl bg-card border-l border-border h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
             <div className="p-5 border-b border-border flex items-center justify-between bg-muted/20">
               <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-                <UploadCloud className="w-4 h-4 text-amber-500" />
+                <UploadCloud className="w-4 h-4 text-foreground" />
                 <span>Upload .haya Cartridge Package</span>
               </h2>
               <button
@@ -729,7 +729,7 @@ export default function AdminAgentsRegistryPage() {
             <form onSubmit={handleUploadSubmit} className="flex-1 p-5 space-y-4 overflow-y-auto text-xs">
               <div className="space-y-1">
                 <label className="font-semibold text-foreground">Cartridge Package File (.haya)</label>
-                <div className="border border-dashed border-border rounded-lg p-6 text-center hover:border-amber-500/50 transition-colors bg-secondary/30 cursor-pointer">
+                <div className="border border-dashed border-border rounded-lg p-6 text-center hover:border-foreground/40 transition-colors bg-secondary/30 cursor-pointer">
                   <UploadCloud className="w-6 h-6 text-muted-foreground mx-auto mb-1.5" />
                   <p className="text-xs font-semibold text-foreground">Click to select or drag .haya package</p>
                   <p className="text-[10px] text-muted-foreground mt-0.5">Signed SHA-256 cartridge file</p>
@@ -744,7 +744,7 @@ export default function AdminAgentsRegistryPage() {
                   value={uploadName}
                   onChange={(e) => setUploadName(e.target.value)}
                   placeholder="e.g. Insolvency Lookback Auditor"
-                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -756,7 +756,7 @@ export default function AdminAgentsRegistryPage() {
                     value={uploadAuthor}
                     onChange={(e) => setUploadAuthor(e.target.value)}
                     placeholder="Adv. Atul Grover"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
 
@@ -767,7 +767,7 @@ export default function AdminAgentsRegistryPage() {
                     value={uploadFirm}
                     onChange={(e) => setUploadFirm(e.target.value)}
                     placeholder="Grover &amp; Associates"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -777,7 +777,7 @@ export default function AdminAgentsRegistryPage() {
                 <select
                   value={uploadArchetype}
                   onChange={(e) => setUploadArchetype(e.target.value as any)}
-                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 >
                   <option value="avoidance_forensic_auditor">Avoidance Forensic Auditor</option>
                   <option value="commercial_injunction_drafter">Commercial Injunction Drafter</option>
@@ -794,7 +794,7 @@ export default function AdminAgentsRegistryPage() {
                   value={uploadVaults}
                   onChange={(e) => setUploadVaults(e.target.value)}
                   placeholder="ibc_2016, cpc_1908"
-                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -808,7 +808,7 @@ export default function AdminAgentsRegistryPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm"
+                  className="px-4 py-1.5 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-sm"
                 >
                   Upload &amp; Accredit
                 </button>

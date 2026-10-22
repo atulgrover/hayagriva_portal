@@ -53,11 +53,11 @@ export function SoftDeleteModal({ user, isOpen, onClose, onConfirm }: SoftDelete
 
         <div className="bg-secondary/40 border border-border p-3 rounded-lg text-xs space-y-1">
           <p className="font-semibold text-foreground flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
             Compliance & Fiduciary Preservation
           </p>
           <p className="text-[11px] text-muted-foreground">
-            This action flags the account as <code className="text-amber-500 font-mono">is_deleted = true</code>. Historical claim records, generated court drafts, and audit trail entries will remain preserved.
+            This action flags the account as <code className="text-foreground font-mono font-semibold">is_deleted = true</code>. Historical claim records, generated court drafts, and audit trail entries will remain preserved.
           </p>
         </div>
 

@@ -294,9 +294,9 @@ function LoginContent() {
               title="Toggle Theme"
             >
               {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-amber-400" />
+                <Sun className="w-4 h-4 text-foreground" />
               ) : (
-                <Moon className="w-4 h-4 text-slate-700" />
+                <Moon className="w-4 h-4 text-foreground" />
               )}
             </button>
           </div>
@@ -520,7 +520,7 @@ function LoginContent() {
                   id="terms"
                   checked={registerData.termsAccepted}
                   onChange={(e) => setRegisterData({ ...registerData, termsAccepted: e.target.checked })}
-                  className="rounded border-input text-amber-500 focus:ring-amber-500 w-3.5 h-3.5"
+                  className="rounded border-input text-foreground focus:ring-primary w-3.5 h-3.5"
                 />
                 <label htmlFor="terms" className="text-[11px] text-muted-foreground leading-tight">
                   I agree to the Sovereign Chamber Terms & Air-Gap Data Integrity Agreement.
@@ -530,7 +530,7 @@ function LoginContent() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                variant="gold"
+                variant="default"
                 disabled={registerLoading}
                 className="w-full text-xs font-semibold py-2.5 rounded-lg shadow-sm gap-2 mt-2"
               >

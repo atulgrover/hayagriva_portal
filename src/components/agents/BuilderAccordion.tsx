@@ -79,7 +79,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
           className="w-full p-4 flex items-center justify-between font-semibold text-foreground hover:bg-secondary/40 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <Bot className="w-4 h-4 text-amber-500" />
+            <Bot className="w-4 h-4 text-foreground" />
             <span>1. Sovereign Identity & Medallion</span>
           </div>
           {openSections.identity ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -94,7 +94,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                   type="text"
                   value={state.name}
                   onChange={(e) => onChange({ name: e.target.value })}
-                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:border-amber-500"
+                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   placeholder="e.g. Avoidance Inquest Auditor"
                 />
               </div>
@@ -104,7 +104,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                   type="text"
                   value={state.slug}
                   onChange={(e) => onChange({ slug: e.target.value })}
-                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono focus:outline-none focus:border-amber-500"
+                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   placeholder="e.g. avoidance-inquest"
                 />
               </div>
@@ -116,7 +116,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 type="text"
                 value={state.description}
                 onChange={(e) => onChange({ description: e.target.value })}
-                className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:border-amber-500"
+                className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 placeholder="Brief summary of agent's jurisdiction and capabilities"
               />
             </div>
@@ -154,7 +154,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
           className="w-full p-4 flex items-center justify-between font-semibold text-foreground hover:bg-secondary/40 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-amber-500" />
+            <Cpu className="w-4 h-4 text-foreground" />
             <span>2. Model & Reasoning Profile</span>
           </div>
           {openSections.model ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -168,7 +168,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 <select
                   value={state.modelEngine}
                   onChange={(e) => onChange({ modelEngine: e.target.value })}
-                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:border-amber-500"
+                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 >
                   <option value="local_llama_r1">Local Llamafile / DeepSeek-R1-7B (Sovereign)</option>
                   <option value="local_llama_3b">Local Llama-3.2-3B (Fast Drafter)</option>
@@ -182,7 +182,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 <select
                   value={state.reasoningEffort}
                   onChange={(e) => onChange({ reasoningEffort: e.target.value })}
-                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:border-amber-500"
+                  className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 >
                   <option value="low">Low (Direct Drafting)</option>
                   <option value="medium">Medium (Standard Verification)</option>
@@ -197,7 +197,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 rows={4}
                 value={state.systemPrompt}
                 onChange={(e) => onChange({ systemPrompt: e.target.value })}
-                className="w-full p-2.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono text-[11px] focus:outline-none focus:border-amber-500"
+                className="w-full p-2.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono text-[11px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 placeholder="Define role, statutory bounds, and drafting behavior..."
               />
             </div>
@@ -213,7 +213,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
           className="w-full p-4 flex items-center justify-between font-semibold text-foreground hover:bg-secondary/40 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <GitFork className="w-4 h-4 text-amber-500" />
+            <GitFork className="w-4 h-4 text-foreground" />
             <span>3. Subagents & Delegation Loop</span>
           </div>
           {openSections.delegation ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -232,7 +232,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 type="checkbox"
                 checked={state.allowSubagents}
                 onChange={(e) => onChange({ allowSubagents: e.target.checked })}
-                className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
+                className="w-4 h-4 accent-foreground rounded cursor-pointer"
               />
             </div>
 
@@ -243,7 +243,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                   <select
                     value={state.criticAgent}
                     onChange={(e) => onChange({ criticAgent: e.target.value })}
-                    className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   >
                     <option value="forms_agent">FormsAgent (Statutory Compliance Audit)</option>
                     <option value="document_agent">DocumentAgent (Court Structure & Skeletons)</option>
@@ -255,7 +255,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                   <select
                     value={state.maxCritiqueTurns}
                     onChange={(e) => onChange({ maxCritiqueTurns: Number(e.target.value) })}
-                    className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   >
                     <option value={1}>1 Pass (Fast Audit)</option>
                     <option value={2}>2 Passes (Deep Refinement)</option>
@@ -276,7 +276,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
           className="w-full p-4 flex items-center justify-between font-semibold text-foreground hover:bg-secondary/40 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <Database className="w-4 h-4 text-amber-500" />
+            <Database className="w-4 h-4 text-foreground" />
             <span>4. Statutory Bare Act Vaults</span>
           </div>
           {openSections.vaults ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -294,7 +294,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                   <label
                     key={vault.id}
                     onClick={() => handleVaultToggle(vault.id)}
-                    className={`p-2.5 rounded-lg border cursor-pointer flex items-center justify-between transition-colors ${isSelected ? 'bg-amber-500/10 border-amber-500/40 text-foreground' : 'bg-secondary/30 border-border text-muted-foreground hover:bg-secondary/50'}`}
+                    className={`p-2.5 rounded-lg border cursor-pointer flex items-center justify-between transition-colors ${isSelected ? 'bg-secondary border-foreground text-foreground' : 'bg-secondary/30 border-border text-muted-foreground hover:bg-secondary/50'}`}
                   >
                     <div className="truncate mr-2">
                       <span className="font-semibold block truncate">{vault.name}</span>
@@ -304,7 +304,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                       type="checkbox"
                       checked={isSelected}
                       readOnly
-                      className="w-3.5 h-3.5 accent-amber-500 rounded"
+                      className="w-3.5 h-3.5 accent-foreground rounded"
                     />
                   </label>
                 );
@@ -322,7 +322,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
           className="w-full p-4 flex items-center justify-between font-semibold text-foreground hover:bg-secondary/40 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <FileCode className="w-4 h-4 text-amber-500" />
+            <FileCode className="w-4 h-4 text-foreground" />
             <span>5. Practice Templates & Monaco Triggers</span>
           </div>
           {openSections.template ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -336,7 +336,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 type="text"
                 value={state.slashTrigger}
                 onChange={(e) => onChange({ slashTrigger: e.target.value })}
-                className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-amber-400 font-mono focus:outline-none focus:border-amber-500"
+                className="w-full px-3 py-1.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 placeholder="/trigger-name"
               />
             </div>
@@ -347,7 +347,7 @@ export function BuilderAccordion({ state, onChange }: BuilderAccordionProps) {
                 rows={5}
                 value={state.templateSkeleton}
                 onChange={(e) => onChange({ templateSkeleton: e.target.value })}
-                className="w-full p-2.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono text-[11px] focus:outline-none focus:border-amber-500"
+                className="w-full p-2.5 rounded-lg border border-border bg-secondary/30 text-foreground font-mono text-[11px] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                 placeholder="Markdown drafting skeleton with {{PLACEHOLDERS}}..."
               />
             </div>

@@ -117,8 +117,8 @@ export function GenerateKeyModal({ isOpen, onClose, onSuccess }: GenerateKeyModa
           </form>
         ) : (
           <div className="space-y-4">
-            <div className="bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg flex items-start gap-2.5 text-xs text-amber-600 dark:text-amber-400">
-              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+            <div className="bg-secondary border border-border p-3 rounded-lg flex items-start gap-2.5 text-xs text-foreground">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-foreground" />
               <span>
                 Make sure to copy your secret token now. For your security, you will not be able to see it again!
               </span>

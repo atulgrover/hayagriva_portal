@@ -111,13 +111,13 @@ export default function AdminHarnessPage() {
   const getOsIcon = (platform: string) => {
     const p = platform.toUpperCase();
     if (p.includes('MAC')) {
-      return <Apple className="w-4 h-4 text-amber-500 shrink-0" />;
+      return <Apple className="w-4 h-4 text-foreground shrink-0" />;
     }
     if (p.includes('WIN')) {
-      return <Monitor className="w-4 h-4 text-blue-500 shrink-0" />;
+      return <Monitor className="w-4 h-4 text-foreground shrink-0" />;
     }
     if (p.includes('LINUX')) {
-      return <Globe className="w-4 h-4 text-purple-500 shrink-0" />;
+      return <Globe className="w-4 h-4 text-foreground shrink-0" />;
     }
     return <Laptop className="w-4 h-4 text-muted-foreground shrink-0" />;
   };
@@ -143,7 +143,7 @@ export default function AdminHarnessPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-foreground">Desktop Harness Release Manager</h1>
-            <span className="text-[10px] bg-amber-500/10 text-amber-500 font-semibold px-2 py-0.5 rounded-full border border-amber-500/20">
+            <span className="text-[10px] bg-secondary text-foreground font-semibold px-2 py-0.5 rounded-full border border-border">
               v1.2.0 Production
             </span>
           </div>
@@ -155,7 +155,7 @@ export default function AdminHarnessPage() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => alert('Opening release staging modal...')}
-            className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm shadow-amber-500/20"
+            className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Publish New Release</span>
@@ -173,7 +173,7 @@ export default function AdminHarnessPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by filename, architecture, or checksum..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
           {searchQuery && (
             <button 
@@ -191,7 +191,7 @@ export default function AdminHarnessPage() {
           <select
             value={osFilter}
             onChange={(e) => setOsFilter(e.target.value)}
-            className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+            className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
           >
             <option value="ALL">All Platforms</option>
             <option value="macOS">macOS</option>
@@ -205,7 +205,7 @@ export default function AdminHarnessPage() {
       <div className="p-5 rounded-xl border border-border bg-card space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-            <DownloadCloud className="w-4 h-4 text-amber-500" />
+            <DownloadCloud className="w-4 h-4 text-foreground" />
             Binary Assets & Checksums ({filteredBinaries.length})
           </h3>
           <span className="text-[11px] text-muted-foreground">Click any row to inspect release details</span>
@@ -233,14 +233,14 @@ export default function AdminHarnessPage() {
                     onClick={() => setSelectedBinary(bin)}
                     className={cn(
                       "hover:bg-secondary/40 transition-colors cursor-pointer",
-                      isSelected && "bg-secondary/50 ring-1 ring-amber-500/40"
+                      isSelected && "bg-secondary/50 ring-1 ring-border"
                     )}
                   >
                     <td className="py-3 font-medium text-foreground whitespace-nowrap">
                       <div className="flex items-center gap-2.5">
                         {getOsIcon(bin.platform)}
                         <div>
-                          <span className="block font-semibold hover:text-amber-500 transition-colors">{bin.platform}</span>
+                          <span className="block font-semibold hover:text-foreground transition-colors">{bin.platform}</span>
                           <span className="text-[10px] text-muted-foreground">{bin.arch}</span>
                         </div>
                       </div>
@@ -305,7 +305,7 @@ export default function AdminHarnessPage() {
             <div className="p-5 border-b border-border flex items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 border border-amber-500/30">
+                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
                     RELEASE v1.2.0
                   </span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500">
@@ -352,7 +352,7 @@ export default function AdminHarnessPage() {
                 </div>
                 <div className="p-3 bg-secondary/30 rounded-lg border border-border space-y-1">
                   <span className="text-[10px] text-muted-foreground block">Release Channel</span>
-                  <span className="text-xs font-semibold text-amber-500 font-mono">
+                  <span className="text-xs font-semibold text-foreground font-mono">
                     Stable (Main)
                   </span>
                 </div>
@@ -405,7 +405,7 @@ export default function AdminHarnessPage() {
             <div className="p-4 border-t border-border bg-card/50 flex items-center justify-between gap-3">
               <button
                 onClick={() => alert(`Editing distribution link for ${selectedBinary.fileName}`)}
-                className="flex-1 py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm shadow-amber-500/20"
+                className="flex-1 py-2 px-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 <span>Edit Binary Settings</span>

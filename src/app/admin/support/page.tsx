@@ -47,7 +47,7 @@ export default function SupportPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-foreground">Practitioner Support Inbox</h1>
-            <span className="text-[10px] bg-amber-500/10 text-amber-500 font-semibold px-2 py-0.5 rounded-full border border-amber-500/20">
+            <span className="text-[10px] bg-secondary text-foreground font-semibold px-2 py-0.5 rounded-full border border-border">
               {tickets.filter(t => t.status === 'OPEN').length} Open Tickets
             </span>
           </div>
@@ -112,14 +112,14 @@ export default function SupportPage() {
         {tickets.map((t) => {
           const priorityColor = {
             URGENT: 'bg-destructive/15 text-destructive border-destructive/25',
-            HIGH: 'bg-amber-500/15 text-amber-500 border-amber-500/25',
-            MEDIUM: 'bg-blue-500/15 text-blue-500 border-blue-500/25',
-            LOW: 'bg-slate-500/15 text-slate-400 border-slate-500/25',
+            HIGH: 'bg-secondary text-foreground border-border',
+            MEDIUM: 'bg-secondary text-muted-foreground border-border',
+            LOW: 'bg-secondary text-muted-foreground border-border',
           }[t.priority] || 'bg-secondary text-foreground';
 
           const statusColor = {
             OPEN: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-            IN_PROGRESS: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+            IN_PROGRESS: 'bg-secondary text-foreground border-border',
             RESOLVED: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
           }[t.status] || 'bg-secondary text-foreground';
 
@@ -131,7 +131,7 @@ export default function SupportPage() {
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-amber-500">{t.id}</span>
+                    <span className="text-xs font-mono font-bold text-foreground">{t.id}</span>
                     <h3 className="text-sm font-bold text-foreground">{t.subject}</h3>
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -155,10 +155,10 @@ export default function SupportPage() {
 
               {/* Official Response Callout if Present */}
               {t.adminResponse && (
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 text-xs space-y-1.5">
-                  <div className="flex items-center justify-between text-amber-500 font-semibold text-[11px]">
+                <div className="bg-secondary/60 border border-border rounded-lg p-3 text-xs space-y-1.5">
+                  <div className="flex items-center justify-between text-foreground font-semibold text-[11px]">
                     <span className="flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-amber-500" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-foreground" />
                       Hayagriva Operations Reply
                     </span>
                     {t.respondedAt && (

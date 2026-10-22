@@ -100,9 +100,9 @@ export function HeaderControls({ mode = 'admin' }: HeaderControlsProps) {
           aria-label="Toggle Theme"
         >
           {theme === 'dark' ? (
-            <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300" />
+            <Sun className="w-4 h-4 text-foreground" />
           ) : (
-            <Moon className="w-4 h-4 text-slate-700 dark:text-slate-200" />
+            <Moon className="w-4 h-4 text-foreground" />
           )}
         </button>
       )}
@@ -114,7 +114,7 @@ export function HeaderControls({ mode = 'admin' }: HeaderControlsProps) {
         aria-label="Notifications"
       >
         <Bell className="w-4 h-4" />
-        <span className="w-2 h-2 rounded-full bg-amber-500 absolute top-1.5 right-1.5 ring-2 ring-card" />
+        <span className="w-2 h-2 rounded-full bg-slate-900 dark:bg-slate-100 absolute top-1.5 right-1.5 ring-2 ring-card" />
       </button>
 
       {/* Divider */}
@@ -126,13 +126,13 @@ export function HeaderControls({ mode = 'admin' }: HeaderControlsProps) {
         className="flex items-center space-x-2.5 pl-1 py-1 pr-2 rounded-lg hover:bg-secondary/70 transition-colors group cursor-pointer"
         title="Manage Profile & Settings"
       >
-        <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-500 flex items-center justify-center text-white text-xs font-bold ring-2 ring-amber-500/20 group-hover:ring-amber-500/40 transition-all shrink-0">
+        <div className="w-7 h-7 rounded-full bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 flex items-center justify-center text-xs font-bold border border-border shrink-0">
           {initials}
         </div>
         <div className="text-left hidden md:block">
-          <div className="text-xs font-semibold text-foreground group-hover:text-amber-500 flex items-center gap-1.5 transition-colors">
+          <div className="text-xs font-semibold text-foreground group-hover:text-foreground flex items-center gap-1.5 transition-colors">
             <span>{displayName}</span>
-            <span className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.2 rounded font-mono font-semibold uppercase tracking-wider">
+            <span className="text-[9px] bg-secondary text-foreground border border-border px-1.5 py-0.2 rounded font-mono font-semibold uppercase tracking-wider">
               {displayBadge}
             </span>
           </div>

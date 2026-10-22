@@ -132,7 +132,7 @@ export function FleetSyncModal({ isOpen, onClose }: FleetSyncModalProps) {
               </div>
 
               <div className="p-3 rounded-lg bg-card border border-border flex items-center gap-3">
-                <div className="p-2 rounded-md bg-amber-500/10 text-amber-500">
+                <div className="p-2 rounded-md bg-secondary text-foreground border border-border">
                   <Lock className="w-4 h-4" />
                 </div>
                 <div>
@@ -145,7 +145,7 @@ export function FleetSyncModal({ isOpen, onClose }: FleetSyncModalProps) {
             {/* Private Tool List */}
             {privateCount > 0 && (
               <div className="space-y-1.5 pt-1">
-                <span className="text-[10px] uppercase font-bold text-amber-500 tracking-wider block">
+                <span className="text-[10px] uppercase font-bold text-foreground tracking-wider block">
                   Synchronized Chamber Confidential Tools:
                 </span>
                 <div className="space-y-1 max-h-32 overflow-y-auto pr-1 text-xs">

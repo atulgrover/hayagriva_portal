@@ -19,13 +19,13 @@ export default function ProfilePage() {
       <div className="bg-card border border-border p-6 rounded-xl shadow-sm space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-amber-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-slate-900 text-slate-100 dark:bg-slate-100 dark:text-slate-900 flex items-center justify-center text-2xl font-bold shadow-sm border border-border">
               AG
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-bold text-foreground">Atul Grover (Adv.)</h2>
-                <span className="text-[10px] bg-amber-500/15 text-amber-500 border border-amber-500/25 px-2 py-0.5 rounded-full font-mono font-bold">
+                <span className="text-[10px] bg-foreground text-background px-2 py-0.5 rounded-full font-mono font-bold">
                   SUPER_ADMIN
                 </span>
               </div>

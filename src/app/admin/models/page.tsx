@@ -182,10 +182,10 @@ export default function AdminModelsRegistryPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
               DISTRIBUTION &amp; ASSETS
             </span>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
               GGUF &amp; ONNX Weights
             </span>
           </div>
@@ -199,7 +199,7 @@ export default function AdminModelsRegistryPage() {
 
         <button
           onClick={() => setIsRegisterOpen(true)}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs transition-colors shadow-sm shadow-amber-500/20 self-start md:self-auto"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs transition-colors shadow-sm self-start md:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Register New Model</span>
@@ -216,7 +216,7 @@ export default function AdminModelsRegistryPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by model name, architecture, quantization..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
           {searchTerm && (
             <button
@@ -236,7 +236,7 @@ export default function AdminModelsRegistryPage() {
             <select
               value={formatFilter}
               onChange={(e) => setFormatFilter(e.target.value as any)}
-              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
             >
               <option value="ALL">All Formats</option>
               <option value="GGUF">GGUF Engines</option>
@@ -250,7 +250,7 @@ export default function AdminModelsRegistryPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
             >
               <option value="ALL">All Status</option>
               <option value="Active">Active</option>
@@ -288,12 +288,12 @@ export default function AdminModelsRegistryPage() {
                   <tr
                     key={model.id}
                     onClick={() => setSelectedModel(model)}
-                    className="hover:bg-amber-500/5 cursor-pointer transition-colors group"
+                    className="hover:bg-secondary/40 cursor-pointer transition-colors group"
                   >
                     {/* Model & Architecture */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-foreground text-xs group-hover:text-amber-500 transition-colors flex items-center gap-2">
-                        <Cpu className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <div className="font-semibold text-foreground text-xs group-hover:text-foreground transition-colors flex items-center gap-2">
+                        <Cpu className="w-3.5 h-3.5 text-foreground shrink-0" />
                         <span>{model.name}</span>
                       </div>
                       <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
@@ -332,7 +332,7 @@ export default function AdminModelsRegistryPage() {
                         model.status === 'Active'
                           ? "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20"
                           : model.status === 'Beta'
-                            ? "bg-amber-500/15 text-amber-500 border border-amber-500/20"
+                            ? "bg-secondary text-foreground border border-border"
                             : "bg-secondary text-muted-foreground"
                       )}>
                         {model.status}
@@ -341,7 +341,7 @@ export default function AdminModelsRegistryPage() {
 
                     {/* Action */}
                     <td className="py-3 px-3 text-center">
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all inline-block" />
+                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all inline-block" />
                     </td>
                   </tr>
                 ))
@@ -370,7 +370,7 @@ export default function AdminModelsRegistryPage() {
             <div className="p-5 border-b border-border flex items-start justify-between gap-4 bg-muted/20">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 border border-amber-500/30">
+                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
                     {selectedModel.format} • {selectedModel.quantization}
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground">
@@ -380,7 +380,7 @@ export default function AdminModelsRegistryPage() {
                     "text-[10px] font-bold px-2 py-0.5 rounded-full",
                     selectedModel.status === 'Active'
                       ? "bg-emerald-500/15 text-emerald-500"
-                      : "bg-amber-500/15 text-amber-500"
+                      : "bg-secondary text-foreground"
                   )}>
                     {selectedModel.status}
                   </span>
@@ -428,7 +428,7 @@ export default function AdminModelsRegistryPage() {
                   </div>
                   <div className="bg-secondary/40 p-2.5 rounded-md border border-border">
                     <span className="text-[10px] text-muted-foreground block font-medium">Download Size</span>
-                    <span className="font-mono font-bold text-amber-500">{selectedModel.fileSize}</span>
+                    <span className="font-mono font-bold text-foreground">{selectedModel.fileSize}</span>
                   </div>
                   <div className="bg-secondary/40 p-2.5 rounded-md border border-border">
                     <span className="text-[10px] text-muted-foreground block font-medium">Recommended RAM</span>
@@ -441,12 +441,12 @@ export default function AdminModelsRegistryPage() {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                    <FolderOpen className="w-3.5 h-3.5 text-amber-500" />
+                    <FolderOpen className="w-3.5 h-3.5 text-foreground" />
                     <span>Harness Destination Path</span>
                   </h3>
                   <button
                     onClick={() => copyToClipboard(selectedModel.destinationPath, 'path')}
-                    className="text-[11px] text-amber-500 hover:text-amber-400 font-medium flex items-center gap-1"
+                    className="text-[11px] text-foreground hover:underline font-medium flex items-center gap-1"
                   >
                     {copiedKey === 'path' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedKey === 'path' ? 'Copied' : 'Copy'}</span>
@@ -466,7 +466,7 @@ export default function AdminModelsRegistryPage() {
                   </h3>
                   <button
                     onClick={() => copyToClipboard(selectedModel.sha256, 'sha')}
-                    className="text-[11px] text-amber-500 hover:text-amber-400 font-medium flex items-center gap-1"
+                    className="text-[11px] text-foreground hover:underline font-medium flex items-center gap-1"
                   >
                     {copiedKey === 'sha' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
                     <span>{copiedKey === 'sha' ? 'Copied' : 'Copy'}</span>
@@ -491,7 +491,7 @@ export default function AdminModelsRegistryPage() {
               <button
                 type="button"
                 onClick={() => alert(`Starting download for ${selectedModel.name} (${selectedModel.fileSize})`)}
-                className="flex-1 px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 transition-all"
+                className="flex-1 px-4 py-2 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
               >
                 <DownloadCloud className="w-4 h-4" />
                 <span>Download Model Weights</span>
@@ -512,7 +512,7 @@ export default function AdminModelsRegistryPage() {
           <aside className="relative z-10 w-full max-w-xl bg-card border-l border-border h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
             <div className="p-5 border-b border-border flex items-center justify-between bg-muted/20">
               <h2 className="text-base font-bold text-foreground flex items-center gap-2">
-                <Plus className="w-4 h-4 text-amber-500" />
+                <Plus className="w-4 h-4 text-foreground" />
                 <span>Register New Model Weight</span>
               </h2>
               <button
@@ -532,7 +532,7 @@ export default function AdminModelsRegistryPage() {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="e.g. Qwen2.5-Coder-7B-Legal"
-                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -542,7 +542,7 @@ export default function AdminModelsRegistryPage() {
                   <select
                     value={newFormat}
                     onChange={(e) => setNewFormat(e.target.value as any)}
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   >
                     <option value="GGUF">GGUF (Llama.cpp)</option>
                     <option value="ONNX">ONNX (Embedding)</option>
@@ -556,7 +556,7 @@ export default function AdminModelsRegistryPage() {
                     value={newQuant}
                     onChange={(e) => setNewQuant(e.target.value)}
                     placeholder="Q4_K_M"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 font-mono"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                   />
                 </div>
               </div>
@@ -569,7 +569,7 @@ export default function AdminModelsRegistryPage() {
                     value={newArch}
                     onChange={(e) => setNewArch(e.target.value)}
                     placeholder="Qwen 2.5 / DeepSeek"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
 
@@ -580,7 +580,7 @@ export default function AdminModelsRegistryPage() {
                     value={newParams}
                     onChange={(e) => setNewParams(e.target.value)}
                     placeholder="7.2 Billion"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -593,7 +593,7 @@ export default function AdminModelsRegistryPage() {
                     value={newSize}
                     onChange={(e) => setNewSize(e.target.value)}
                     placeholder="4.35 GB"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 font-mono"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
                   />
                 </div>
 
@@ -604,7 +604,7 @@ export default function AdminModelsRegistryPage() {
                     value={newRam}
                     onChange={(e) => setNewRam(e.target.value)}
                     placeholder="16 GB RAM"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
               </div>
@@ -616,7 +616,7 @@ export default function AdminModelsRegistryPage() {
                   value={newPurpose}
                   onChange={(e) => setNewPurpose(e.target.value)}
                   placeholder="Explain legal purpose, court applications, and reasoning tasks..."
-                  className="w-full bg-secondary/50 border border-input rounded-md p-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-secondary/50 border border-input rounded-md p-2.5 text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -627,7 +627,7 @@ export default function AdminModelsRegistryPage() {
                   value={newSha}
                   onChange={(e) => setNewSha(e.target.value)}
                   placeholder="64-character SHA-256 hex string"
-                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground font-mono focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               </div>
 
@@ -641,7 +641,7 @@ export default function AdminModelsRegistryPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-md bg-amber-500 hover:bg-amber-600 text-black font-semibold shadow-sm"
+                  className="px-4 py-1.5 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-sm"
                 >
                   Save Model Weight
                 </button>

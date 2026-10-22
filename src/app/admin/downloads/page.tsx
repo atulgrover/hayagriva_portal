@@ -75,15 +75,15 @@ export default function DownloadsPage() {
   const getPlatformIcon = (platform: string) => {
     const p = platform.toUpperCase();
     if (p.includes('MACOS') || p.includes('ARM64') || p.includes('APPLE')) {
-      return <Apple className="w-3.5 h-3.5 text-amber-500 shrink-0" />;
+      return <Apple className="w-3.5 h-3.5 text-foreground shrink-0" />;
     }
     if (p.includes('WIN')) {
-      return <Monitor className="w-3.5 h-3.5 text-blue-500 shrink-0" />;
+      return <Monitor className="w-3.5 h-3.5 text-foreground shrink-0" />;
     }
     if (p.includes('LINUX') || p.includes('APPIMAGE')) {
-      return <Globe className="w-3.5 h-3.5 text-purple-500 shrink-0" />;
+      return <Globe className="w-3.5 h-3.5 text-foreground shrink-0" />;
     }
-    return <Laptop className="w-3.5 h-3.5 text-emerald-500 shrink-0" />;
+    return <Laptop className="w-3.5 h-3.5 text-foreground shrink-0" />;
   };
 
   const filteredDownloads = useMemo(() => {
@@ -148,7 +148,7 @@ export default function DownloadsPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by IP hash, platform, location, or app version..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
           {searchQuery && (
             <button 
@@ -166,7 +166,7 @@ export default function DownloadsPage() {
           <select
             value={platformFilter}
             onChange={(e) => setPlatformFilter(e.target.value)}
-            className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+            className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
           >
             {availablePlatforms.map((plat) => (
               <option key={plat} value={plat}>
@@ -209,7 +209,7 @@ export default function DownloadsPage() {
                       onClick={() => setSelectedRecord(r)}
                       className={cn(
                         "hover:bg-secondary/30 transition-colors cursor-pointer",
-                        isSelected && "bg-secondary/50 ring-1 ring-amber-500/40"
+                        isSelected && "bg-secondary/50 ring-1 ring-border"
                       )}
                     >
                       <td className="px-4 py-2.5 font-mono text-muted-foreground whitespace-nowrap">
@@ -229,7 +229,7 @@ export default function DownloadsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-2.5 text-foreground flex items-center gap-1.5 whitespace-nowrap">
-                        <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <MapPin className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                         <span>{r.city || 'New Delhi'}, {r.countryCode || 'IN'}</span>
                       </td>
                       <td className="px-4 py-2.5 font-mono text-muted-foreground max-w-xs" onClick={(e) => e.stopPropagation()}>
@@ -283,7 +283,7 @@ export default function DownloadsPage() {
             <div className="p-5 border-b border-border flex items-start justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 border border-amber-500/30 flex items-center gap-1">
+                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border flex items-center gap-1">
                     <Radio className="w-3 h-3" />
                     TELEMETRY EVENT
                   </span>
@@ -330,7 +330,7 @@ export default function DownloadsPage() {
                 <div className="p-3 bg-secondary/30 rounded-lg border border-border space-y-1">
                   <span className="text-[10px] text-muted-foreground block">Geographic Origin</span>
                   <span className="text-xs font-semibold text-foreground flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                     {selectedRecord.city || 'New Delhi'}, {selectedRecord.countryCode || 'IN'}
                   </span>
                 </div>
