@@ -60,7 +60,7 @@ export function FleetSyncModal({ isOpen, onClose }: FleetSyncModalProps) {
       >
         <div className="flex items-center justify-between pb-3 border-b border-border">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900 flex items-center justify-center">
               <HardDrive className="w-4 h-4" />
             </div>
             <div>
@@ -88,13 +88,13 @@ export function FleetSyncModal({ isOpen, onClose }: FleetSyncModalProps) {
               type="text"
               value={licenseKey}
               onChange={(e) => setLicenseKey(e.target.value)}
-              className="flex-1 bg-secondary/50 border border-border rounded-xl px-3 py-2 text-xs font-mono text-foreground outline-none focus:border-amber-500"
+              className="flex-1 bg-secondary/50 border border-border rounded-md px-3 py-2 text-xs font-mono text-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
               placeholder="HAYA-ENT-8F92-K4X9-98QA"
             />
             <button
               onClick={handleSync}
               disabled={loading}
-              className="px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-sm disabled:opacity-50 shrink-0"
+              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-xs font-bold rounded-md flex items-center gap-1.5 shadow-sm disabled:opacity-50 shrink-0 transition-colors"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? 'Syncing...' : 'Perform Handshake'}</span>

@@ -64,23 +64,23 @@ export function ItemDetailModal({ item, onClose }: ItemDetailModalProps) {
         {/* Modal Header */}
         <div className="p-6 border-b border-border flex items-start justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-secondary/80 border border-border flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+            <div className="w-14 h-14 rounded-xl bg-secondary/80 border border-border flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
               {item.imageUrl ? (
                 <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
               ) : (
-                <Sparkles className="w-7 h-7 text-amber-500" />
+                <Sparkles className="w-7 h-7 text-foreground" />
               )}
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h2 className="text-xl font-bold text-foreground tracking-tight">{item.name}</h2>
                 {item.verified && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Verified
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Verified
                   </span>
                 )}
                 {isPrivate && (
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
                     <Lock className="w-3 h-3" /> Chamber Confidential ({item.orgId || 'Private'})
                   </span>
                 )}
@@ -93,7 +93,7 @@ export function ItemDetailModal({ item, onClose }: ItemDetailModalProps) {
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -102,9 +102,9 @@ export function ItemDetailModal({ item, onClose }: ItemDetailModalProps) {
         {/* Action & CLI Strip */}
         <div className="px-6 py-3.5 bg-secondary/50 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2 font-mono text-foreground">
-            <Terminal className="w-4 h-4 text-amber-500 shrink-0" />
+            <Terminal className="w-4 h-4 text-slate-500 shrink-0" />
             <span className="text-muted-foreground">Install Command:</span>
-            <span className="bg-card px-2.5 py-1 rounded-md text-amber-500 font-bold border border-border">
+            <span className="bg-card px-2.5 py-1 rounded-md text-foreground font-mono font-bold border border-border">
               {installCmd}
             </span>
             <button
@@ -119,10 +119,10 @@ export function ItemDetailModal({ item, onClose }: ItemDetailModalProps) {
           <button
             onClick={handlePushToWorkstation}
             disabled={installing}
-            className={`px-4 py-2 rounded-xl font-semibold transition-all shadow-md flex items-center gap-2 shrink-0 ${
+            className={`px-4 py-2 rounded-md font-semibold transition-all shadow-sm flex items-center gap-2 shrink-0 ${
               installed 
-                ? 'bg-emerald-500 text-white' 
-                : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+                ? 'bg-emerald-600 text-white' 
+                : 'bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100'
             }`}
           >
             {installed ? (

@@ -97,7 +97,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
       >
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900 flex items-center justify-center">
               <Upload className="w-4 h-4" />
             </div>
             <div>
@@ -125,13 +125,13 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               <button
                 type="button"
                 onClick={() => setVisibility('PRIVATE_CHAMBER')}
-                className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
+                className={`p-3 rounded-lg border text-left flex flex-col gap-1 transition-all ${
                   visibility === 'PRIVATE_CHAMBER'
-                    ? 'border-amber-500 bg-amber-500/10 text-foreground'
+                    ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-900/50 text-foreground'
                     : 'border-border bg-secondary/30 text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <div className="flex items-center gap-1.5 font-bold text-xs text-amber-500">
+                <div className="flex items-center gap-1.5 font-bold text-xs text-foreground">
                   <Lock className="w-3.5 h-3.5" />
                   <span>Chamber Private</span>
                 </div>
@@ -143,13 +143,13 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               <button
                 type="button"
                 onClick={() => setVisibility('PUBLIC')}
-                className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all ${
+                className={`p-3 rounded-lg border text-left flex flex-col gap-1 transition-all ${
                   visibility === 'PUBLIC'
-                    ? 'border-cyan-500 bg-cyan-500/10 text-foreground'
+                    ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-900/50 text-foreground'
                     : 'border-border bg-secondary/30 text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <div className="flex items-center gap-1.5 font-bold text-xs text-cyan-400">
+                <div className="flex items-center gap-1.5 font-bold text-xs text-foreground">
                   <Globe className="w-3.5 h-3.5" />
                   <span>Public Community</span>
                 </div>
@@ -166,7 +166,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               <select
                 value={itemType}
                 onChange={(e) => setItemType(e.target.value)}
-                className="w-full bg-secondary/50 border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-amber-500"
+                className="w-full bg-secondary/50 border border-border rounded-md px-3 py-2 text-xs text-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
               >
                 <option value="agent-skill">Agent Skill (.js handler)</option>
                 <option value="slash-command">Slash Command</option>
@@ -182,7 +182,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
                 value={licenseKey}
                 onChange={(e) => setLicenseKey(e.target.value)}
                 placeholder="HAYA-ENT-XXXX-..."
-                className="w-full bg-secondary/50 border border-border rounded-xl px-3 py-2 text-xs font-mono text-foreground outline-none focus:border-amber-500"
+                className="w-full bg-secondary/50 border border-border rounded-md px-3 py-2 text-xs font-mono text-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
               />
             </div>
           </div>
@@ -195,7 +195,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Insolvency Resolution Cost (CIRPC) Auditing Skill"
-              className="w-full bg-secondary/50 border border-border rounded-xl px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-amber-500"
+              className="w-full bg-secondary/50 border border-border rounded-md px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
             />
           </div>
 
@@ -207,7 +207,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Explain practical legal benefits, statutory basis, or workflow automation capabilities..."
-              className="w-full bg-secondary/50 border border-border rounded-xl px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-amber-500"
+              className="w-full bg-secondary/50 border border-border rounded-md px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
             />
           </div>
 
@@ -217,7 +217,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               type="text"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              className="w-full bg-secondary/50 border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-amber-500"
+              className="w-full bg-secondary/50 border border-border rounded-md px-3 py-2 text-xs text-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
             />
           </div>
 
@@ -227,7 +227,7 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
               rows={4}
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="w-full bg-card border border-border rounded-xl p-3 text-[11px] font-mono text-foreground outline-none focus:border-amber-500 leading-relaxed"
+              className="w-full bg-card border border-border rounded-md p-3 text-[11px] font-mono text-foreground outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white leading-relaxed"
             />
           </div>
 
@@ -235,9 +235,9 @@ export function PublishModal({ isOpen, onClose, onPublishSuccess }: PublishModal
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs py-2.5 rounded-xl shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 font-semibold text-xs py-2.5 rounded-md shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? 'Publishing &amp; Encrypting Manifest...' : (visibility === 'PRIVATE_CHAMBER' ? 'Publish Confidential Chamber Tool' : 'Publish to Community Hub')}
+              {loading ? 'Publishing & Encrypting Manifest...' : (visibility === 'PRIVATE_CHAMBER' ? 'Publish Confidential Chamber Tool' : 'Publish to Community Hub')}
             </button>
           </div>
         </form>

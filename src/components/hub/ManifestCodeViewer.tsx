@@ -56,50 +56,50 @@ export function ManifestCodeViewer({ files, item }: ManifestCodeViewerProps) {
           {contract && (
             <button
               onClick={() => setActiveTab('contract')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors ${
                 activeTab === 'contract'
-                  ? 'bg-card text-foreground shadow-sm font-semibold'
+                  ? 'bg-card text-foreground shadow-xs font-semibold'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Cpu className="w-3.5 h-3.5 text-emerald-400" />
+              <Cpu className="w-3.5 h-3.5 text-foreground" />
               <span>Cognitive Contract</span>
             </button>
           )}
 
           <button
             onClick={() => setActiveTab('readme')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors ${
               activeTab === 'readme'
-                ? 'bg-card text-foreground shadow-sm font-semibold'
+                ? 'bg-card text-foreground shadow-xs font-semibold'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            <BookOpen className="w-3.5 h-3.5 text-amber-500" />
+            <BookOpen className="w-3.5 h-3.5 text-foreground" />
             <span>README.md</span>
           </button>
 
           <button
             onClick={() => setActiveTab('handler')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors ${
               activeTab === 'handler'
-                ? 'bg-card text-foreground shadow-sm font-semibold'
+                ? 'bg-card text-foreground shadow-xs font-semibold'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            <FileCode className="w-3.5 h-3.5 text-cyan-400" />
+            <FileCode className="w-3.5 h-3.5 text-foreground" />
             <span>handler.js</span>
           </button>
 
           <button
             onClick={() => setActiveTab('plugin')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors ${
               activeTab === 'plugin'
-                ? 'bg-card text-foreground shadow-sm font-semibold'
+                ? 'bg-card text-foreground shadow-xs font-semibold'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            <Terminal className="w-3.5 h-3.5 text-purple-400" />
+            <Terminal className="w-3.5 h-3.5 text-foreground" />
             <span>plugin.json</span>
           </button>
         </div>

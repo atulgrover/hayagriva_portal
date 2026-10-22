@@ -53,18 +53,18 @@ export function CategoryTabs({
             <button
               key={cat.id}
               onClick={() => handleCategoryChange(cat.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap transition-all ${
                 isSelected
-                  ? 'bg-primary text-primary-foreground shadow-md font-bold'
-                  : 'bg-card/70 hover:bg-secondary text-muted-foreground hover:text-foreground border border-border/80'
+                  ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-sm font-semibold'
+                  : 'bg-card hover:bg-secondary text-muted-foreground hover:text-foreground border border-border'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-primary-foreground' : cat.color || 'text-muted-foreground'}`} />
+              <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-inherit' : 'text-muted-foreground'}`} />
               <span>{cat.name}</span>
               <span
                 className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono ${
                   isSelected
-                    ? 'bg-primary-foreground/20 text-primary-foreground font-extrabold'
+                    ? 'bg-white/20 dark:bg-black/20 text-inherit font-bold'
                     : 'bg-secondary text-muted-foreground'
                 }`}
               >
