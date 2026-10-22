@@ -71,14 +71,14 @@
 - Create: `/Users/atulgrover/Desktop/HAYAGRIVA WEBSITE/css/design-tokens.css` (Website)
 - Modify: `HAYAGRIVA WEBSITE/index.html`, `context.html`, `knowledge.html`, `intelligence.html`, `agents.html`, `community.html`
 
-- [ ] **Step 1: Write `src/app/design-tokens.css` in Portal**
+- [x] **Step 1: Write `src/app/design-tokens.css` in Portal**
   Define `:root` and `.dark` variables with exact typography (`--font-sans`, `--font-mono`), slate neutrals (`--slate-50` through `--slate-950`), semantic surfaces, `12px` card radius, and `6px` button radius.
-- [ ] **Step 2: Copy `design-tokens.css` to `HAYAGRIVA WEBSITE/css/design-tokens.css`**
+- [x] **Step 2: Copy `design-tokens.css` to `HAYAGRIVA WEBSITE/css/design-tokens.css`**
   Ensure byte-for-byte identical token definitions.
-- [ ] **Step 3: Add `<link rel="stylesheet" href="css/design-tokens.css">` to website HTML files**
+- [x] **Step 3: Add `<link rel="stylesheet" href="css/design-tokens.css">` to website HTML files**
   Insert right before `css/main.css` across all 5 pillar pages and `index.html`.
-- [ ] **Step 4: Verify website pages load tokens with zero console errors on `http://localhost:5050`**
-- [ ] **Step 5: Commit Task 1**
+- [x] **Step 4: Verify website pages load tokens with zero console errors on `http://localhost:5050`**
+- [x] **Step 5: Commit Task 1**
   ```bash
   git add src/app/design-tokens.css
   git commit -m "feat(tokens): create shared design tokens contract"
@@ -93,14 +93,14 @@
 - Modify: `src/app/globals.css`
 - Modify: `tailwind.config.ts`
 
-- [ ] **Step 1: Update `src/app/layout.tsx`**
+- [x] **Step 1: Update `src/app/layout.tsx`**
   Import `Inter` and `JetBrains_Mono` from `next/font/google`. Apply `inter.variable` and `jetbrainsMono.variable` to `html`/`body`. Replace selection highlight with `selection:bg-slate-900 selection:text-white dark:selection:bg-slate-100 dark:selection:text-slate-950`.
-- [ ] **Step 2: Update `src/app/globals.css`**
+- [x] **Step 2: Update `src/app/globals.css`**
   Import `./design-tokens.css` at top. Bind CSS variables (`--background`, `--foreground`, `--card`, `--border`, `--muted`, `--primary`) directly to the slate tokens for `:root` and `.dark`. Set `body { font-family: var(--font-sans); }`.
-- [ ] **Step 3: Update `tailwind.config.ts`**
+- [x] **Step 3: Update `tailwind.config.ts`**
   Add `fontFamily: { sans: ['var(--font-sans)', 'sans-serif'], mono: ['var(--font-mono)', 'monospace'] }`.
-- [ ] **Step 4: Verify Next.js dev server compiles without errors on `http://localhost:3300`**
-- [ ] **Step 5: Commit Task 2**
+- [x] **Step 4: Verify Next.js dev server compiles without errors on `http://localhost:3300`**
+- [x] **Step 5: Commit Task 2**
   ```bash
   git add src/app/layout.tsx src/app/globals.css tailwind.config.ts
   git commit -m "feat(theme): configure Inter and JetBrains Mono fonts and slate tailwind tokens"
@@ -116,15 +116,15 @@
 - Modify: `src/components/ui/badge.tsx`
 - Modify: `src/components/ui/tabs.tsx`
 
-- [ ] **Step 1: Update `src/components/ui/button.tsx`**
+- [x] **Step 1: Update `src/components/ui/button.tsx`**
   Set `default` variant to `bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 font-semibold shadow-xs`. Update `outline` to `border border-border bg-background hover:bg-secondary text-foreground`. Deprecate solid amber button fills.
-- [ ] **Step 2: Update `src/components/ui/card.tsx`**
+- [x] **Step 2: Update `src/components/ui/card.tsx`**
   Ensure container uses `rounded-xl border border-border bg-card text-card-foreground shadow-xs`.
-- [ ] **Step 3: Update `src/components/ui/badge.tsx`**
+- [x] **Step 3: Update `src/components/ui/badge.tsx`**
   Standardize badges to clean outline pills with subtle slate backgrounds. Implement live dot indicators (`w-1.5 h-1.5 rounded-full inline-block mr-1.5`).
-- [ ] **Step 4: Update `src/components/ui/tabs.tsx`**
+- [x] **Step 4: Update `src/components/ui/tabs.tsx`**
   Ensure tabs triggers use crisp minimal slate borders and subtle active indicators.
-- [ ] **Step 5: Commit Task 3**
+- [x] **Step 5: Commit Task 3**
   ```bash
   git add src/components/ui/
   git commit -m "feat(ui): refactor button, card, badge, and tabs to minimal slate primitives"
@@ -141,16 +141,16 @@
 - Modify: `src/components/client/header.tsx` & `src/components/client/sidebar.tsx`
 - Modify: `src/components/admin/header.tsx` & `src/components/admin/sidebar.tsx`
 
-- [ ] **Step 1: Refactor `src/app/login/page.tsx`**
+- [x] **Step 1: Refactor `src/app/login/page.tsx`**
   Style left 4 feature cards with `rounded-xl`, `border-border`, monospace `01`–`04` tags, bold slate titles, and muted descriptions. Update right-side tab switcher, inputs, and button to monochrome standard.
-- [ ] **Step 2: Update `UnifiedNavbar.tsx` & `HeaderControls.tsx`**
+- [x] **Step 2: Update `UnifiedNavbar.tsx` & `HeaderControls.tsx`**
   Replace amber ॐ icon with dark slate / monochrome emblem. Set active tab to `bg-secondary text-foreground font-semibold`. Mute icon colors. Update `⌘K` search badge to `font-mono`.
-- [ ] **Step 3: Update `ClientSidebar` & `ClientHeader`**
+- [x] **Step 3: Update `ClientSidebar` & `ClientHeader`**
   Enforce slate background, monochrome section titles (`font-mono text-[10px] tracking-wider uppercase text-muted-foreground`), and active navigation link state.
-- [ ] **Step 4: Update `AdminSidebar` & `AdminHeader`**
+- [x] **Step 4: Update `AdminSidebar` & `AdminHeader`**
   Align admin layout shells with the identical slate navigation styles.
-- [ ] **Step 5: Verify `/login` and portal navigation visually on `http://localhost:3300/login`**
-- [ ] **Step 6: Commit Task 4**
+- [x] **Step 5: Verify `/login` and portal navigation visually on `http://localhost:3300/login`**
+- [x] **Step 6: Commit Task 4**
   ```bash
   git add src/app/login/page.tsx src/components/navigation/ src/components/client/ src/components/admin/
   git commit -m "feat(nav): harmonize split auth and navigation shells with minimal slate aesthetic"
@@ -171,16 +171,16 @@
 - Modify: `src/components/client/deactivate-modal.tsx`
 - Modify: `src/components/client/transfer-seat-modal.tsx`
 
-- [ ] **Step 1: Refactor `src/app/dashboard/page.tsx`**
+- [x] **Step 1: Refactor `src/app/dashboard/page.tsx`**
   Purge all `border-amber-500/30`, `bg-amber-500/15 text-amber-500`, and `bg-amber-500` buttons. Rebuild Sovereign Agent Packages into clean typographic cards with `font-mono` version tags and high-contrast download CTA. Device seats use clean emerald/slate dot indicators.
-- [ ] **Step 2: Refactor `workspace/page.tsx` & `licenses/page.tsx`**
+- [x] **Step 2: Refactor `workspace/page.tsx` & `licenses/page.tsx`**
   Format license keys in `font-mono text-xs`, clean copy actions, and slate hardware binding cards.
-- [ ] **Step 3: Refactor `billing/page.tsx` & `support/page.tsx`**
+- [x] **Step 3: Refactor `billing/page.tsx` & `support/page.tsx`**
   Format invoices and tickets into clean data tables with 1px slate gridlines and monochrome status pills.
-- [ ] **Step 4: Refactor Client Modals**
+- [x] **Step 4: Refactor Client Modals**
   Update modal dialogs in `src/components/client/` to use slate borders, muted headers, and monochrome buttons.
-- [ ] **Step 5: Verify `http://localhost:3300/dashboard` in browser subagent**
-- [ ] **Step 6: Commit Task 5**
+- [x] **Step 5: Verify `http://localhost:3300/dashboard` in browser subagent**
+- [x] **Step 6: Commit Task 5**
   ```bash
   git add src/app/dashboard/ src/components/client/
   git commit -m "feat(dashboard): purge amber fills and harmonize client dashboard pages"
@@ -197,20 +197,20 @@
 - Modify: `src/components/community/AiReplyCard.tsx`
 - Modify: `src/components/community/TiptapEditor.tsx`
 
-- [ ] **Step 1: Refactor `CommunityBoard.tsx`**
+- [x] **Step 1: Refactor `CommunityBoard.tsx`**
   Update topic category pills to minimal outline buttons (`border-border text-muted-foreground`, active: `bg-foreground text-background font-semibold`). Update search input and new discussion modal to slate tokens.
-- [ ] **Step 2: Refactor `ThreadCard.tsx`**
+- [x] **Step 2: Refactor `ThreadCard.tsx`**
   Remove amber borders and halos. Apply `hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 hover:shadow-md`. Refine AI status badge to subtle monochrome or slate pill with sparkle.
-- [ ] **Step 3: Refactor `ThreadDrawer.tsx` & `AiReplyCard.tsx`**
+- [x] **Step 3: Refactor `ThreadDrawer.tsx` & `AiReplyCard.tsx`**
   Update drawer container to `bg-card border-l border-border`. Format AI reply card with crisp slate border, legal citations rendered in `font-mono text-xs`.
-- [ ] **Step 4: Refactor `TiptapEditor.tsx`**
+- [x] **Step 4: Refactor `TiptapEditor.tsx`**
   Enforce 1px slate toolbar divider, clean active formatting button states (`bg-secondary`), and focus ring.
-- [ ] **Step 5: Run community test suite to verify zero logic regressions**
+- [x] **Step 5: Run community test suite to verify zero logic regressions**
   ```bash
   npm test src/tests/community_api.test.ts src/tests/community_e2e.test.ts
   ```
   Expected: All tests pass.
-- [ ] **Step 6: Commit Task 6**
+- [x] **Step 6: Commit Task 6**
   ```bash
   git add src/components/community/
   git commit -m "feat(community): harmonize community board, thread cards, and tiptap editor"
@@ -233,14 +233,14 @@
 - Modify: `src/components/agents/BuilderAccordion.tsx`
 - Modify: `src/components/agents/SandboxCanvas.tsx`
 
-- [ ] **Step 1: Refactor `ItemCard.tsx` & `CategoryTabs.tsx` in Hub**
+- [x] **Step 1: Refactor `ItemCard.tsx` & `CategoryTabs.tsx` in Hub**
   Rebuild agent cards to 3-column minimal grid matching website `.pillar-teaser-grid`. Remove amber fills; use monochrome category tags and high-contrast buttons.
-- [ ] **Step 2: Refactor Hub Modals & Manifest Viewer**
+- [x] **Step 2: Refactor Hub Modals & Manifest Viewer**
   Format `ManifestCodeViewer.tsx` with clean `font-mono` slate container; clean modal actions.
-- [ ] **Step 3: Refactor Agent Studio in `src/components/agents/`**
+- [x] **Step 3: Refactor Agent Studio in `src/components/agents/`**
   Transform `ArchetypeCard.tsx`, `BuilderAccordion.tsx`, and `SandboxCanvas.tsx` from colored boxes to executive typographic cards.
-- [ ] **Step 4: Verify `http://localhost:3300/hub` and `/dashboard/agents` in browser subagent**
-- [ ] **Step 5: Commit Task 7**
+- [x] **Step 4: Verify `http://localhost:3300/hub` and `/dashboard/agents` in browser subagent**
+- [x] **Step 5: Commit Task 7**
   ```bash
   git add src/app/hub/ src/components/hub/ src/components/agents/
   git commit -m "feat(hub): harmonize garuda catalog and agent studio components"
@@ -261,14 +261,14 @@
 - Modify: `src/components/admin/ticket-resolution-modal.tsx`
 - Modify: `src/components/admin/soft-delete-modal.tsx`
 
-- [ ] **Step 1: Refactor `metrics-card.tsx` & `admin/dashboard/page.tsx`**
+- [x] **Step 1: Refactor `metrics-card.tsx` & `admin/dashboard/page.tsx`**
   KPI metrics styled with bold numerals (`text-2xl font-bold tracking-tight text-foreground`), slate borders, and subtle trend badges.
-- [ ] **Step 2: Refactor `users-table.tsx` & `user-view-drawer.tsx`**
+- [x] **Step 2: Refactor `users-table.tsx` & `user-view-drawer.tsx`**
   Table rows with 1px slate gridlines, clean slate header row, and monochrome actions.
-- [ ] **Step 3: Refactor Admin Modals**
+- [x] **Step 3: Refactor Admin Modals**
   Update `ticket-resolution-modal.tsx` and `soft-delete-modal.tsx` to slate tokens.
-- [ ] **Step 4: Verify `http://localhost:3300/admin/dashboard` in browser subagent**
-- [ ] **Step 5: Commit Task 8**
+- [x] **Step 4: Verify `http://localhost:3300/admin/dashboard` in browser subagent**
+- [x] **Step 5: Commit Task 8**
   ```bash
   git add src/app/admin/ src/components/admin/
   git commit -m "feat(admin): harmonize super admin center and metrics components"
@@ -282,17 +282,17 @@
 - Test: All 5 test suites
 - Inspect: Browser views across website and portal
 
-- [ ] **Step 1: Run all automated tests**
+- [x] **Step 1: Run all automated tests**
   ```bash
   npm test
   ```
   Expected: 5 passing suites, 0 failures.
-- [ ] **Step 2: Run Next.js build / typecheck**
+- [x] **Step 2: Run Next.js build / typecheck**
   ```bash
   npm run build
   ```
   Expected: Zero compilation errors, clean bundle.
-- [ ] **Step 3: Execute visual verification matrix in browser subagent**
+- [x] **Step 3: Execute visual verification matrix in browser subagent**
   Compare `http://localhost:5050` (Website) with:
   1. `http://localhost:3300/login`
   2. `http://localhost:3300/dashboard`
@@ -300,7 +300,7 @@
   4. `http://localhost:3300/hub`
   5. `http://localhost:3300/admin/dashboard`
   in both Light and Dark modes. Confirm font weights, card radiuses, border contrasts, and button weights are completely seamless.
-- [ ] **Step 4: Final commit and summary**
+- [x] **Step 4: Final commit and summary**
   ```bash
   git commit --allow-empty -m "chore: complete look-and-feel harmonization across website and portal"
   ```
