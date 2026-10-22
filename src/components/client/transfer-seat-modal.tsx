@@ -74,7 +74,7 @@ export function TransferSeatModal({
       <div className="relative bg-card border border-border rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95 duration-150">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-600 border border-blue-500/20 shrink-0">
+            <div className="p-2.5 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900 shrink-0">
               <ArrowRightLeft className="w-5 h-5" />
             </div>
             <div>
@@ -99,11 +99,11 @@ export function TransferSeatModal({
             <span>New Bound Workstation</span>
           </div>
           <div className="flex items-center justify-between font-medium">
-            <div className="flex items-center gap-2 text-destructive font-mono">
+            <div className="flex items-center gap-2 text-rose-500 font-mono">
               <Laptop className="w-3.5 h-3.5" />
               <span>{currentActiveDevice ? currentActiveDevice.deviceName : 'No Active Device'}</span>
             </div>
-            <ArrowRightLeft className="w-4 h-4 text-blue-500" />
+            <ArrowRightLeft className="w-4 h-4 text-slate-500" />
             <div className="flex items-center gap-2 text-emerald-500 font-mono">
               <Laptop className="w-3.5 h-3.5" />
               <span>{deviceName || 'Target Workstation'}</span>
@@ -161,7 +161,7 @@ export function TransferSeatModal({
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-1.5 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-md shadow-sm flex items-center gap-1.5 transition-all disabled:opacity-50"
+              className="px-4 py-1.5 text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-md shadow-sm flex items-center gap-1.5 transition-all disabled:opacity-50"
             >
               <ArrowRightLeft className="w-3.5 h-3.5" />
               <span>{loading ? 'Transferring...' : 'Confirm 1-Click Transfer'}</span>

@@ -217,10 +217,10 @@ function WorkspaceContent() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
               USER WORKSPACE
             </span>
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
               Unified Hub
             </span>
           </div>
@@ -260,7 +260,7 @@ function WorkspaceContent() {
         <div className="bg-card border border-border p-5 rounded-xl shadow-sm space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-border">
             <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-amber-500" />
+              <Building2 className="w-4 h-4 text-muted-foreground" />
               <span>Chamber &amp; Practitioner Profile</span>
             </h2>
             {saveSuccess && (
@@ -275,7 +275,7 @@ function WorkspaceContent() {
             <div className="space-y-1">
               <label className="font-semibold text-foreground flex items-center gap-1.5">
                 <span>Registered Email</span>
-                <span className="text-[9px] bg-blue-500/10 text-blue-500 border border-blue-500/20 px-1 rounded flex items-center gap-0.5 font-mono">
+                <span className="text-[9px] bg-secondary text-muted-foreground border border-border px-1 rounded flex items-center gap-0.5 font-mono">
                   <Lock className="w-2.5 h-2.5" /> IMMUTABLE
                 </span>
               </label>
@@ -296,7 +296,7 @@ function WorkspaceContent() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Senior Advocate / Legal Counsel"
-                className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
               />
             </div>
 
@@ -308,7 +308,7 @@ function WorkspaceContent() {
                 value={org}
                 onChange={(e) => setOrg(e.target.value)}
                 placeholder="e.g. Rao &amp; Partners Insolvency Advocates"
-                className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
               />
             </div>
 
@@ -330,10 +330,10 @@ function WorkspaceContent() {
           <div>
             <div className="flex items-center justify-between pb-2 border-b border-border">
               <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-                <KeyRound className="w-4 h-4 text-emerald-500" />
+                <KeyRound className="w-4 h-4 text-muted-foreground" />
                 <span>Active License &amp; Entitlements</span>
               </h2>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-amber-500/15 text-amber-500 border border-amber-500/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded font-bold bg-secondary text-foreground border border-border">
                 {license?.planTier || 'ENTERPRISE'}
               </span>
             </div>
@@ -357,7 +357,7 @@ function WorkspaceContent() {
                   </button>
                   <button
                     onClick={handleCopyKey}
-                    className="p-2 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-500 transition-colors"
+                    className="p-2 rounded-md bg-secondary hover:bg-secondary/80 border border-border text-foreground transition-colors"
                     title="Copy License Key"
                   >
                     {copiedKey ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -375,7 +375,7 @@ function WorkspaceContent() {
                 </div>
                 <div className="w-full h-2 rounded-full bg-secondary overflow-hidden">
                   <div 
-                    className="h-full bg-amber-500 transition-all rounded-full"
+                    className="h-full bg-foreground transition-all rounded-full"
                     style={{ width: `${Math.min(100, (activeCount / (maxDevices || 1)) * 100)}%` }}
                   />
                 </div>
@@ -497,7 +497,7 @@ function WorkspaceContent() {
       <div className="space-y-4">
         <div>
           <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-            <DownloadCloud className="w-4 h-4 text-amber-500" />
+            <DownloadCloud className="w-4 h-4 text-muted-foreground" />
             <span>Install Garuda Desktop Harness</span>
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -512,29 +512,29 @@ function WorkspaceContent() {
               className={cn(
                 "p-4 rounded-xl border bg-card flex flex-col justify-between space-y-3 transition-all",
                 rel.recommended
-                  ? "border-amber-500/50 shadow-sm shadow-amber-500/10"
-                  : "border-border hover:border-border/80"
+                  ? "border-slate-400 dark:border-slate-600 shadow-xs"
+                  : "border-border hover:border-slate-400 dark:hover:border-slate-600"
               )}
             >
               <div>
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-foreground">{rel.os}</span>
                   {rel.recommended && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-500">
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-secondary text-foreground border border-border">
                       Recommended
                     </span>
                   )}
                 </div>
                 <div className="text-[11px] text-muted-foreground mt-0.5">{rel.arch}</div>
-                <div className="font-mono text-[10px] text-amber-500 mt-2">{rel.fileName} ({rel.fileSize})</div>
+                <div className="font-mono text-[10px] text-muted-foreground mt-2">{rel.fileName} ({rel.fileSize})</div>
               </div>
 
               <button
                 onClick={() => alert(`Starting download for ${rel.fileName}`)}
                 className={cn(
-                  "w-full py-1.5 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors",
+                  "w-full py-1.5 px-3 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer",
                   rel.recommended
-                    ? "bg-amber-500 hover:bg-amber-600 text-black shadow-sm"
+                    ? "bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 shadow-xs"
                     : "bg-secondary hover:bg-secondary/80 text-foreground border border-border"
                 )}
               >

@@ -54,7 +54,7 @@ export function CreateTicketModal({ isOpen, onClose, onSuccess }: CreateTicketMo
       <div className="relative bg-card border border-border rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95 duration-150">
         <div className="flex items-start justify-between pb-2 border-b border-border">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500 border border-blue-500/20">
+            <div className="p-2 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900">
               <HelpCircle className="w-5 h-5" />
             </div>
             <div>
@@ -118,7 +118,7 @@ export function CreateTicketModal({ isOpen, onClose, onSuccess }: CreateTicketMo
             <button
               type="submit"
               disabled={loading}
-              className="px-3.5 py-1.5 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-md shadow flex items-center gap-1.5 disabled:opacity-50"
+              className="px-3.5 py-1.5 text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-md shadow flex items-center gap-1.5 disabled:opacity-50 transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
               <span>{loading ? 'Submitting...' : 'Submit Ticket'}</span>

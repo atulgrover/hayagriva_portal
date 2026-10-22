@@ -52,7 +52,7 @@ export function DeactivateModal({ device, isOpen, onClose, onConfirm }: Deactiva
 
         <div className="bg-secondary/40 border border-border p-3 rounded-lg text-xs space-y-1">
           <p className="font-semibold text-foreground flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-900 dark:bg-white"></span>
             Opens 1 Chamber Seat
           </p>
           <p className="text-[11px] text-muted-foreground">

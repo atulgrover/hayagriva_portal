@@ -93,36 +93,36 @@ export default function ClientDashboardPage() {
       {/* Sovereign Chamber Inventory Section */}
       <div className="space-y-6">
         {/* Section 1: Sovereign Agent Packages (Star of the Show) */}
-        <div className="p-6 rounded-xl border border-amber-500/30 bg-card space-y-4 shadow-sm relative overflow-hidden">
+        <div className="p-6 rounded-xl border border-border bg-card space-y-4 shadow-xs relative overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border">
             <div>
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-amber-500/15 text-amber-500">
+                <div className="p-1.5 rounded-lg bg-secondary text-foreground border border-border">
                   <Bot className="w-5 h-5" />
                 </div>
                 <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                   Custom Sovereign Agent Packages (.haya)
-                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-500 border border-amber-500/20">
+                  <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-secondary text-foreground border border-border">
                     FLAGSHIP
                   </span>
                 </h2>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Active custom agents crafted for your chamber. Download compiled <code className="text-amber-500">.haya</code> packages to dock directly into your desktop harness.
+                Active custom agents crafted for your chamber. Download compiled <code className="font-mono text-foreground font-semibold">.haya</code> packages to dock directly into your desktop harness.
               </p>
             </div>
 
             <div className="flex items-center gap-2 self-start sm:self-auto">
               <Link
                 href="/dashboard/agents/builder?archetype=custom_chamber"
-                className="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-sm shadow-amber-500/20"
+                className="px-3.5 py-1.5 rounded-md bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 font-semibold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Create New Agent</span>
               </Link>
               <Link
                 href="/dashboard/agents"
-                className="px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 text-foreground text-xs font-medium flex items-center gap-1 border border-border transition-colors"
+                className="px-3 py-1.5 rounded-md bg-secondary hover:bg-secondary/80 text-foreground text-xs font-semibold flex items-center gap-1 border border-border transition-colors"
               >
                 <span>Agent Studio</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
@@ -132,11 +132,11 @@ export default function ClientDashboardPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {mockAgents.map((agt) => (
-              <div key={agt.id} className="p-4 rounded-lg bg-secondary/40 border border-border/80 flex items-center justify-between hover:border-amber-500/40 transition-colors">
+              <div key={agt.id} className="p-4 rounded-xl bg-secondary/30 border border-border flex items-center justify-between hover:border-slate-400 dark:hover:border-slate-600 transition-colors">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-semibold text-foreground">{agt.name}</h3>
-                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500">
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-secondary text-muted-foreground border border-border">
                       {agt.version}
                     </span>
                   </div>
@@ -144,9 +144,9 @@ export default function ClientDashboardPage() {
                 </div>
                 <button
                   onClick={() => alert(`Downloading ${agt.file} for Chamber Docking`)}
-                  className="px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 text-foreground text-xs font-medium flex items-center gap-1.5 border border-border transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-md bg-secondary hover:bg-secondary/80 text-foreground text-xs font-semibold flex items-center gap-1.5 border border-border transition-colors cursor-pointer"
                 >
-                  <DownloadCloud className="w-3.5 h-3.5 text-amber-500" />
+                  <DownloadCloud className="w-3.5 h-3.5 text-muted-foreground" />
                   <span>Download</span>
                 </button>
               </div>
@@ -155,26 +155,27 @@ export default function ClientDashboardPage() {
         </div>
 
         {/* Section 2: Hardware Seats & Devices */}
-        <div className="p-6 rounded-xl border border-border bg-card space-y-4 shadow-sm">
+        <div className="p-6 rounded-xl border border-border bg-card space-y-4 shadow-xs">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-              <Laptop className="w-4 h-4 text-amber-500" />
+              <Laptop className="w-4 h-4 text-muted-foreground" />
               Chamber Hardware Seat & Transfer
               <span className="text-xs font-normal text-muted-foreground">
                 ({data?.license ? `${data.license.activeDevices} / ${data.license.maxDevices}` : '1 / 1'} Seat Bound)
               </span>
             </h2>
-            <Link href="/dashboard/licenses" className="text-xs text-amber-500 hover:underline flex items-center gap-1">
+            <Link href="/dashboard/licenses" className="text-xs text-foreground font-semibold hover:underline flex items-center gap-1">
               Manage / Transfer Seat <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {mockDevices.map((dev) => (
-              <div key={dev.id} className="p-4 rounded-lg bg-secondary/40 border border-border/80 space-y-2">
+              <div key={dev.id} className="p-4 rounded-xl bg-secondary/30 border border-border space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-foreground">{dev.deviceName}</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
                     {dev.status}
                   </span>
                 </div>
@@ -194,7 +195,7 @@ export default function ClientDashboardPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between pt-2">
             <div>
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider text-muted-foreground">
+              <h2 className="text-xs font-bold font-mono text-muted-foreground uppercase tracking-wider">
                 Sovereign Reference Catalogs (In-Harness Sync)
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -205,28 +206,28 @@ export default function ClientDashboardPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Statutory Vaults Card */}
-            <div className="p-5 rounded-xl border border-border bg-card space-y-3 shadow-sm">
+            <div className="p-5 rounded-xl border border-border bg-card space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <Database className="w-4 h-4 text-amber-500" />
+                  <Database className="w-4 h-4 text-muted-foreground" />
                   Statutory Vaults
                   <span className="text-xs font-normal text-muted-foreground">({mockVaults.length} Cartridges)</span>
                 </h3>
-                <Link href="/dashboard/vaults" className="text-xs text-amber-500 hover:underline flex items-center gap-1">
+                <Link href="/dashboard/vaults" className="text-xs text-foreground font-semibold hover:underline flex items-center gap-1">
                   View Catalog <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
               <div className="space-y-2">
                 {mockVaults.map((vault) => (
-                  <div key={vault.id} className="p-3 rounded-lg bg-secondary/40 border border-border/70 flex items-center justify-between text-xs">
+                  <div key={vault.id} className="p-3 rounded-lg bg-secondary/30 border border-border flex items-center justify-between text-xs">
                     <div>
                       <div className="font-semibold text-foreground">{vault.name}</div>
                       <div className="font-mono text-[11px] text-muted-foreground">{vault.id}</div>
                     </div>
                     <div className="text-right">
                       <div className="text-muted-foreground font-mono text-[11px]">{vault.size}</div>
-                      <div className="text-amber-500 font-mono text-[10px]">{vault.memory}</div>
+                      <div className="text-muted-foreground font-mono text-[10px]">{vault.memory}</div>
                     </div>
                   </div>
                 ))}
@@ -234,26 +235,26 @@ export default function ClientDashboardPage() {
             </div>
 
             {/* BharatGen Models Card */}
-            <div className="p-5 rounded-xl border border-border bg-card space-y-3 shadow-sm">
+            <div className="p-5 rounded-xl border border-border bg-card space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                  <Cpu className="w-4 h-4 text-amber-500" />
+                  <Cpu className="w-4 h-4 text-muted-foreground" />
                   BharatGen Models
                   <span className="text-xs font-normal text-muted-foreground">({mockModels.length} Certified SLMs)</span>
                 </h3>
-                <Link href="/dashboard/models" className="text-xs text-amber-500 hover:underline flex items-center gap-1">
+                <Link href="/dashboard/models" className="text-xs text-foreground font-semibold hover:underline flex items-center gap-1">
                   View Models <ArrowUpRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
               <div className="space-y-2">
                 {mockModels.map((model) => (
-                  <div key={model.id} className="p-3 rounded-lg bg-secondary/40 border border-border/70 flex items-center justify-between text-xs">
+                  <div key={model.id} className="p-3 rounded-lg bg-secondary/30 border border-border flex items-center justify-between text-xs">
                     <div>
                       <div className="font-semibold text-foreground">{model.name}</div>
                       <div className="font-mono text-[11px] text-muted-foreground">{model.location}</div>
                     </div>
-                    <span className="text-xs font-mono font-bold text-foreground bg-secondary px-2 py-1 rounded">
+                    <span className="text-xs font-mono font-bold text-foreground bg-secondary px-2 py-1 rounded border border-border">
                       {model.size}
                     </span>
                   </div>

@@ -60,7 +60,7 @@ export function GenerateKeyModal({ isOpen, onClose, onSuccess }: GenerateKeyModa
       <div className="relative bg-card border border-border rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 duration-150">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20">
+            <div className="p-2.5 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900">
               <Zap className="w-5 h-5" />
             </div>
             <div>
@@ -90,8 +90,10 @@ export function GenerateKeyModal({ isOpen, onClose, onSuccess }: GenerateKeyModa
 
             <div className="bg-secondary/40 border border-border p-3 rounded-lg text-xs space-y-1">
               <p className="font-semibold text-foreground">Included Scopes:</p>
-              <p className="text-[11px] text-muted-foreground">
-                <code className="text-purple-500 font-mono">mcp:agent:read</code>, <code className="text-purple-500 font-mono">mcp:agent:exec</code>, <code className="text-purple-500 font-mono">mcp:vault:query</code>
+              <p className="text-[11px] text-muted-foreground font-mono flex flex-wrap gap-1.5 pt-1">
+                <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">mcp:agent:read</span>
+                <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">mcp:agent:exec</span>
+                <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">mcp:vault:query</span>
               </p>
             </div>
 
@@ -106,7 +108,7 @@ export function GenerateKeyModal({ isOpen, onClose, onSuccess }: GenerateKeyModa
               <button
                 type="submit"
                 disabled={loading}
-                className="px-3 py-1.5 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-md shadow flex items-center gap-1.5 disabled:opacity-50"
+                className="px-3 py-1.5 text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-md shadow flex items-center gap-1.5 disabled:opacity-50 transition-colors"
               >
                 <Key className="w-3.5 h-3.5" />
                 <span>{loading ? 'Generating...' : 'Generate Secret Key'}</span>
@@ -115,7 +117,7 @@ export function GenerateKeyModal({ isOpen, onClose, onSuccess }: GenerateKeyModa
           </form>
         ) : (
           <div className="space-y-4">
-            <div className="bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg flex items-start gap-2.5 text-xs text-amber-500">
+            <div className="bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg flex items-start gap-2.5 text-xs text-amber-600 dark:text-amber-400">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>
                 Make sure to copy your secret token now. For your security, you will not be able to see it again!
@@ -141,7 +143,7 @@ export function GenerateKeyModal({ isOpen, onClose, onSuccess }: GenerateKeyModa
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-1.5 text-xs font-semibold bg-primary text-primary-foreground rounded-md shadow"
+                className="px-4 py-1.5 text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-md shadow transition-colors"
               >
                 Done
               </button>

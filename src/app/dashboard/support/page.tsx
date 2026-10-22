@@ -46,14 +46,14 @@ export default function ClientSupportPage() {
           <button
             onClick={fetchTickets}
             disabled={loading}
-            className="p-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border transition-colors"
+            className="p-2 rounded-md bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-colors"
             title="Refresh tickets"
           >
             <RefreshCw className={cn("w-4 h-4", loading ? "animate-spin" : "")} />
           </button>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-3.5 py-1.5 text-xs font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg shadow-sm flex items-center gap-1.5 transition-all"
+            className="px-3.5 py-1.5 text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-md shadow-sm flex items-center gap-1.5 transition-all"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Create Support Ticket</span>
@@ -66,27 +66,27 @@ export default function ClientSupportPage() {
         {tickets.length > 0 ? (
           tickets.map((t) => {
             const priorityColor = {
-              URGENT: 'bg-destructive/15 text-destructive border-destructive/25',
-              HIGH: 'bg-amber-500/15 text-amber-500 border-amber-500/25',
-              MEDIUM: 'bg-blue-500/15 text-blue-500 border-blue-500/25',
-              LOW: 'bg-slate-500/15 text-slate-400 border-slate-500/25',
+              URGENT: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+              HIGH: 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-300 dark:border-slate-700',
+              MEDIUM: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700',
+              LOW: 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700',
             }[t.priority] || 'bg-secondary text-foreground';
 
             const statusColor = {
-              OPEN: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-              IN_PROGRESS: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-              RESOLVED: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
+              OPEN: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+              IN_PROGRESS: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700',
+              RESOLVED: 'bg-slate-100 dark:bg-slate-800 text-slate-400 border-slate-200 dark:border-slate-800',
             }[t.status] || 'bg-secondary text-foreground';
 
             return (
               <div
                 key={t.id}
-                className="bg-card border border-border rounded-xl p-4 shadow-sm space-y-3 hover:border-border/80 transition-all"
+                className="bg-card border border-border rounded-xl p-4 shadow-sm space-y-3 hover:border-slate-300 dark:hover:border-slate-700 transition-all"
               >
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono font-bold text-blue-500">{t.id}</span>
+                      <span className="text-xs font-mono font-bold text-slate-900 dark:text-slate-100">{t.id}</span>
                       <h3 className="text-sm font-bold text-foreground">{t.subject}</h3>
                     </div>
                   </div>
@@ -95,7 +95,11 @@ export default function ClientSupportPage() {
                     <span className={cn("px-2 py-0.5 rounded text-[10px] font-bold border font-mono", priorityColor)}>
                       {t.priority}
                     </span>
-                    <span className={cn("px-2 py-0.5 rounded text-[10px] font-bold border font-mono", statusColor)}>
+                    <span className={cn("px-2 py-0.5 rounded text-[10px] font-bold border font-mono inline-flex items-center gap-1.5", statusColor)}>
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        t.status === 'OPEN' ? "bg-emerald-500" : t.status === 'IN_PROGRESS' ? "bg-amber-500" : "bg-slate-400"
+                      )} />
                       {t.status}
                     </span>
                   </div>
@@ -140,7 +144,7 @@ export default function ClientSupportPage() {
             <p>You have no active support tickets.</p>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="px-3 py-1.5 bg-primary text-primary-foreground rounded text-xs font-semibold"
+              className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 rounded-md text-xs font-semibold"
             >
               Submit a Ticket
             </button>

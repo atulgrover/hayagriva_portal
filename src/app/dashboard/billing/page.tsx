@@ -43,7 +43,7 @@ export default function ClientBillingPage() {
         <button
           onClick={fetchInvoices}
           disabled={loading}
-          className="px-3 py-1.5 text-xs font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-md border border-border flex items-center gap-1.5 transition-colors self-start sm:self-auto"
+          className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-800 flex items-center gap-1.5 transition-colors self-start sm:self-auto"
         >
           <RefreshCw className={cn("w-3.5 h-3.5", loading ? "animate-spin" : "")} />
           <span>Refresh</span>
@@ -76,7 +76,7 @@ export default function ClientBillingPage() {
                 invoices.map((inv) => {
                   const statusColor = {
                     PAID: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-                    PENDING: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+                    PENDING: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700',
                     OVERDUE: 'bg-destructive/10 text-destructive border-destructive/20',
                   }[inv.status] || 'bg-secondary text-foreground';
 
@@ -85,14 +85,18 @@ export default function ClientBillingPage() {
                       <td className="px-4 py-3 font-mono text-xs font-bold text-foreground">
                         {inv.id}
                       </td>
-                      <td className="px-4 py-3 font-mono text-xs text-amber-500 font-semibold">
+                      <td className="px-4 py-3 font-mono text-xs text-foreground font-semibold">
                         {inv.planTier}
                       </td>
                       <td className="px-4 py-3 font-bold text-xs font-mono text-foreground">
                         ₹{Number(inv.amountInr).toLocaleString('en-IN')}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={cn("px-2 py-0.5 rounded text-[10px] font-bold border font-mono", statusColor)}>
+                        <span className={cn("px-2 py-0.5 rounded text-[10px] font-bold border font-mono inline-flex items-center gap-1.5", statusColor)}>
+                          <span className={cn(
+                            "w-1.5 h-1.5 rounded-full",
+                            inv.status === 'PAID' ? "bg-emerald-500" : inv.status === 'PENDING' ? "bg-amber-500" : "bg-destructive"
+                          )} />
                           {inv.status}
                         </span>
                       </td>
