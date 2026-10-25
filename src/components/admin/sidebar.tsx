@@ -76,12 +76,12 @@ export function AdminSidebar() {
         <div className="flex items-center space-x-2.5">
           <div className="w-8 h-8 rounded-lg bg-secondary border border-border flex items-center justify-center p-0.5 shadow-xs overflow-hidden">
             <img
-              src="/branding/hayagriva_knight_dark.png"
+              src="/branding/unicorn_emblem_white.png"
               alt="Hayagriva"
               className="w-full h-full object-contain filter drop-shadow-sm hidden dark:block"
             />
             <img
-              src="/branding/hayagriva_knight_light.png"
+              src="/branding/unicorn_emblem.png"
               alt="Hayagriva"
               className="w-full h-full object-contain filter drop-shadow-sm block dark:hidden"
             />

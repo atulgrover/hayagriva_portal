@@ -7,6 +7,7 @@
   /* 1. Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-serif: 'Noto Serif Devanagari', -apple-system, Georgia, serif;
 
   /* 2. Canonical Shadcn Slate Neutral Palette */
   --slate-50:  #f8fafc;

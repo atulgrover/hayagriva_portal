@@ -20,7 +20,6 @@ import {
   EyeOff,
   Loader2,
   Sparkles,
-  CheckCircle2,
   Sun,
   Moon,
   Laptop,
@@ -155,119 +154,32 @@ function LoginContent() {
   return (
     <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-12 bg-background text-foreground">
       {/* ─────────────────────────────────────────────────────────────────────────────
-          LEFT PANEL: Concept A - Sovereign Legal Capabilities (58% desktop width)
+          LEFT PANEL: Heroic Emblem & Sovereign Motto (58% desktop width)
          ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="lg:col-span-7 hidden lg:flex flex-col justify-between p-8 xl:p-14 bg-card border-r border-border relative overflow-hidden select-none">
-        {/* Top Branding */}
-        <div className="space-y-6 relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 flex items-center justify-center font-black text-base shadow-xs">
-              ॐ
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold tracking-tight text-foreground">
-                  HAYAGRIVA
-                </span>
-                <Badge variant="outline" className="text-[10px] py-0 px-1.5 uppercase font-mono font-semibold">
-                  Sovereign Fleet
-                </Badge>
-              </div>
-              <p className="text-[11px] text-muted-foreground font-mono">
-                Decentralized Legal AI Control Plane
-              </p>
-            </div>
+      <div className="lg:col-span-7 hidden lg:flex flex-col items-center justify-center p-8 xl:p-14 bg-card border-r border-border relative overflow-hidden select-none">
+        {/* Center: Large Multi-Armed Hayagriva Icon + Sacred Shloka */}
+        <div className="flex flex-col items-center justify-center text-center px-4 py-8 relative z-10 space-y-6 max-w-xl">
+          <div className="relative w-64 h-64 sm:w-72 sm:h-72 xl:w-80 xl:h-80 flex items-center justify-center">
+            <img
+              src="/branding/hayagriva_multi_arm_white.png"
+              alt="Lord Hayagriva"
+              className="w-full h-full object-contain filter drop-shadow-md hidden dark:block transition-transform hover:scale-[1.02] duration-300"
+            />
+            <img
+              src="/branding/hayagriva_multi_arm.png"
+              alt="Lord Hayagriva"
+              className="w-full h-full object-contain filter drop-shadow-md block dark:hidden transition-transform hover:scale-[1.02] duration-300"
+            />
           </div>
 
-          <div className="space-y-2 pt-2">
-            <h1 className="text-2xl xl:text-3xl font-extrabold tracking-tight text-foreground leading-tight">
-              Sovereign AI Built for Indian Legal Chambers & Insolvency Resolution.
-            </h1>
-            <p className="text-xs xl:text-sm text-muted-foreground max-w-xl leading-relaxed">
-              Air-gapped execution, local models, and domain-specialized legal intelligence. Keep confidential case notes in your chamber with zero cloud leakage.
+          <div className="space-y-3 max-w-lg mx-auto">
+            <p className="font-serif text-base sm:text-lg xl:text-xl font-medium text-foreground tracking-wide leading-relaxed">
+              ज्ञानानन्दमयं देवं निर्मलस्फटिकाकृतिम् ।<br />
+              आधारं सर्वविद्यानां हयग्रीवमुपास्महे ॥
             </p>
-          </div>
-        </div>
-
-        {/* Middle: 4 Distinct Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 my-8 relative z-10">
-          {/* Card 1: Air-Gap Privacy */}
-          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
-                01
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
-                Privacy
-              </span>
-            </div>
-            <h2 className="text-xs font-bold text-foreground">Air-Gapped Sovereign Privacy</h2>
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Local LLMs run entirely inside your chamber. Client case files and debtor records never train public models or leave your local network.
+            <p className="font-serif text-xs sm:text-sm font-normal text-muted-foreground italic leading-relaxed">
+              &ldquo;We bow to Lord Hayagriva, whose form shines clear as pure crystal, the sacred source of all intellect, wisdom, and learning.&rdquo;
             </p>
-          </div>
-
-          {/* Card 2: 64k-Node Knowledge Graph */}
-          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
-                02
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
-                Knowledge Graph
-              </span>
-            </div>
-            <h2 className="text-xs font-bold text-foreground">64k-Node Statutory Graph</h2>
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Pre-indexed Bare Acts, IBC 2016 regulations, and precedent orders with automated statutory citation verification on Azure.
-            </p>
-          </div>
-
-          {/* Card 3: Garuda Agent Cartridge Fleet */}
-          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
-                03
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
-                Agents
-              </span>
-            </div>
-            <h2 className="text-xs font-bold text-foreground">Garuda Legal Agent Fleet</h2>
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Downloadable autonomous agents for Section 43/45/66 avoidance audits, CIRP claim adjudication, and commercial dispute drafting.
-            </p>
-          </div>
-
-          {/* Card 4: Community & LightRAG Bot */}
-          <div className="p-4 rounded-xl border border-border bg-background space-y-2 hover:border-slate-400 dark:hover:border-slate-600 hover:-translate-y-0.5 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase px-1.5 py-0.5 rounded border border-border bg-secondary/50">
-                04
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
-                Community
-              </span>
-            </div>
-            <h2 className="text-xs font-bold text-foreground">Community & LightRAG Bot</h2>
-            <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Collaborate directly with peer advocates and consult the sovereign legal knowledge graph right inside your portal dashboard.
-            </p>
-          </div>
-        </div>
-
-        {/* Bottom: Trust & Hardware-Bound Licensing Seal */}
-        <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground relative z-10">
-          <div className="flex items-center gap-2">
-            <Laptop className="w-4 h-4 text-muted-foreground" />
-            <span className="font-medium text-foreground">
-              Hardware-Bound Cryptographic Licensing
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
-            <span className="px-1.5 py-0.5 rounded bg-secondary border border-border">macOS</span>
-            <span className="px-1.5 py-0.5 rounded bg-secondary border border-border">Windows</span>
-            <span className="px-1.5 py-0.5 rounded bg-secondary border border-border">Linux</span>
           </div>
         </div>
       </div>
@@ -275,12 +187,21 @@ function LoginContent() {
       {/* ─────────────────────────────────────────────────────────────────────────────
           RIGHT PANEL: Unified Tabbed Authentication Form (42% desktop width)
          ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-background relative">
+      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-background relative min-h-screen">
         {/* Top Bar with Theme Toggle */}
         <div className="flex items-center justify-between w-full pb-4">
           <div className="flex items-center gap-2 lg:hidden">
-            <div className="w-7 h-7 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 flex items-center justify-center font-black text-xs">
-              ॐ
+            <div className="w-7 h-7 rounded-lg bg-secondary border border-border flex items-center justify-center p-0.5 shadow-xs overflow-hidden">
+              <img
+                src="/branding/unicorn_emblem_white.png"
+                alt="Hayagriva"
+                className="w-full h-full object-contain filter drop-shadow-sm hidden dark:block"
+              />
+              <img
+                src="/branding/unicorn_emblem.png"
+                alt="Hayagriva"
+                className="w-full h-full object-contain filter drop-shadow-sm block dark:hidden"
+              />
             </div>
             <span className="font-bold text-sm tracking-tight text-foreground">
               HAYAGRIVA PORTAL
@@ -304,18 +225,6 @@ function LoginContent() {
 
         {/* Center Auth Card Container */}
         <div className="w-full max-w-md mx-auto my-auto space-y-6">
-          {/* Header */}
-          <div className="text-left space-y-1">
-            <h2 className="text-xl font-bold tracking-tight text-foreground">
-              {activeTab === 'login' ? 'Welcome back to Hayagriva' : 'Create Practitioner Account'}
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              {activeTab === 'login'
-                ? 'Sign in to access your chamber agents, licenses, and community board.'
-                : 'Get instant access to the sovereign portal and auto-provision 1 free license.'}
-            </p>
-          </div>
-
           {/* Unified Tab Switcher */}
           <div className="grid grid-cols-2 p-1 bg-secondary/60 rounded-lg border border-border text-xs font-medium">
             <button
@@ -346,7 +255,7 @@ function LoginContent() {
                   : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              Register License
+              Register
             </button>
           </div>
 
@@ -550,17 +459,6 @@ function LoginContent() {
               </Button>
             </form>
           )}
-
-          {/* Bottom Security Note */}
-          <div className="pt-4 border-t border-border/60 text-center text-[11px] text-muted-foreground flex items-center justify-center gap-1.5">
-            <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-            <span>Air-gapped deployment • Zero telemetry on case notes</span>
-          </div>
-        </div>
-
-        {/* Bottom Legal Copyright */}
-        <div className="text-center text-[10px] text-muted-foreground/60 pt-4">
-          © {new Date().getFullYear()} Hayagriva Sovereign AI Suite. All rights reserved.
         </div>
       </div>
     </div>

@@ -53,21 +53,30 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
   const isSuperAdmin = user?.role === 'SUPER_ADMIN';
 
   return (
-    <header className="h-14 border-b border-border bg-card/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 transition-colors">
+    <header className="h-[58px] border-b border-border bg-card/90 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 transition-colors">
       {/* Left: Brand & Main Navigation Tabs */}
       <div className="flex items-center space-x-6">
         <Link href="/hub" className="flex items-center space-x-2.5 group">
-          <div className="w-7 h-7 rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-950 flex items-center justify-center font-black text-xs shadow-xs group-hover:scale-105 transition-transform">
-            ॐ
+          <div className="w-8 h-8 rounded-lg bg-secondary border border-border flex items-center justify-center p-0.5 shadow-xs overflow-hidden group-hover:scale-105 transition-transform">
+            <img
+              src="/branding/unicorn_emblem_white.png"
+              alt="Hayagriva"
+              className="w-full h-full object-contain filter drop-shadow-sm hidden dark:block"
+            />
+            <img
+              src="/branding/unicorn_emblem.png"
+              alt="Hayagriva"
+              className="w-full h-full object-contain filter drop-shadow-sm block dark:hidden"
+            />
           </div>
           <div className="hidden md:flex flex-col">
             <span className="text-xs font-bold tracking-tight text-foreground flex items-center gap-1.5">
               HAYAGRIVA
-              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-secondary text-foreground font-semibold border border-border">
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-secondary text-foreground font-semibold border border-border uppercase tracking-wider">
                 SOVEREIGN HUB
               </span>
             </span>
-            <span className="text-[9px] text-muted-foreground">Legal AI Community & Chamber Fleet</span>
+            <span className="text-[9px] text-muted-foreground tracking-tight">Legal AI Community & Chamber Fleet</span>
           </div>
         </Link>
 
@@ -75,9 +84,9 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
         <nav className="flex items-center space-x-1 sm:space-x-2">
           <Link
             href="/dashboard/agents?tab=bazaar"
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium tracking-tight transition-all flex items-center gap-1.5 ${
               (pathname.includes('/agents') || pathname.startsWith('/hub'))
-                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
+                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/60'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
@@ -87,9 +96,9 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
 
           <Link
             href="/dashboard"
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium tracking-tight transition-all flex items-center gap-1.5 ${
               pathname === '/dashboard'
-                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
+                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/60'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
@@ -99,9 +108,9 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
 
           <Link
             href="/dashboard/community"
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium tracking-tight transition-all flex items-center gap-1.5 ${
               pathname.startsWith('/dashboard/community')
-                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
+                ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/60'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
           >
@@ -112,9 +121,9 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
           {isSuperAdmin && (
             <Link
               href="/admin/dashboard"
-              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-md text-xs font-medium tracking-tight transition-all flex items-center gap-1.5 ${
                 pathname.startsWith('/admin')
-                  ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/50'
+                  ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/60'
                   : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
               }`}
             >
@@ -134,14 +143,14 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
             <span className="font-medium text-foreground max-w-[140px] truncate">
               {user.org || user.name}
             </span>
-            <span className="font-mono text-[9px] px-1 py-0.2 rounded bg-secondary text-foreground font-bold border border-border">
+            <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-secondary text-foreground font-bold border border-border uppercase tracking-wider">
               {user.plan || 'ENTERPRISE'}
             </span>
           </div>
         ) : (
           <Link
             href="/login"
-            className="text-xs text-foreground hover:underline font-semibold px-2 py-1"
+            className="text-xs text-foreground hover:underline font-semibold px-2 py-1 tracking-tight"
           >
             Sign In with License
           </Link>
