@@ -27,7 +27,11 @@ export const metadata: Metadata = {
   title: 'Hayagriva Portal | Sovereign Legal AI Chamber & Control Plane',
   description: 'Sovereign AI Suite, Decentralized Legal Chamber & Licensing Control Plane for Advocates and Insolvency Professionals',
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
   },
 };
 
