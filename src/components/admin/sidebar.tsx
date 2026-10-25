@@ -76,7 +76,7 @@ export function AdminSidebar() {
   return (
     <aside className="w-64 border-r border-border bg-card flex flex-col h-screen select-none sticky top-0 shrink-0">
       {/* Brand Header */}
-      <div className="p-4 border-b border-border flex items-center justify-between">
+      <div className="h-[71px] px-4 border-b border-border flex items-center justify-between shrink-0">
         <div className="flex items-center space-x-2.5">
           <div className="w-8 h-8 rounded-lg bg-secondary border border-border flex items-center justify-center p-0.5 shadow-xs overflow-hidden">
             <img
