@@ -12,7 +12,10 @@ import {
   Cpu,
   Bot,
   Sparkles,
-  MessageSquare
+  MessageSquare,
+  LayoutDashboard,
+  User,
+  DownloadCloud
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -30,26 +33,33 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    title: 'User Workspace',
+    title: 'Core Workspace',
     items: [
-      { name: 'Profile / License / Hardware', href: '/dashboard/workspace', icon: Laptop },
-      { name: 'Advocate Community & AI Bot', href: '/dashboard/community', icon: MessageSquare, badge: 'Public' },
-      { name: 'Custom Agents', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
+      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { name: 'Profile', href: '/dashboard/workspace', icon: User },
     ]
   },
   {
-    title: 'Garuda Directories',
+    title: 'Workspace & Studio',
     items: [
-      { name: 'Sovereign Models', href: '/dashboard/models', icon: Cpu },
-      { name: 'Knowledge Vaults', href: '/dashboard/vaults', icon: Database },
-      { name: 'Community Agents', href: '/dashboard/community-agents', icon: Sparkles, badge: 'Registry' },
+      { name: 'Discussions', href: '/dashboard/community', icon: MessageSquare, badge: 'Live' },
+      { name: 'Studio', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
+      { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
     ]
   },
   {
-    title: 'Governance',
+    title: 'AI Assets',
     items: [
-      { name: 'Invoices & Payments', href: '/dashboard/billing', icon: CreditCard },
-      { name: 'Helpdesk & Support', href: '/dashboard/support', icon: HelpCircle },
+      { name: 'Harness', href: '/dashboard/harness', icon: DownloadCloud },
+      { name: 'Vaults', href: '/dashboard/vaults', icon: Database },
+      { name: 'Models', href: '/dashboard/models', icon: Cpu },
+      { name: 'Agents', href: '/dashboard/community-agents', icon: Sparkles, badge: 'Registry' },
+    ]
+  },
+  {
+    title: 'Operations',
+    items: [
+      { name: 'Support', href: '/dashboard/support', icon: HelpCircle },
     ]
   }
 ];
@@ -102,7 +112,7 @@ export function ClientSidebar() {
               } else {
                 isActive = pathname === item.href || 
                   (item.href !== '/dashboard' && !item.href.includes('?') && pathname.startsWith(item.href)) ||
-                  (item.href === '/dashboard/workspace' && (pathname === '/dashboard/licenses' || pathname === '/dashboard/profile' || pathname === '/dashboard/harness'));
+                  (item.href === '/dashboard/workspace' && (pathname === '/dashboard/licenses' || pathname === '/dashboard/profile'));
               }
               const Icon = item.icon;
 

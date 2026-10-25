@@ -18,7 +18,8 @@ import {
   ExternalLink,
   ChevronRight,
   Server,
-  MessageSquare
+  MessageSquare,
+  Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -38,32 +39,33 @@ const navSections: NavSection[] = [
   {
     title: 'Control Center',
     items: [
-      { name: 'Executive Overview', href: '/admin/dashboard', icon: LayoutDashboard },
-      { name: 'Users & Hardware Seats', href: '/admin/users', icon: Users },
+      { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+      { name: 'Users & Seats', href: '/admin/users', icon: Users },
     ]
   },
   {
-    title: 'Distribution & Assets',
+    title: 'Workspace & Studio',
     items: [
-      { name: 'Desktop Harness Releases', href: '/admin/harness', icon: DownloadCloud },
-      { name: 'Statutory Bare Act Vaults', href: '/admin/vaults', icon: Database },
-      { name: 'AI Models Registry', href: '/admin/models', icon: Cpu },
+      { name: 'Discussions', href: '/admin/community', icon: MessageSquare, badge: 'Live' },
+      { name: 'Studio', href: '/admin/agents', icon: Bot, badge: 'Studio' },
+      { name: 'Billing', href: '/admin/invoices', icon: CreditCard },
+    ]
+  },
+  {
+    title: 'AI Assets',
+    items: [
+      { name: 'Harness', href: '/admin/harness', icon: DownloadCloud },
+      { name: 'Vaults', href: '/admin/vaults', icon: Database },
+      { name: 'Models', href: '/admin/models', icon: Cpu },
+      { name: 'Agents', href: '/dashboard/community-agents', icon: Sparkles, badge: 'Registry' },
+    ]
+  },
+  {
+    title: 'Operations',
+    items: [
+      { name: 'Support', href: '/admin/support', icon: HelpCircle, badge: '4' },
       { name: 'Install Telemetry', href: '/admin/downloads', icon: Activity },
-    ]
-  },
-  {
-    title: 'Agent Foundry',
-    items: [
-      { name: 'Agent Cartridges Directory', href: '/admin/agents', icon: Bot },
-    ]
-  },
-  {
-    title: 'Commercial & Governance',
-    items: [
-      { name: 'Billing & Revenue', href: '/admin/invoices', icon: CreditCard },
-      { name: 'System & API Logs', href: '/admin/logs', icon: Server },
-      { name: 'Support Tickets', href: '/admin/support', icon: HelpCircle, badge: '4' },
-      { name: 'Community Discussions', href: '/admin/community', icon: MessageSquare, badge: 'Live' },
+      { name: 'System Logs', href: '/admin/logs', icon: Server },
     ]
   }
 ];
