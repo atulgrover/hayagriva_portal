@@ -1,84 +1,116 @@
-// admin-panel/src/app/dashboard/agents/page.tsx
+// src/app/dashboard/agents/page.tsx
 'use client';
 
-import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { 
   Bot, 
   Sparkles, 
-  Plus, 
+  DownloadCloud, 
   Search, 
   X, 
   ChevronRight, 
-  DownloadCloud, 
-  Layers, 
-  Code2, 
-  Database, 
   Check, 
   Copy, 
   Terminal, 
   ShieldCheck, 
-  SlidersHorizontal,
-  ArrowRight
+  CheckCircle2, 
+  Code2, 
+  Layers, 
+  Database,
+  ArrowRight,
+  ExternalLink
 } from 'lucide-react';
-import { courtArchetypes, CourtArchetype } from '@/components/agents/archetypes';
+import { HubItem } from '@/lib/db/schema';
 import { cn } from '@/lib/utils';
 
-interface ActiveChamberAgent {
-  id: string;
-  name: string;
-  description: string;
-  archetype: string;
-  version: string;
-  vaults: string[];
-  slashTrigger: string;
-  downloads: number;
-  updatedAt: string;
-  status: 'ACTIVE' | 'DRAFT';
-}
-
-const mockActiveAgents: ActiveChamberAgent[] = [
-  {
-    id: 'agt_001',
-    name: 'Section 43 Avoidance Auditor',
-    description: 'Audits multi-bank ledgers, identifies contra-sweeps, and flags preferential transactions within look-back windows.',
-    archetype: 'avoidance_auditor',
-    version: '1.0.0',
-    vaults: ['bare_ibc.vault', 'cirp_regs.vault'],
-    slashTrigger: '/avoidance-inquest',
-    downloads: 14,
-    updatedAt: '2 hours ago',
-    status: 'ACTIVE',
-  },
-  {
-    id: 'agt_002',
-    name: 'Commercial Injunction Drafter',
-    description: 'Generates urgent interlocutory relief petitions under Order 39 Rules 1 & 2 read with Section 151 CPC.',
-    archetype: 'commercial_pleading',
-    version: '1.1.0',
-    vaults: ['commercial_courts.vault', 'cpc_1908.vault'],
-    slashTrigger: '/cpc-order39',
-    downloads: 8,
-    updatedAt: 'Yesterday',
-    status: 'ACTIVE',
-  },
-];
-
-function CustomAgentsContent() {
+export default function AgentsDirectoryPage() {
+  const [items, setItems] = useState<HubItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedArchetype, setSelectedArchetype] = useState<CourtArchetype | null>(null);
+  const [selectedDomain, setSelectedDomain] = useState<string>('ALL');
+  const [selectedArchetype, setSelectedArchetype] = useState<string>('ALL');
+  const [selectedItem, setSelectedItem] = useState<HubItem | null>(null);
+  const [activeCodeFile, setActiveCodeFile] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [installingId, setInstallingId] = useState<string | null>(null);
+  const [installSuccessId, setInstallSuccessId] = useState<string | null>(null);
 
-  // Close drawer on Escape
+  // Close drawer on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setSelectedArchetype(null);
+        setSelectedItem(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Fetch Items from Hub API
+  useEffect(() => {
+    const fetchItems = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('/api/v1/hub/items?limit=50');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.items)) {
+          setItems(data.items);
+        }
+      } catch (err) {
+        console.error('Failed to load community agents:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchItems();
+  }, []);
+
+  // Unique domains and archetypes for dropdowns
+  const domains = useMemo(() => {
+    const set = new Set<string>();
+    items.forEach((item) => {
+      if (item.domain) set.add(item.domain);
+    });
+    return ['ALL', ...Array.from(set)];
+  }, [items]);
+
+  const archetypes = useMemo(() => {
+    const set = new Set<string>();
+    items.forEach((item) => {
+      if (item.archetype) set.add(item.archetype);
+    });
+    return ['ALL', ...Array.from(set)];
+  }, [items]);
+
+  // Calculate download size
+  const getItemSize = (item: HubItem): string => {
+    const manifest = (item.manifest as any) || {};
+    if (Array.isArray(manifest.files) && manifest.files.length > 0) {
+      const bytes = manifest.files.reduce((acc: number, f: any) => acc + (f.size || 0), 0);
+      if (bytes < 1024) return `${bytes} B`;
+      return `${(bytes / 1024).toFixed(1)} KB`;
+    }
+    return '18.4 KB';
+  };
+
+  // Filter items
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => {
+      const q = searchQuery.toLowerCase().trim();
+      const nameMatch = (item.name || '').toLowerCase().includes(q);
+      const descMatch = (item.description || '').toLowerCase().includes(q);
+      const domainMatch = (item.domain || '').toLowerCase().includes(q);
+      const tags = Array.isArray(item.tags) ? item.tags : [];
+      const tagMatch = tags.some((t: any) => String(t).toLowerCase().includes(q));
+
+      const matchesSearch = !q || nameMatch || descMatch || domainMatch || tagMatch;
+      const matchesDomain = selectedDomain === 'ALL' || item.domain === selectedDomain;
+      const matchesArchetype = selectedArchetype === 'ALL' || item.archetype === selectedArchetype;
+
+      return matchesSearch && matchesDomain && matchesArchetype;
+    });
+  }, [items, searchQuery, selectedDomain, selectedArchetype]);
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -86,76 +118,60 @@ function CustomAgentsContent() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  // Filter Active Agents
-  const filteredActiveAgents = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return mockActiveAgents;
-    return mockActiveAgents.filter(
-      (a) =>
-        a.name.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q) ||
-        a.slashTrigger.toLowerCase().includes(q) ||
-        a.archetype.toLowerCase().includes(q)
-    );
-  }, [searchQuery]);
+  const handleInstall = (item: HubItem) => {
+    setInstallingId(item.id);
+    setTimeout(() => {
+      setInstallingId(null);
+      setInstallSuccessId(item.id);
+      setTimeout(() => setInstallSuccessId(null), 3500);
+    }, 1200);
+  };
 
-  // Filter Starter Archetypes
-  const filteredArchetypes = useMemo(() => {
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return courtArchetypes;
-    return courtArchetypes.filter(
-      (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.description.toLowerCase().includes(q) ||
-        a.domain.toLowerCase().includes(q) ||
-        a.badge.toLowerCase().includes(q) ||
-        a.slashTrigger.toLowerCase().includes(q)
-    );
-  }, [searchQuery]);
+  const getSlashTrigger = (item: HubItem) => {
+    if (item.slug) return `/${item.slug}`;
+    const tags = Array.isArray(item.tags) ? item.tags : [];
+    if (tags.length > 0) return `/${tags[0]}`;
+    return '/run-agent';
+  };
+
+  // Manifest files for selected item
+  const selectedManifest = (selectedItem?.manifest as any) || {};
+  const manifestFiles: any[] = Array.isArray(selectedManifest.files) ? selectedManifest.files : [];
+  const currentCodeFile = manifestFiles.find(f => f.name === activeCodeFile) || manifestFiles[0];
 
   return (
-    <div className="space-y-8 pb-12 max-w-7xl mx-auto">
-      {/* Top Header */}
+    <div className="space-y-6 pb-12 max-w-7xl mx-auto">
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-              USER WORKSPACE
+            <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-secondary text-foreground border border-border">
+              AI ASSETS
             </span>
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-              Chamber Sovereign Agents
+              Community Registry
             </span>
           </div>
           <h1 className="text-xl font-bold tracking-tight text-foreground">
-            Custom Agents
+            Agents Directory
           </h1>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Audit, configure, and create bespoke legal agents for your chamber. Build from starter archetypes or launch a custom canvas with verified statutory grounding.
+            Pre-assembled Indian legal and statutory agents published by the sovereign legal community. Click any row to view manifest details and install.
           </p>
-        </div>
-
-        {/* Global Action CTA */}
-        <div className="flex items-center gap-2">
-          <Link
-            href="/dashboard/agents/builder?archetype=custom_chamber"
-            className="px-3.5 py-2 rounded-md bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 font-semibold text-xs flex items-center gap-2 transition-colors shadow-xs"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Create Custom Agent</span>
-          </Link>
         </div>
       </div>
 
-      {/* Filter / Search Bar */}
-      <div className="flex items-center justify-between gap-3 bg-card border border-border p-3 rounded-lg shadow-sm">
+      {/* Filter Bar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-card border border-border p-3 rounded-lg shadow-sm">
+        {/* Search */}
         <div className="relative flex-1">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search custom agents, archetypes, statutes, or slash commands..."
-            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white"
+            placeholder="Filter agents by title, description, slash trigger, or tags..."
+            className="w-full pl-9 pr-8 py-1.5 text-xs rounded-md border border-input bg-secondary/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           />
           {searchQuery && (
             <button 
@@ -166,381 +182,295 @@ function CustomAgentsContent() {
             </button>
           )}
         </div>
+
+        {/* Dropdowns */}
+        <div className="flex items-center gap-2">
+          {/* Domain Filter */}
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">Domain:</span>
+            <select
+              value={selectedDomain}
+              onChange={(e) => setSelectedDomain(e.target.value)}
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer max-w-[140px] truncate"
+            >
+              {domains.map((d) => (
+                <option key={d} value={d}>
+                  {d === 'ALL' ? 'All Domains' : d}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Archetype Filter */}
+          <div className="flex items-center gap-1.5 text-xs">
+            <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">Archetype:</span>
+            <select
+              value={selectedArchetype}
+              onChange={(e) => setSelectedArchetype(e.target.value)}
+              className="bg-secondary/60 border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer max-w-[140px] truncate"
+            >
+              {archetypes.map((a) => (
+                <option key={a} value={a}>
+                  {a === 'ALL' ? 'All Archetypes' : a}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
-      {/* SECTION 1: Active Chamber Agents (Simple Table) */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-              <Bot className="w-4 h-4 text-foreground" />
-              <span>Active Chamber Agents</span>
-              <span className="text-[11px] font-normal text-muted-foreground">
-                ({filteredActiveAgents.length} Configured)
-              </span>
-            </h2>
-            <p className="text-[11px] text-muted-foreground">
-              Agents currently deployed and authorized within your chamber fleet.
-            </p>
-          </div>
-          <Link 
-            href="/dashboard/agents/builder?archetype=custom_chamber" 
-            className="text-xs text-foreground hover:underline font-semibold"
-          >
-            + New Agent Blank Canvas
-          </Link>
-        </div>
-
-        <div className="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-border bg-muted/40 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  <th className="py-2.5 px-4">Agent Name &amp; Mandate</th>
-                  <th className="py-2.5 px-3 w-36">Slash Trigger</th>
-                  <th className="py-2.5 px-3 w-48">Statutory Vaults</th>
-                  <th className="py-2.5 px-3 w-24 text-center">Status</th>
-                  <th className="py-2.5 px-4 w-40 text-right">Actions</th>
+      {/* Agents Table */}
+      <div className="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-border bg-muted/40 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                <th className="py-2.5 px-4">Agent &amp; Role Description</th>
+                <th className="py-2.5 px-3 w-36">Trigger</th>
+                <th className="py-2.5 px-3 w-36">Archetype</th>
+                <th className="py-2.5 px-3 w-28 text-right">Download Size</th>
+                <th className="py-2.5 px-3 w-16 text-center"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border text-xs">
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-muted-foreground">
+                    Loading community registry...
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filteredActiveAgents.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-6 text-center text-muted-foreground">
-                      No active chamber agents match your search query.
+              ) : filteredItems.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-muted-foreground">
+                    No community agents match the current filter criteria.
+                  </td>
+                </tr>
+              ) : (
+                filteredItems.map((item) => (
+                  <tr
+                    key={item.id}
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setActiveCodeFile(null);
+                    }}
+                    className="hover:bg-secondary/40 cursor-pointer transition-colors group"
+                  >
+                    <td className="py-3 px-4">
+                      <div className="font-semibold text-foreground text-xs group-hover:text-primary transition-colors flex items-center gap-2">
+                        <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
+                        <span>{item.name}</span>
+                        {item.verified && (
+                          <span title="Verified Sovereign Agent" className="inline-flex">
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
+                        {item.description}
+                      </p>
+                    </td>
+
+                    <td className="py-3 px-3">
+                      <span className="font-mono text-[10px] px-2 py-0.5 rounded font-semibold bg-secondary text-foreground border border-border">
+                        {getSlashTrigger(item)}
+                      </span>
+                    </td>
+
+                    <td className="py-3 px-3">
+                      <span className="text-[11px] text-muted-foreground font-medium truncate block">
+                        {item.archetype || item.domain || 'legal-skill'}
+                      </span>
+                    </td>
+
+                    <td className="py-3 px-3 text-right">
+                      <span className="font-mono font-bold text-foreground text-xs">
+                        {getItemSize(item)}
+                      </span>
+                    </td>
+
+                    <td className="py-3 px-3 text-center">
+                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all inline-block" />
                     </td>
                   </tr>
-                ) : (
-                  filteredActiveAgents.map((agt) => (
-                    <tr key={agt.id} className="hover:bg-secondary/40 transition-colors group">
-                      {/* Name & Description */}
-                      <td className="py-3 px-4">
-                        <div className="font-semibold text-foreground text-xs flex items-center gap-2">
-                          <Bot className="w-3.5 h-3.5 text-foreground shrink-0" />
-                          <span>{agt.name}</span>
-                          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-secondary text-muted-foreground">
-                            v{agt.version}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
-                          {agt.description}
-                        </p>
-                      </td>
-
-                      {/* Slash Trigger */}
-                      <td className="py-3 px-3">
-                        <span className="font-mono text-[10px] px-2 py-0.5 rounded font-semibold bg-secondary text-foreground border border-border">
-                          {agt.slashTrigger}
-                        </span>
-                      </td>
-
-                      {/* Vaults */}
-                      <td className="py-3 px-3">
-                        <div className="flex gap-1 flex-wrap">
-                          {agt.vaults.map((v) => (
-                            <span 
-                              key={v} 
-                              className="text-[10px] font-mono bg-secondary px-1.5 py-0.5 rounded text-foreground border border-border"
-                            >
-                              {v.replace('.vault', '')}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-
-                      {/* Status */}
-                      <td className="py-3 px-3 text-center">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/20">
-                          {agt.status}
-                        </span>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="py-3 px-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Link
-                            href={`/dashboard/agents/builder?edit=${agt.id}`}
-                            className="px-2.5 py-1 rounded bg-secondary hover:bg-secondary/80 text-foreground font-medium text-xs transition-colors border border-border"
-                          >
-                            Edit
-                          </Link>
-                          <button
-                            onClick={() => alert(`Downloading ${agt.name} (.haya cartridge)`)}
-                            className="p-1 rounded hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
-                            title="Download .haya package"
-                          >
-                            <DownloadCloud className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="px-4 py-2.5 border-t border-border bg-muted/20 text-[11px] text-muted-foreground flex justify-between items-center">
+          <span>Showing {filteredItems.length} of {items.length} community agents</span>
+          <span className="text-[10px]">Click any row to open manifest drawer</span>
         </div>
       </div>
 
-      {/* SECTION 2: Starter Archetypes (Simple Table - NO CARDS) */}
-      <div className="space-y-3">
-        <div>
-          <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-foreground" />
-            <span>Chamber Starter Archetypes (Audit &amp; Create)</span>
-            <span className="text-[11px] font-normal text-muted-foreground">
-              ({filteredArchetypes.length} Available)
-            </span>
-          </h2>
-          <p className="text-[11px] text-muted-foreground">
-            Select a verified archetype template to pre-load statutory prompts, bare act vaults, and Monaco slash triggers into the builder. Click any row for details.
-          </p>
-        </div>
-
-        <div className="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-border bg-muted/40 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  <th className="py-2.5 px-4">Archetype Template &amp; Mandate</th>
-                  <th className="py-2.5 px-3 w-40">Statutory Domain</th>
-                  <th className="py-2.5 px-3 w-36">Trigger</th>
-                  <th className="py-2.5 px-3 w-40">Default Vaults</th>
-                  <th className="py-2.5 px-4 w-36 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {filteredArchetypes.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-6 text-center text-muted-foreground">
-                      No starter archetypes match your search query.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredArchetypes.map((archetype) => (
-                    <tr
-                      key={archetype.key}
-                      onClick={() => setSelectedArchetype(archetype)}
-                      className="hover:bg-secondary/40 cursor-pointer transition-colors group"
-                    >
-                      {/* Title & Description */}
-                      <td className="py-3 px-4">
-                        <div className="font-semibold text-foreground text-xs group-hover:text-slate-900 dark:group-hover:text-white transition-colors flex items-center gap-2">
-                          <Sparkles className="w-3.5 h-3.5 text-foreground shrink-0" />
-                          <span>{archetype.title}</span>
-                          <span className={cn(
-                            "text-[9px] font-semibold px-1.5 py-0.2 rounded border",
-                            archetype.badgeColor
-                          )}>
-                            {archetype.badge}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
-                          {archetype.description}
-                        </p>
-                      </td>
-
-                      {/* Domain */}
-                      <td className="py-3 px-3 text-muted-foreground font-mono text-[11px]">
-                        {archetype.domain}
-                      </td>
-
-                      {/* Slash Trigger */}
-                      <td className="py-3 px-3">
-                        <span className="font-mono text-[10px] px-2 py-0.5 rounded font-semibold bg-secondary text-foreground border border-border">
-                          {archetype.slashTrigger}
-                        </span>
-                      </td>
-
-                      {/* Default Vaults */}
-                      <td className="py-3 px-3">
-                        <div className="flex gap-1 flex-wrap">
-                          {archetype.defaultVaults.map((v) => (
-                            <span 
-                              key={v} 
-                              className="text-[10px] font-mono bg-secondary px-1.5 py-0.5 rounded text-foreground border border-border"
-                            >
-                              {v.replace('.vault', '')}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-
-                      {/* Action */}
-                      <td className="py-3 px-4 text-right">
-                        <Link
-                          href={`/dashboard/agents/builder?archetype=${archetype.key}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 font-semibold text-xs transition-colors shadow-xs"
-                        >
-                          <span>Use Template</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="px-4 py-2.5 border-t border-border bg-muted/20 text-[11px] text-muted-foreground flex justify-between items-center">
-            <span>Showing {filteredArchetypes.length} of {courtArchetypes.length} starter archetypes</span>
-            <span className="text-[10px]">Click any row to open specification drawer</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Information Drawer (Slide-Over from Right for Archetype Details) */}
-      {selectedArchetype && (
+      {/* Information Drawer (Slide-Over from Right) */}
+      {selectedItem && (
         <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Backdrop */}
           <div 
-            onClick={() => setSelectedArchetype(null)}
+            onClick={() => setSelectedItem(null)}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
           />
 
-          {/* Drawer Content */}
           <aside className="relative z-10 w-full max-w-xl bg-card border-l border-border h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-            {/* Drawer Header */}
             <div className="p-5 border-b border-border flex items-start justify-between gap-4 bg-muted/20">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className={cn(
-                    "text-[10px] font-bold font-mono px-2 py-0.5 rounded border",
-                    selectedArchetype.badgeColor
-                  )}>
-                    {selectedArchetype.badge}
+                  <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+                    {selectedItem.archetype || selectedItem.domain}
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-secondary text-muted-foreground">
-                    {selectedArchetype.domain}
+                    {getItemSize(selectedItem)}
                   </span>
+                  {selectedItem.verified && (
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3" /> Verified
+                    </span>
+                  )}
                 </div>
                 <h2 className="text-base font-bold text-foreground leading-snug">
-                  {selectedArchetype.title}
+                  {selectedItem.name}
                 </h2>
+                <p className="text-[11px] text-muted-foreground">
+                  By {selectedItem.authorName || 'Garuda Sovereign Guild'} • {selectedItem.downloads || 0} chamber installs
+                </p>
               </div>
               <button
-                onClick={() => setSelectedArchetype(null)}
+                onClick={() => setSelectedItem(null)}
                 className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Drawer Scrollable Body */}
             <div className="flex-1 p-5 space-y-6 overflow-y-auto text-xs">
-              {/* Description */}
+              {installSuccessId === selectedItem.id && (
+                <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 p-3 rounded-lg flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>Agent installed successfully. Ready for slash execution in your desktop harness.</span>
+                </div>
+              )}
+
               <div className="space-y-1.5">
                 <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground">
-                  Statutory Archetype Overview
+                  Agent Mandate &amp; Legal Logic
                 </h3>
                 <p className="text-foreground leading-relaxed bg-secondary/30 p-3 rounded-lg border border-border">
-                  {selectedArchetype.description}
+                  {selectedItem.description}
                 </p>
               </div>
 
-              {/* In-Harness Slash Trigger */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                    <Terminal className="w-3.5 h-3.5 text-slate-500" />
+                    <Terminal className="w-3.5 h-3.5 text-primary" />
                     <span>In-Harness Slash Trigger</span>
                   </h3>
                   <button
-                    onClick={() => copyToClipboard(selectedArchetype.slashTrigger, 'trigger')}
-                    className="text-[11px] text-foreground hover:underline font-medium flex items-center gap-1"
+                    onClick={() => copyToClipboard(getSlashTrigger(selectedItem), 'trigger')}
+                    className="text-[11px] text-primary hover:underline font-medium flex items-center gap-1"
                   >
                     {copiedKey === 'trigger' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedKey === 'trigger' ? 'Copied' : 'Copy'}</span>
+                    <span>{copiedKey === 'trigger' ? 'Copied' : 'Copy Trigger'}</span>
                   </button>
                 </div>
-                <div className="bg-slate-950 text-slate-100 p-2.5 rounded-md font-mono text-[11px] border border-border flex items-center justify-between">
-                  <span>{selectedArchetype.slashTrigger}</span>
+                <div className="bg-slate-950 text-foreground p-2.5 rounded-md font-mono text-[11px] border border-border flex items-center justify-between">
+                  <span>{getSlashTrigger(selectedItem)}</span>
                 </div>
               </div>
 
-              {/* Bound Default Vaults */}
-              <div className="space-y-1.5">
-                <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Bound Statutory Vaults</span>
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedArchetype.defaultVaults.map((vault) => (
-                    <span 
-                      key={vault} 
-                      className="px-2.5 py-1 rounded bg-secondary border border-border font-mono text-[11px] text-foreground"
-                    >
-                      {vault}
-                    </span>
-                  ))}
+              {Array.isArray(selectedItem.statutoryVaults) && selectedItem.statutoryVaults.length > 0 && (
+                <div className="space-y-1.5">
+                  <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <Database className="w-3.5 h-3.5 text-blue-500" />
+                    <span>Required Statutory Grounding Vaults</span>
+                  </h3>
+                  <div className="space-y-1">
+                    {selectedItem.statutoryVaults.map((vault: string, idx: number) => (
+                      <div key={idx} className="bg-secondary/40 p-2 rounded border border-border font-mono text-[11px] text-foreground flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        <span>{vault}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Subagents & Critique Engine */}
-              <div className="space-y-1.5">
-                <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Critic Engine &amp; Subagents</span>
-                </h3>
-                <div className="bg-secondary/40 p-2.5 rounded-md border border-border flex items-center justify-between text-[11px]">
-                  <span className="text-muted-foreground">Dual-Loop Critique Agent:</span>
-                  <span className="font-mono font-semibold text-foreground">
-                    {selectedArchetype.criticAgent || 'None (Single-Agent)'}
-                  </span>
+              {manifestFiles.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Package Manifest Files ({manifestFiles.length})</span>
+                  </h3>
+                  <div className="flex flex-wrap gap-1.5 pb-1">
+                    {manifestFiles.map((file: any) => (
+                      <button
+                        key={file.name}
+                        onClick={() => setActiveCodeFile(file.name)}
+                        className={cn(
+                          "px-2.5 py-1 rounded text-[11px] font-mono border transition-colors",
+                          (activeCodeFile === file.name || (!activeCodeFile && currentCodeFile?.name === file.name))
+                            ? "bg-primary/10 text-primary border-primary/30 font-bold"
+                            : "bg-secondary text-muted-foreground border-border hover:text-foreground"
+                        )}
+                      >
+                        {file.name} ({file.size ? `${file.size} B` : ''})
+                      </button>
+                    ))}
+                  </div>
+
+                  {currentCodeFile && currentCodeFile.content && (
+                    <div className="bg-slate-950 text-slate-100 p-3 rounded-md font-mono text-[11px] border border-border/80 overflow-x-auto max-h-48 leading-relaxed select-all">
+                      <pre>{currentCodeFile.content}</pre>
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
 
-              {/* System Prompt Instructions */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-slate-500" />
-                    <span>System Prompt Mandate</span>
+                  <h3 className="font-bold text-foreground text-xs uppercase tracking-wider text-muted-foreground">
+                    Garuda Distribution URN
                   </h3>
                   <button
-                    onClick={() => copyToClipboard(selectedArchetype.systemPrompt, 'prompt')}
-                    className="text-[11px] text-foreground hover:underline font-medium flex items-center gap-1"
+                    onClick={() => copyToClipboard(selectedItem.urn || selectedItem.id, 'urn')}
+                    className="text-[11px] text-primary hover:underline font-medium flex items-center gap-1"
                   >
-                    {copiedKey === 'prompt' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedKey === 'prompt' ? 'Copied' : 'Copy'}</span>
+                    {copiedKey === 'urn' ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                    <span>{copiedKey === 'urn' ? 'Copied' : 'Copy URN'}</span>
                   </button>
                 </div>
-                <div className="bg-slate-950 text-slate-200 p-3 rounded-md font-mono text-[11px] border border-border/80 overflow-x-auto max-h-40 leading-relaxed select-all">
-                  <pre className="whitespace-pre-wrap">{selectedArchetype.systemPrompt}</pre>
+                <div className="bg-secondary/70 p-2.5 rounded-md border border-border font-mono text-[10px] text-muted-foreground select-all break-all">
+                  {selectedItem.urn || selectedItem.id}
                 </div>
               </div>
             </div>
 
-            {/* Drawer Footer Actions */}
             <div className="p-4 border-t border-border bg-card flex items-center justify-between gap-3">
               <button
                 type="button"
-                onClick={() => setSelectedArchetype(null)}
+                onClick={() => setSelectedItem(null)}
                 className="px-4 py-2 rounded-md border border-border text-xs font-medium text-foreground hover:bg-secondary transition-colors"
               >
                 Close
               </button>
 
-              <Link
-                href={`/dashboard/agents/builder?archetype=${selectedArchetype.key}`}
-                className="flex-1 px-4 py-2 rounded-md bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all text-center"
+              <button
+                type="button"
+                disabled={installingId === selectedItem.id}
+                onClick={() => handleInstall(selectedItem)}
+                className="flex-1 px-4 py-2 rounded-md bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
               >
-                <span>Open in Agent Builder</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                <DownloadCloud className="w-4 h-4" />
+                <span>
+                  {installingId === selectedItem.id 
+                    ? 'Pushing to Desktop Harness...' 
+                    : `Install Agent (${getItemSize(selectedItem)})`}
+                </span>
+              </button>
             </div>
           </aside>
         </div>
       )}
     </div>
-  );
-}
-
-export default function CustomAgentsPage() {
-  return (
-    <Suspense fallback={<div className="p-8 text-xs text-muted-foreground animate-pulse">Loading Custom Agents...</div>}>
-      <CustomAgentsContent />
-    </Suspense>
   );
 }

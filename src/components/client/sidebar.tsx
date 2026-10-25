@@ -36,14 +36,14 @@ const navSections: NavSection[] = [
     title: 'Core Workspace',
     items: [
       { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-      { name: 'Profile', href: '/dashboard/workspace', icon: User },
+      { name: 'Workspace', href: '/dashboard/workspace', icon: Laptop },
     ]
   },
   {
     title: 'Workspace & Studio',
     items: [
-      { name: 'Discussions', href: '/dashboard/community', icon: MessageSquare, badge: 'Live' },
-      { name: 'Studio', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
+      { name: 'Discussions', href: '/dashboard/discussions', icon: MessageSquare, badge: 'Live' },
+      { name: 'Studio', href: '/dashboard/studio', icon: Bot, badge: 'Studio' },
       { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
     ]
   },
@@ -53,7 +53,7 @@ const navSections: NavSection[] = [
       { name: 'Harness', href: '/dashboard/harness', icon: DownloadCloud },
       { name: 'Vaults', href: '/dashboard/vaults', icon: Database },
       { name: 'Models', href: '/dashboard/models', icon: Cpu },
-      { name: 'Agents', href: '/dashboard/community-agents', icon: Sparkles, badge: 'Registry' },
+      { name: 'Agents', href: '/dashboard/agents', icon: Sparkles, badge: 'Registry' },
     ]
   },
   {
@@ -112,7 +112,9 @@ export function ClientSidebar() {
               } else {
                 isActive = pathname === item.href || 
                   (item.href !== '/dashboard' && !item.href.includes('?') && pathname.startsWith(item.href)) ||
-                  (item.href === '/dashboard/workspace' && (pathname === '/dashboard/licenses' || pathname === '/dashboard/profile'));
+                  (item.href === '/dashboard/workspace' && (pathname === '/dashboard/licenses' || pathname === '/dashboard/profile')) ||
+                  (item.href === '/dashboard/discussions' && pathname.startsWith('/dashboard/community')) ||
+                  (item.href === '/dashboard/agents' && pathname.startsWith('/dashboard/community-agents'));
               }
               const Icon = item.icon;
 

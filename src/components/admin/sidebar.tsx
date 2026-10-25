@@ -46,9 +46,9 @@ const navSections: NavSection[] = [
   {
     title: 'Workspace & Studio',
     items: [
-      { name: 'Discussions', href: '/admin/community', icon: MessageSquare, badge: 'Live' },
-      { name: 'Studio', href: '/admin/agents', icon: Bot, badge: 'Studio' },
-      { name: 'Billing', href: '/admin/invoices', icon: CreditCard },
+      { name: 'Discussions', href: '/admin/discussions', icon: MessageSquare, badge: 'Live' },
+      { name: 'Studio', href: '/admin/studio', icon: Bot, badge: 'Studio' },
+      { name: 'Billing', href: '/admin/billing', icon: CreditCard },
     ]
   },
   {
@@ -57,14 +57,14 @@ const navSections: NavSection[] = [
       { name: 'Harness', href: '/admin/harness', icon: DownloadCloud },
       { name: 'Vaults', href: '/admin/vaults', icon: Database },
       { name: 'Models', href: '/admin/models', icon: Cpu },
-      { name: 'Agents', href: '/dashboard/community-agents', icon: Sparkles, badge: 'Registry' },
+      { name: 'Agents', href: '/admin/agents', icon: Sparkles, badge: 'Registry' },
     ]
   },
   {
     title: 'Operations',
     items: [
       { name: 'Support', href: '/admin/support', icon: HelpCircle, badge: '4' },
-      { name: 'Install Telemetry', href: '/admin/downloads', icon: Activity },
+      { name: 'Install Telemetry', href: '/admin/telemetry', icon: Activity },
       { name: 'System Logs', href: '/admin/logs', icon: Server },
     ]
   }
@@ -110,7 +110,11 @@ export function AdminSidebar() {
               {section.title}
             </div>
             {section.items.map((item) => {
-              const isActive = pathname === item.href || (item.href !== '/admin/dashboard' && pathname.startsWith(item.href));
+              const isActive = pathname === item.href || 
+                (item.href !== '/admin/dashboard' && pathname.startsWith(item.href)) ||
+                (item.href === '/admin/discussions' && pathname.startsWith('/admin/community')) ||
+                (item.href === '/admin/billing' && pathname.startsWith('/admin/invoices')) ||
+                (item.href === '/admin/telemetry' && pathname.startsWith('/admin/downloads'));
               const Icon = item.icon;
 
               return (

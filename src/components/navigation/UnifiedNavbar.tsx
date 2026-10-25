@@ -107,9 +107,9 @@ export function UnifiedNavbar({ onOpenPublish, onTriggerSync }: UnifiedNavbarPro
           </Link>
 
           <Link
-            href="/dashboard/community"
+            href="/dashboard/discussions"
             className={`px-3 py-1.5 rounded-md text-xs font-medium tracking-tight transition-all flex items-center gap-1.5 ${
-              pathname.startsWith('/dashboard/community')
+              pathname.startsWith('/dashboard/discussions') || pathname.startsWith('/dashboard/community')
                 ? 'bg-secondary text-foreground shadow-xs font-semibold border border-border/60'
                 : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
             }`}
