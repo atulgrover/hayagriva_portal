@@ -17,7 +17,8 @@ import {
   Bot,
   ExternalLink,
   ChevronRight,
-  Server
+  Server,
+  MessageSquare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -62,6 +63,7 @@ const navSections: NavSection[] = [
       { name: 'Billing & Revenue', href: '/admin/invoices', icon: CreditCard },
       { name: 'System & API Logs', href: '/admin/logs', icon: Server },
       { name: 'Support Tickets', href: '/admin/support', icon: HelpCircle, badge: '4' },
+      { name: 'Community Discussions', href: '/admin/community', icon: MessageSquare, badge: 'Live' },
     ]
   }
 ];

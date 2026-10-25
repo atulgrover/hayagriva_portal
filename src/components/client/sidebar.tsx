@@ -33,7 +33,7 @@ const navSections: NavSection[] = [
     title: 'User Workspace',
     items: [
       { name: 'Profile / License / Hardware', href: '/dashboard/workspace', icon: Laptop },
-      { name: 'Discussions & AI Bot', href: '/dashboard/community', icon: MessageSquare, badge: 'Live' },
+      { name: 'Advocate Community & AI Bot', href: '/dashboard/community', icon: MessageSquare, badge: 'Public' },
       { name: 'Custom Agents', href: '/dashboard/agents', icon: Bot, badge: 'Studio' },
     ]
   },
@@ -49,7 +49,7 @@ const navSections: NavSection[] = [
     title: 'Governance',
     items: [
       { name: 'Invoices & Payments', href: '/dashboard/billing', icon: CreditCard },
-      { name: 'Support Tickets', href: '/dashboard/support', icon: HelpCircle },
+      { name: 'Helpdesk & Support', href: '/dashboard/support', icon: HelpCircle },
     ]
   }
 ];

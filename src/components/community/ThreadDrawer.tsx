@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Sparkles, MessageSquare, Send, RotateCw, AlertTriangle, ShieldCheck, User } from 'lucide-react';
+import { Sparkles, MessageSquare, Send, RotateCw, AlertTriangle, ShieldCheck, User, Trash2 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -12,6 +12,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
 import { CommunityThreadItem } from './ThreadCard';
 import { AiReplyCard } from './AiReplyCard';
 import { TiptapEditor } from './TiptapEditor';
@@ -44,6 +45,17 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRetryingAi, setIsRetryingAi] = useState(false);
   const [activeThread, setActiveThread] = useState<CommunityThreadItem | null>(thread);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const val = getCookieValue(document.cookie, 'hayagriva_user');
+      if (val) {
+        setCurrentUser(safeParseJsonCookie(val));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     setActiveThread(thread);
@@ -109,7 +121,37 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
     }
   };
 
+  const handleDeleteThread = async () => {
+    if (!activeThread?.id || isDeleting) return;
+    if (!window.confirm('Are you sure you want to delete this thread? This action cannot be undone.')) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/community/threads/${activeThread.id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        if (onThreadUpdated) onThreadUpdated();
+        onClose();
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Failed to delete thread');
+      }
+    } catch (err) {
+      console.error('Failed to delete thread:', err);
+      alert('An unexpected error occurred while deleting the thread.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   if (!activeThread) return null;
+
+  const canDelete = Boolean(
+    currentUser &&
+    (currentUser.role === 'SUPER_ADMIN' ||
+     currentUser.role === 'ADMIN' ||
+     currentUser.id === activeThread.author_id)
+  );
 
   const aiReply = replies.find((r) => r.is_ai_generated);
   const humanReplies = replies.filter((r) => !r.is_ai_generated);
@@ -122,14 +164,29 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
       >
         {/* Drawer Header */}
         <div className="p-5 border-b border-border bg-card shrink-0 pr-12">
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="text-[10px] uppercase font-semibold">
-              {activeThread.category.replace('-', ' ')}
-            </Badge>
-            {activeThread.is_pinned && (
-              <Badge variant="secondary" className="text-[10px]">
-                Pinned
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-[10px] uppercase font-semibold">
+                {activeThread.category.replace('-', ' ')}
               </Badge>
+              {activeThread.is_pinned && (
+                <Badge variant="secondary" className="text-[10px]">
+                  Pinned
+                </Badge>
+              )}
+            </div>
+            {canDelete && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDeleteThread}
+                disabled={isDeleting}
+                className="h-7 px-2 text-destructive hover:bg-destructive/10 text-xs flex items-center gap-1.5"
+                title="Delete Thread"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Delete Thread</span>
+              </Button>
             )}
           </div>
           <SheetTitle className="text-base sm:text-lg font-bold text-foreground leading-snug">
