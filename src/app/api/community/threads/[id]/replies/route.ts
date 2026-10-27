@@ -4,10 +4,23 @@ import { neon } from '@neondatabase/serverless';
 import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
 import { queryAzureLightRag } from '@/lib/services/lightrag';
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Forwarded-For",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
+}
+
 function getDb() {
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) throw new Error("DATABASE_URL not configured");
-  return neon(databaseUrl);
+  const connectionString =
+    process.env.SHARED_FORUM_DATABASE_URL_POOLED ||
+    process.env.SHARED_FORUM_DATABASE_URL ||
+    process.env.DATABASE_URL ||
+    "postgresql://neondb_owner:npg_hfx1TLRcS5aD@ep-curly-meadow-b30a75yb-pooler.c-4.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
+  return neon(connectionString);
 }
 
 // Background handler for contextual follow-up @ai queries
@@ -39,7 +52,7 @@ async function triggerContextualAiReply(threadId: string, userQuery: string) {
         'system_lightrag_bot',
         'Hayagriva Sovereign Bot',
         'AI_BOT',
-        '/branding/hayagriva_medallion.png',
+        '/branding/unicorn_emblem.png',
         ${result.answer},
         true,
         ${JSON.stringify(result.citations)}::jsonb,
@@ -73,7 +86,7 @@ export async function POST(
       user = {
         id: 'usr_guest_adv',
         name: 'Guest Practitioner',
-        role: 'ADVOCATE',
+        role: 'GUEST',
       };
     }
 
@@ -81,7 +94,7 @@ export async function POST(
     const { body: content } = body;
 
     if (!content || typeof content !== 'string' || content.trim().length < 2) {
-      return NextResponse.json({ error: 'Reply text cannot be empty' }, { status: 400 });
+      return NextResponse.json({ error: 'Reply text cannot be empty' }, { status: 400, headers: corsHeaders });
     }
 
     const sql = getDb();
@@ -94,9 +107,9 @@ export async function POST(
       ) VALUES (
         ${replyId},
         ${threadId},
-        ${user.id || 'usr_adv_01'},
-        ${user.name || 'Advocate'},
-        ${user.role || 'ADVOCATE'},
+        ${user.id || 'usr_guest_adv'},
+        ${user.name || 'Guest Practitioner'},
+        ${user.role || 'GUEST'},
         ${user.avatarUrl || null},
         ${content.trim()},
         false,
@@ -114,18 +127,17 @@ export async function POST(
       WHERE id = ${threadId}
     `;
 
-    const newReply = inserted[0];
-
-    // Detect if user tagged @ai or @hayagriva
-    if (/@(ai|hayagriva|bot)/i.test(content)) {
-      triggerContextualAiReply(threadId, content).catch((err) => {
-        console.error('[Community API] Follow-up AI trigger failed:', err);
+    // Check if reply explicitly requests AI follow-up via @ai or @bot
+    if (content.toLowerCase().includes('@ai') || content.toLowerCase().includes('@bot')) {
+      const cleanPrompt = content.replace(/@ai|@bot/gi, '').trim();
+      triggerContextualAiReply(threadId, cleanPrompt).catch((err) => {
+        console.error('[Community API] Contextual AI reply failed:', err);
       });
     }
 
-    return NextResponse.json({ reply: newReply }, { status: 201 });
+    return NextResponse.json({ reply: inserted[0] }, { status: 201, headers: corsHeaders });
   } catch (error: any) {
-    console.error('[Community API] Failed to add reply:', error);
-    return NextResponse.json({ error: error?.message || 'Failed to add reply' }, { status: 500 });
+    console.error('[Community API] Failed to post reply:', error);
+    return NextResponse.json({ error: error?.message || 'Failed to post reply' }, { status: 500, headers: corsHeaders });
   }
 }
