@@ -195,7 +195,7 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
           <SheetDescription className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
             <span>Posted by <strong className="text-foreground">{activeThread.author_name}</strong></span>
             <span>•</span>
-            <span>{new Date(activeThread.created_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+            <span>{new Date(activeThread.created_at).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </SheetDescription>
         </div>
 
@@ -292,7 +292,7 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
                       </Badge>
                     </div>
                     <span className="text-[10px] text-muted-foreground font-mono">
-                      {new Date(reply.created_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(reply.created_at).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
 

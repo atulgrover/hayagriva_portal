@@ -95,9 +95,9 @@ export async function queryAzureLightRag(
       "User-Agent": "HayagrivaPortal/1.0",
     };
 
-    if (process.env.LIGHTRAG_API_KEY) {
-      headers["Authorization"] = `Bearer ${process.env.LIGHTRAG_API_KEY}`;
-      headers["X-API-Key"] = process.env.LIGHTRAG_API_KEY;
+    const apiKey = process.env.LIGHTRAG_API_KEY || "20b8aa6253d9e09e9c70417d4938f8c7";
+    if (apiKey) {
+      headers["X-API-Key"] = apiKey;
     }
 
     const payload = {

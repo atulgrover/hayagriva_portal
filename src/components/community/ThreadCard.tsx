@@ -59,7 +59,7 @@ function formatDate(dateStr: string) {
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
-    return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+    return d.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric' });
   } catch {
     return dateStr;
   }
