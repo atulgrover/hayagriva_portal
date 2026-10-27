@@ -1,23 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Sparkles, MessageSquare, Send, RotateCw, AlertTriangle, ShieldCheck, User, Trash2 } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from '@/components/ui/sheet';
-import { Badge } from '@/components/ui/badge';
+import { X, Send, Sparkles, MessageSquare, Loader2, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { safeParseJsonCookie, getCookieValue } from '@/lib/auth/cookies';
+import { AiReplyCard, LegalCitation } from './AiReplyCard';
 import { CommunityThreadItem } from './ThreadCard';
-import { AiReplyCard } from './AiReplyCard';
-import { TiptapEditor } from './TiptapEditor';
 
-interface ReplyItem {
+interface CommunityReplyItem {
   id: string;
   thread_id: string;
   author_id: string;
@@ -26,51 +15,48 @@ interface ReplyItem {
   author_avatar?: string | null;
   body: string;
   is_ai_generated: boolean;
-  ai_citations?: any;
+  ai_citations?: LegalCitation[] | null;
   upvotes: number;
   created_at: string;
+}
+
+
+function formatIndianTime(dateStr: string) {
+  try {
+    const normalized = typeof dateStr === "string" && !dateStr.endsWith("Z") && !dateStr.includes("+") ? dateStr + "Z" : dateStr;
+    return new Date(normalized).toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  } catch {
+    return dateStr;
+  }
 }
 
 interface ThreadDrawerProps {
   thread: CommunityThreadItem | null;
   isOpen: boolean;
   onClose: () => void;
-  onThreadUpdated?: () => void;
+  onReplyAdded?: () => void;
 }
 
-export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: ThreadDrawerProps) {
-  const [replies, setReplies] = useState<ReplyItem[]>([]);
+export function ThreadDrawer({ thread, isOpen, onClose, onReplyAdded }: ThreadDrawerProps) {
+  const [replies, setReplies] = useState<CommunityReplyItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [replyText, setReplyText] = useState('');
+  const [authorName, setAuthorName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isRetryingAi, setIsRetryingAi] = useState(false);
-  const [activeThread, setActiveThread] = useState<CommunityThreadItem | null>(thread);
-  const [currentUser, setCurrentUser] = useState<any>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      const val = getCookieValue(document.cookie, 'hayagriva_user');
-      if (val) {
-        setCurrentUser(safeParseJsonCookie(val));
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    setActiveThread(thread);
-    if (thread?.id) {
-      fetchThreadDetails(thread.id);
-    }
-  }, [thread?.id]);
-
-  const fetchThreadDetails = async (threadId: string) => {
+  const fetchReplies = async () => {
+    if (!thread) return;
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/community/threads/${threadId}`);
+      const res = await fetch(`/api/community/threads/${thread.id}`);
       if (res.ok) {
         const data = await res.json();
-        setActiveThread(data.thread);
         setReplies(data.replies || []);
       }
     } catch (err) {
@@ -80,265 +66,182 @@ export function ThreadDrawer({ thread, isOpen, onClose, onThreadUpdated }: Threa
     }
   };
 
-  const handleSendReply = async () => {
-    if (!activeThread?.id || !replyText.trim() || isSubmitting) return;
+  useEffect(() => {
+    if (isOpen && thread) {
+      fetchReplies();
+      // Poll every 8s if AI is processing
+      if (!thread.has_ai_answer) {
+        const interval = setInterval(fetchReplies, 8000);
+        return () => clearInterval(interval);
+      }
+    }
+  }, [isOpen, thread?.id, thread?.has_ai_answer]);
+
+  const handleSubmitReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!thread || !replyText.trim()) return;
 
     setIsSubmitting(true);
+    setError('');
+
     try {
-      const res = await fetch(`/api/community/threads/${activeThread.id}/replies`, {
+      const res = await fetch(`/api/community/threads/${thread.id}/replies`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ body: replyText }),
+        body: JSON.stringify({
+          body: replyText.trim(),
+          authorName: authorName.trim() || 'Practitioner',
+        }),
       });
 
-      if (res.ok) {
-        setReplyText('');
-        fetchThreadDetails(activeThread.id);
-        if (onThreadUpdated) onThreadUpdated();
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to submit reply');
       }
-    } catch (err) {
-      console.error('Failed to send reply:', err);
+
+      setReplyText('');
+      await fetchReplies();
+      if (onReplyAdded) onReplyAdded();
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleRetryAi = async () => {
-    if (!activeThread?.id || isRetryingAi) return;
-    setIsRetryingAi(true);
-    try {
-      const res = await fetch(`/api/community/threads/${activeThread.id}/ai-retry`, {
-        method: 'POST',
-      });
-      if (res.ok) {
-        fetchThreadDetails(activeThread.id);
-        if (onThreadUpdated) onThreadUpdated();
-      }
-    } catch (err) {
-      console.error('Failed to retry AI:', err);
-    } finally {
-      setIsRetryingAi(false);
-    }
-  };
-
-  const handleDeleteThread = async () => {
-    if (!activeThread?.id || isDeleting) return;
-    if (!window.confirm('Are you sure you want to delete this thread? This action cannot be undone.')) return;
-    setIsDeleting(true);
-    try {
-      const res = await fetch(`/api/community/threads/${activeThread.id}`, {
-        method: 'DELETE',
-      });
-      if (res.ok) {
-        if (onThreadUpdated) onThreadUpdated();
-        onClose();
-      } else {
-        const err = await res.json();
-        alert(err.error || 'Failed to delete thread');
-      }
-    } catch (err) {
-      console.error('Failed to delete thread:', err);
-      alert('An unexpected error occurred while deleting the thread.');
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  if (!activeThread) return null;
-
-  const canDelete = Boolean(
-    currentUser &&
-    (currentUser.role === 'SUPER_ADMIN' ||
-     currentUser.role === 'ADMIN' ||
-     currentUser.id === activeThread.author_id)
-  );
+  if (!isOpen || !thread) return null;
 
   const aiReply = replies.find((r) => r.is_ai_generated);
   const humanReplies = replies.filter((r) => !r.is_ai_generated);
 
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent
-        side="right"
-        className="flex flex-col h-full w-full sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-0 overflow-hidden bg-background"
-      >
-        {/* Drawer Header */}
-        <div className="p-5 border-b border-border bg-card shrink-0 pr-12">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-[10px] uppercase font-semibold">
-                {activeThread.category.replace('-', ' ')}
-              </Badge>
-              {activeThread.is_pinned && (
-                <Badge variant="secondary" className="text-[10px]">
-                  Pinned
-                </Badge>
+    <div className="fixed inset-0 z-50 overflow-hidden bg-zinc-950/40 backdrop-blur-xs animate-in fade-in duration-200">
+      <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
+        <div className="w-screen max-w-2xl bg-white dark:bg-zinc-900 border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex flex-col">
+          {/* Header */}
+          <div className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+                {thread.category.toUpperCase()}
+              </span>
+              <h2 className="mt-1 text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2">
+                {thread.title}
+              </h2>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Body Content */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+            {/* Original Question Card */}
+            <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-800 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-zinc-200 dark:border-zinc-800 font-medium text-zinc-500 text-[11px]">
+                <span>Asked by {thread.author_name}</span>
+                <span>•</span>
+                <span>{new Date(thread.created_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+              </div>
+              {thread.body}
+            </div>
+
+            {/* AI Verified Answer Card */}
+            {aiReply ? (
+              <AiReplyCard
+                body={aiReply.body}
+                citations={aiReply.ai_citations || []}
+                createdAt={aiReply.created_at}
+              />
+            ) : thread.ai_status === 'QUEUED' || thread.ai_status === 'PENDING' ? (
+              <div className="p-4 rounded-xl bg-sky-50/40 dark:bg-sky-950/20 border border-sky-200 dark:border-sky-900/40 text-center space-y-2">
+                <Loader2 className="w-5 h-5 animate-spin mx-auto text-sky-600" />
+                <p className="text-xs font-semibold text-sky-900 dark:text-sky-200">
+                  Azure Knowledge Graph is synthesizing analysis...
+                </p>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  Checking statutory Bare Acts, CIRP Regulations, and NCLT tribunal precedents.
+                </p>
+              </div>
+            ) : null}
+
+            {/* Human Practitioner Discussion Section */}
+            <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+              <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <MessageSquare className="w-3.5 h-3.5 text-zinc-400" />
+                <span>Practitioner Perspectives ({humanReplies.length})</span>
+              </h3>
+
+              {isLoading && replies.length === 0 ? (
+                <div className="py-6 text-center text-xs text-zinc-400">
+                  <Loader2 className="w-4 h-4 animate-spin mx-auto mb-1" />
+                  Loading replies...
+                </div>
+              ) : humanReplies.length === 0 ? (
+                <div className="py-6 text-center text-xs text-zinc-400 italic">
+                  No community comments yet. Share your statutory perspective below.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {humanReplies.map((reply) => (
+                    <div
+                      key={reply.id}
+                      className="p-3.5 rounded-lg bg-zinc-50/70 dark:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-700/60 text-xs space-y-1.5"
+                    >
+                      <div className="flex items-center justify-between text-[11px] text-zinc-500">
+                        <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                          {reply.author_name}
+                        </span>
+                        <span className="font-mono text-[10px]">
+                          {formatIndianTime(reply.created_at)}
+                        </span>
+                      </div>
+                      <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                        {reply.body}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-            {canDelete && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleDeleteThread}
-                disabled={isDeleting}
-                className="h-7 px-2 text-destructive hover:bg-destructive/10 text-xs flex items-center gap-1.5"
-                title="Delete Thread"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Delete Thread</span>
-              </Button>
-            )}
-          </div>
-          <SheetTitle className="text-base sm:text-lg font-bold text-foreground leading-snug">
-            {activeThread.title}
-          </SheetTitle>
-          <SheetDescription className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Posted by <strong className="text-foreground">{activeThread.author_name}</strong></span>
-            <span>•</span>
-            <span>{new Date(activeThread.created_at).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', year: 'numeric' })}</span>
-          </SheetDescription>
-        </div>
-
-        {/* Scrollable Conversation Stream */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
-          {/* 1. Original Inquiry / Post */}
-          <div className="rounded-lg border border-border bg-card p-4 space-y-3 shadow-xs">
-            <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border/50 pb-2">
-              <div className="flex items-center gap-2">
-                <Avatar className="w-6 h-6 text-[10px]">
-                  {activeThread.author_avatar ? (
-                    <AvatarImage src={activeThread.author_avatar} />
-                  ) : null}
-                  <AvatarFallback>{activeThread.author_name[0] || 'A'}</AvatarFallback>
-                </Avatar>
-                <span className="font-semibold text-foreground text-xs">{activeThread.author_name}</span>
-                <Badge variant="outline" className="text-[9px] py-0 px-1.5 uppercase font-mono">
-                  {activeThread.author_role}
-                </Badge>
-              </div>
-              <span className="text-[10px] font-mono">OP</span>
-            </div>
-
-            <div
-              className="prose dark:prose-invert prose-sm max-w-none text-xs text-foreground/90 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: activeThread.body }}
-            />
           </div>
 
-          {/* 2. Pinned Sovereign AI Analysis */}
-          {aiReply ? (
-            <AiReplyCard
-              body={aiReply.body}
-              citations={aiReply.ai_citations}
-              createdAt={aiReply.created_at}
-            />
-          ) : activeThread.ai_status === 'PENDING' ? (
-            <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40 p-4 flex items-center gap-3 animate-pulse">
-              <Sparkles className="w-5 h-5 text-slate-900 dark:text-white animate-spin" />
-              <div>
-                <p className="text-xs font-semibold text-slate-900 dark:text-white">
-                  Hayagriva Sovereign Bot is analyzing Bare Acts...
-                </p>
-                <p className="text-[11px] text-muted-foreground">
-                  Consulting Central India Azure legal knowledge graph.
-                </p>
-              </div>
+          {/* Reply Input Footer */}
+          <form onSubmit={handleSubmitReply} className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/40 space-y-2">
+            {error && <p className="text-xs text-rose-500">{error}</p>}
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Your Name (Optional)"
+                value={authorName}
+                onChange={(e) => setAuthorName(e.target.value)}
+                className="w-1/3 px-3 py-1.5 rounded-lg text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-1 focus:ring-sky-500"
+              />
+              <span className="text-[11px] text-zinc-400 italic truncate">
+                Tip: Include <strong className="text-sky-600">@ai</strong> to trigger an AI follow-up
+              </span>
             </div>
-          ) : activeThread.ai_status === 'FAILED' ? (
-            <div className="rounded-lg border border-border bg-secondary/30 p-3.5 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <AlertTriangle className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="text-xs text-muted-foreground">
-                  AI analysis could not complete automatically.
-                </span>
-              </div>
+            <div className="flex gap-2">
+              <textarea
+                rows={2}
+                placeholder="Share legal precedent or query the AI with @ai..."
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="flex-1 p-2 rounded-lg text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-1 focus:ring-sky-500 resize-none"
+              />
               <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRetryAi}
-                disabled={isRetryingAi}
-                className="text-xs h-7 gap-1"
+                type="submit"
+                disabled={isSubmitting || !replyText.trim()}
+                className="bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 self-end h-9"
               >
-                <RotateCw className={isRetryingAi ? 'w-3 h-3 animate-spin' : 'w-3 h-3'} />
-                {isRetryingAi ? 'Consulting...' : 'Ask AI Bot'}
+                {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
               </Button>
             </div>
-          ) : null}
-
-          {/* 3. Community Human Replies Stream */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground px-1">
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Community Discussion ({humanReplies.length})</span>
-            </div>
-
-            {humanReplies.length === 0 ? (
-              <div className="rounded-md border border-dashed border-border/70 p-6 text-center text-xs text-muted-foreground">
-                No replies from other advocates yet. Be the first to contribute insight!
-              </div>
-            ) : (
-              humanReplies.map((reply) => (
-                <div key={reply.id} className="rounded-lg border border-border bg-card p-3.5 space-y-2">
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="w-5 h-5 text-[9px]">
-                        <AvatarFallback>{reply.author_name[0] || 'U'}</AvatarFallback>
-                      </Avatar>
-                      <span className="font-semibold text-foreground text-xs">
-                        {reply.author_name}
-                      </span>
-                      <Badge variant="outline" className="text-[9px] py-0 px-1 text-muted-foreground uppercase">
-                        {reply.author_role}
-                      </Badge>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground font-mono">
-                      {new Date(reply.created_at).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
-
-                  <div
-                    className="prose dark:prose-invert prose-sm max-w-none text-xs text-foreground/90 leading-relaxed pl-7"
-                    dangerouslySetInnerHTML={{ __html: reply.body }}
-                  />
-                </div>
-              ))
-            )}
-          </div>
+          </form>
         </div>
-
-        {/* Drawer Footer: Reply Composer */}
-        <div className="p-4 border-t border-border bg-card/95 backdrop-blur shrink-0 space-y-2.5">
-          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-            <span className="flex items-center gap-1 font-medium">
-              <User className="w-3 h-3 text-foreground" />
-              <span>Post a Reply</span>
-            </span>
-            <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono">
-              Tip: Tag <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">@ai</code> to ask the Sovereign Bot
-            </span>
-          </div>
-
-          <TiptapEditor
-            content={replyText}
-            onChange={setReplyText}
-            placeholder="Write your analysis, statutory question, or tag @ai for automated citations..."
-            minHeight="100px"
-          />
-
-          <div className="flex items-center justify-end gap-2 pt-1">
-            <Button
-              onClick={handleSendReply}
-              disabled={isSubmitting || !replyText.trim()}
-              size="sm"
-              variant="default"
-              className="gap-1.5 px-4 text-xs font-semibold"
-            >
-              <Send className="w-3.5 h-3.5" />
-              {isSubmitting ? 'Posting...' : 'Post Reply'}
-            </Button>
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </div>
   );
 }

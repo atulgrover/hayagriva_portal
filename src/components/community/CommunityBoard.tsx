@@ -1,19 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, MessageSquare, Sparkles, Filter, RefreshCw, Scale } from 'lucide-react';
+import { Search, Plus, MessageSquare, Sparkles, Filter, RefreshCw, Scale, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { ThreadCard, CommunityThreadItem } from './ThreadCard';
 import { ThreadDrawer } from './ThreadDrawer';
-import { TiptapEditor } from './TiptapEditor';
+import { DailyLimitModal } from './DailyLimitModal';
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Topics' },
+  { id: 'all', label: 'All Practice Topics' },
   { id: 'insolvency-ibc', label: 'IBC & CIRP' },
   { id: 'commercial-pleading', label: 'Commercial Pleading' },
-  { id: 'desktop-harness', label: 'Desktop Harness' },
-  { id: 'bare-acts', label: 'Bare Acts & Statutes' },
+  { id: 'bare-acts', label: 'Bare Acts & Precedents' },
   { id: 'general', label: 'General Legal' },
 ];
 
@@ -31,14 +29,19 @@ export function CommunityBoard() {
   const [newCategory, setNewCategory] = useState('insolvency-ibc');
   const [newContent, setNewContent] = useState('');
   const [newTags, setNewTags] = useState('IBC, Section 12');
+  const [authorName, setAuthorName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [createError, setCreateError] = useState('');
+
+  // Daily Limit Modal State
+  const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
+  const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
 
   const fetchThreads = async () => {
     setIsLoading(true);
     try {
       const params = new URLSearchParams();
-      if (selectedCategory && selectedCategory !== 'all') {
+      if (selectedCategory && selectedCategory !== 'all' && selectedCategory !== 'my-threads') {
         params.set('category', selectedCategory);
       }
       if (searchQuery.trim()) {
@@ -48,7 +51,14 @@ export function CommunityBoard() {
       const res = await fetch(`/api/community/threads?${params.toString()}`);
       if (res.ok) {
         const data = await res.json();
-        setThreads(data.threads || []);
+        let loaded = data.threads || [];
+        if (selectedCategory === 'my-threads') {
+          try {
+            const savedIds = JSON.parse(localStorage.getItem('rb_my_threads') || '[]');
+            loaded = loaded.filter((t: CommunityThreadItem) => savedIds.includes(t.id));
+          } catch {}
+        }
+        setThreads(loaded);
       }
     } catch (err) {
       console.error('Failed to load community threads:', err);
@@ -92,147 +102,151 @@ export function CommunityBoard() {
           body: newContent,
           category: newCategory,
           tags: tagsArray,
+          turnstileToken: 'test-token',
         }),
       });
 
+      if (res.status === 429) {
+        setIsModalOpen(false);
+        setIsLimitModalOpen(true);
+        return;
+      }
+
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Failed to create discussion');
+        throw new Error(data.error || 'Failed to submit legal inquiry');
       }
 
       const data = await res.json();
-      setIsModalOpen(false);
+      if (typeof data.remaining === 'number') {
+        setRemainingQuota(data.remaining);
+      }
+
+      // Save to local 'My Inquiries'
+      try {
+        const savedIds = JSON.parse(localStorage.getItem('rb_my_threads') || '[]');
+        if (data.thread?.id) {
+          savedIds.push(data.thread.id);
+          localStorage.setItem('rb_my_threads', JSON.stringify(savedIds));
+        }
+      } catch {}
+
+      // Reset Form and Open newly created thread
       setNewTitle('');
       setNewContent('');
-      setNewTags('');
-
-      // Refresh and open the newly created thread in the drawer
+      setIsModalOpen(false);
       await fetchThreads();
+
       if (data.thread) {
-        handleOpenThread(data.thread);
+        setSelectedThread(data.thread);
+        setIsDrawerOpen(true);
       }
     } catch (err: any) {
-      setCreateError(err.message || 'Error creating discussion');
+      setCreateError(err.message || 'Failed to submit inquiry');
     } finally {
       setIsCreating(false);
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="text-xl sm:text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
-                <Scale className="w-5 h-5 text-foreground" />
-                Practitioner Community Board
-              </span>
-              <Badge variant="outline" className="text-[10px] uppercase font-semibold flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                Sovereign Fleet
-              </Badge>
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      {/* Top Banner / Hero */}
+      <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-sky-950 to-indigo-950 text-white shadow-xl border border-sky-500/20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-mono font-medium border border-sky-400/30">
+              <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+              <span>Sovereign Legal Intelligence • 3 Free Daily Inquiries</span>
             </div>
-            <p className="text-xs text-muted-foreground max-w-2xl leading-relaxed">
-              Exchange legal strategies, statutory precedents, and resolve queries instantly with the integrated{' '}
-              <strong className="text-foreground">Azure LightRAG knowledge graph</strong>.
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-serif">
+              Insolvency & Commercial Law Forum
+            </h1>
+            <p className="text-xs sm:text-sm text-sky-200/80 leading-relaxed">
+              Explore public tribunal precedents, analyze Section 29A disqualification criteria, and receive automated statutory Bare Act citations powered by our Azure knowledge graph.
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={fetchThreads}
-              className="text-xs gap-1 h-9"
-              title="Refresh discussions"
-            >
-              <RefreshCw className={isLoading ? 'w-3.5 h-3.5 animate-spin' : 'w-3.5 h-3.5'} />
-              <span className="hidden sm:inline">Refresh</span>
-            </Button>
+          <div className="flex items-center gap-3 shrink-0">
             <Button
               onClick={() => setIsModalOpen(true)}
-              variant="default"
-              size="sm"
-              className="text-xs gap-1.5 h-9 font-semibold"
+              className="bg-sky-500 hover:bg-sky-400 text-zinc-950 font-semibold text-xs sm:text-sm h-10 px-4 shadow-lg shadow-sky-500/20 transition-all cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
-              <span>Start Discussion</span>
+              <Plus className="w-4 h-4 mr-1.5" />
+              <span>Ask Statutory Question</span>
             </Button>
-          </div>
-        </div>
-
-        {/* Filter & Search Bar */}
-        <div className="mt-6 pt-5 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                  selectedCategory === cat.id
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-xs'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Search Box */}
-          <div className="relative w-full sm:w-72">
-            <Search className="w-3.5 h-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search topics, sections, keywords..."
-              className="w-full bg-secondary/50 border border-input rounded-md pl-8 pr-3 py-1.5 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-            />
           </div>
         </div>
       </div>
 
-      {/* Main Feed */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2, 3, 4].map((n) => (
-            <div
-              key={n}
-              className="h-36 rounded-lg border border-border bg-card p-4 animate-pulse space-y-3"
+      {/* Control Bar: Search & Category Tabs */}
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
+        {/* Category Filter Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors cursor-pointer border ${
+                selectedCategory === cat.id
+                  ? 'bg-sky-600 text-white border-sky-600 shadow-xs'
+                  : 'bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400'
+              }`}
             >
-              <div className="h-4 bg-secondary rounded w-1/4" />
-              <div className="h-5 bg-secondary rounded w-3/4" />
-              <div className="h-3 bg-secondary rounded w-1/2" />
-            </div>
+              {cat.label}
+            </button>
           ))}
+          <button
+            onClick={() => setSelectedCategory('my-threads')}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors cursor-pointer border ${
+              selectedCategory === 'my-threads'
+                ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
+                : 'bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400'
+            }`}
+          >
+            My Inquiries
+          </button>
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative w-full lg:w-72">
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400" />
+          <input
+            type="text"
+            placeholder="Search Bare Acts, Sections..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-3 py-1.5 rounded-xl text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-1 focus:ring-sky-500"
+          />
+        </div>
+      </div>
+
+      {/* Main Grid: Discussion Thread Cards */}
+      {isLoading ? (
+        <div className="py-16 text-center text-xs text-zinc-500 space-y-2">
+          <Loader2 className="w-6 h-6 animate-spin mx-auto text-sky-600" />
+          <p>Loading statutory discussions...</p>
         </div>
       ) : threads.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-border p-12 text-center space-y-3 bg-card/40">
-          <div className="w-10 h-10 rounded-full bg-secondary/80 flex items-center justify-center mx-auto text-muted-foreground">
-            <MessageSquare className="w-5 h-5" />
-          </div>
-          <h3 className="text-sm font-semibold text-foreground">No discussions found</h3>
-          <p className="text-xs text-muted-foreground max-w-md mx-auto">
-            {searchQuery
-              ? `No topics match "${searchQuery}". Try a different keyword.`
-              : 'Be the first practitioner to start a discussion in this category.'}
+        <div className="py-16 text-center rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 p-8 space-y-3">
+          <Scale className="w-8 h-8 mx-auto text-zinc-400" />
+          <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            No inquiries found in this category
+          </h3>
+          <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+            Be the first practitioner to ask a question and trigger our Azure Sovereign AI knowledge graph analysis.
           </p>
           <Button
             onClick={() => setIsModalOpen(true)}
-            variant="outline"
             size="sm"
-            className="text-xs gap-1 mt-2"
+            className="bg-sky-600 hover:bg-sky-700 text-white text-xs mt-2"
           >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Create Topic</span>
+            <Plus className="w-3.5 h-3.5 mr-1" />
+            <span>Ask First Question</span>
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {threads.map((thread) => (
             <ThreadCard
               key={thread.id}
@@ -244,118 +258,137 @@ export function CommunityBoard() {
         </div>
       )}
 
-      {/* Slide-Over Conversation Drawer */}
+      {/* Slide-over Thread Details Drawer */}
       <ThreadDrawer
         thread={selectedThread}
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        onThreadUpdated={fetchThreads}
+        onReplyAdded={fetchThreads}
       />
 
-      {/* Modal: Start New Discussion */}
+      {/* Daily Quota Reached Modal */}
+      <DailyLimitModal
+        isOpen={isLimitModalOpen}
+        onClose={() => setIsLimitModalOpen(false)}
+      />
+
+      {/* New Question Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <div>
-                <h3 className="text-base font-bold text-foreground flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-foreground" />
-                  Start a Community Discussion
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  The Azure LightRAG bot will automatically review and provide initial Bare Act analysis.
-                </p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-6 text-zinc-900 dark:text-zinc-100 animate-in zoom-in-95 duration-150 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-bold">Ask Sovereign Legal Matter</h3>
               </div>
               <button
-                type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-muted-foreground hover:text-foreground text-sm font-bold p-1"
+                className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
             {createError && (
-              <div className="p-3 text-xs rounded bg-destructive/10 border border-destructive/30 text-destructive font-medium">
+              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs">
                 {createError}
               </div>
             )}
 
             <form onSubmit={handleCreateThread} className="space-y-4">
-              {/* Category & Tags */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-foreground">Legal Domain / Category</label>
+              <div>
+                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                  Matter Title
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Scope of Section 29A(c) Disqualification on Regularized NPAs"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-hidden focus:ring-1 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Practice Area
+                  </label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-xs text-foreground focus:ring-1 focus:ring-primary focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-hidden focus:ring-1 focus:ring-sky-500"
                   >
-                    <option value="insolvency-ibc">Insolvency & Bankruptcy (IBC)</option>
-                    <option value="commercial-pleading">Commercial Dispute Pleading</option>
-                    <option value="desktop-harness">Desktop Harness Configuration</option>
-                    <option value="bare-acts">Bare Acts & Statutory Vaults</option>
-                    <option value="general">General Practitioner Exchange</option>
+                    <option value="insolvency-ibc">IBC & CIRP</option>
+                    <option value="commercial-pleading">Commercial Pleading</option>
+                    <option value="bare-acts">Bare Acts & Precedents</option>
+                    <option value="general">General Legal</option>
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-foreground">Tags (Comma-separated)</label>
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Tags (Comma Separated)
+                  </label>
                   <input
                     type="text"
+                    placeholder="Section 29A, CIRP, NCLT"
                     value={newTags}
                     onChange={(e) => setNewTags(e.target.value)}
-                    placeholder="e.g. Section 12, CIRP, NCLAT"
-                    className="w-full bg-secondary/50 border border-input rounded-md px-3 py-1.5 text-xs text-foreground focus:ring-1 focus:ring-primary focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-hidden focus:ring-1 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
-              {/* Title */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-foreground">Discussion Topic / Query</label>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="e.g. CIRP limitation period exclusion under Section 12 during litigation"
-                  className="w-full bg-secondary/50 border border-input rounded-md px-3 py-2 text-sm text-foreground focus:ring-1 focus:ring-primary focus:outline-none font-medium"
+              <div>
+                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                  Factual Context & Specific Legal Query
+                </label>
+                <textarea
                   required
+                  rows={4}
+                  placeholder="Detail the corporate debtor circumstance, dates of default, relevant tribunal bench, and specific statutory relief sought..."
+                  value={newContent}
+                  onChange={(e) => setNewContent(e.target.value)}
+                  className="w-full p-3 rounded-xl text-xs border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:outline-hidden focus:ring-1 focus:ring-sky-500 resize-none"
                 />
               </div>
 
-              {/* Tiptap Rich Content */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-foreground">Details & Legal Context</label>
-                <TiptapEditor
-                  content={newContent}
-                  onChange={setNewContent}
-                  placeholder="Provide facts, relevant statutory sections, or specific questions for the sovereign AI bot and advocate community..."
-                  minHeight="140px"
-                />
+              <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1">
+                <div className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-sky-500" />
+                  <span>Azure LightRAG Asynchronous Synthesis:</span>
+                </div>
+                <p>
+                  Upon submission, your query will enter our Azure queuing engine. Within ~30 seconds, an automated analysis citing relevant Bare Act sections and Supreme Court / NCLAT precedents will be attached.
+                </p>
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-border">
+              <div className="flex justify-end gap-2.5 pt-2 border-t border-zinc-200 dark:border-zinc-800">
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
                   onClick={() => setIsModalOpen(false)}
-                  disabled={isCreating}
-                  className="text-xs"
+                  className="text-xs h-9"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  variant="default"
-                  size="sm"
                   disabled={isCreating}
-                  className="text-xs font-semibold gap-1.5 px-4"
+                  className="bg-sky-600 hover:bg-sky-700 text-white text-xs h-9 px-4 font-medium"
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  {isCreating ? 'Publishing Topic...' : 'Publish & Consult AI'}
+                  {isCreating ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin mr-1.5" />
+                      <span>Submitting to Azure...</span>
+                    </>
+                  ) : (
+                    <span>Submit Legal Inquiry</span>
+                  )}
                 </Button>
               </div>
             </form>
